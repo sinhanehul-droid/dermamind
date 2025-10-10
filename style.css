@@ -48,7 +48,10 @@ nav { display: flex; justify-content: space-between; align-items: center; }
     color: var(--text-primary);
     text-decoration: none;
 }
-
+#bld{
+    font-weight:bold;
+    color:#c0fdfd;
+}
 /* Login page ke brand panel ka logo */
 .login-brand-panel .logo-text {
     font-size: 2rem;

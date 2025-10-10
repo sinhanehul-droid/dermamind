@@ -47,6 +47,57 @@
             align-items: center;
             gap: 15px;
         }
+
+        /* --- STYLES FOR THE DISCLAIMER POP-UP MODAL --- */
+        .modal-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7); /* Overlay thoda aur dark kar diya */
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-backdrop.hidden {
+            display: none;
+        }
+
+        .modal-content {
+            /* === YEH STYLE UPDATE KIYA HAI AAPKE KEHNE PAR === */
+            background-color: #080b0f; /* Solid, dark background (blackish-blue tint) */
+            border: 1px solid #334155;  /* Thodi halki border taaki alag dikhe */
+            
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+        }
+
+        .modal-content h3 {
+            margin-top: 0;
+            font-size: 1.6rem;
+            color: #ffffff; /* Heading ka text safed */
+        }
+
+        .modal-content p {
+            margin-bottom: 25px;
+            line-height: 1.6;
+            color: #cbd5e1; /* Paragraph ka text halka off-white */
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        /* --- END OF MODAL STYLES --- */
+
     </style>
 </head>
 <body id="profilepage">
