@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DermaMind AI - Intelligent Skin Analysis</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/feather-icons"></script>
+</head>
+<body>
+
+    <header class="main-header">
+        <nav class="container">
+            <a href="index.html" class="logo-text">DermaMind AI</a>
+            <div class="nav-links">
+                <a href="#about">About</a>
+                <a href="#process">How It Works</a>
+                <a href="#features">Features</a>
+                <a href="#contact">Contact</a>
+                <a href="login.html" id="loginBtn" class="btn btn-cta-login">Login</a>
+                <a href="profile.html" id="profileBtn" class="btn btn-cta-login hidden">Profile</a>
+                <button id="logoutBtn" class="btn btn-cta-login hidden">Logout</button>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero-section">
+            <div class="hero-content">
+                <h1>Intelligent Skin Analysis</h1>
+                <p class="subheading">& Profound AI Diagnostics</p>
+                <a href="login.html" id="heroAuthBtn" class="btn btn-cta-main">Login / Signup</a>
+                <div class="social-proof">
+                    <i data-feather="users"></i>
+                    <span>Trusted by 10,000+ Users</span>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="content-section">
+            <div class="container animated-element">
+                <div class="section-header">
+                    <h3>About Us</h3>
+                    <p>Pioneering accessible dermatological insights through technology.</p>
+                </div>
+                <p class="section-body">DermaMind AI was founded on the principle that understanding your skin health should be simple, fast, and accessible. Our team of AI specialists and medical advisors has developed a cutting-edge platform that translates complex visual data into clear, actionable insights.</p>
+            </div>
+        </section>
+
+        <section id="process" class="process-section dark-bg">
+            <div class="container">
+                 <div class="section-header animated-element">
+                    <h3>How It Works</h3>
+                    <p>A simple, secure, and swift process.</p>
+                </div>
+                <div class="steps-grid">
+                    <div class="step-card animated-element" data-delay="100">
+                        <i data-feather="upload"></i>
+                        <h4>1. Upload Image</h4>
+                        <p>Submit a clear photo of the skin area through our secure portal.</p>
+                    </div>
+                    <div class="step-card animated-element" data-delay="200">
+                        <i data-feather="cpu"></i>
+                        <h4>2. AI Analysis</h4>
+                        <p>Our advanced model analyzes your image in seconds.</p>
+                    </div>
+                    <div class="step-card animated-element" data-delay="300">
+                        <i data-feather="file-text"></i>
+                        <h4>3. Get Insights</h4>
+                        <p>Receive a preliminary report with actionable insights.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="features" class="content-section">
+             <div class="container animated-element">
+                <div class="section-header"><h3>Key Features</h3><p>Advanced technology designed for clarity and security.</p></div>
+                <div class="features-grid">
+                    <div class="feature-item"><i data-feather="shield"></i> Privacy First</div>
+                    <div class="feature-item"><i data-feather="zap"></i> Instant Results</div>
+                    <div class="feature-item"><i data-feather="check-circle"></i> High Accuracy</div>
+                    <div class="feature-item"><i data-feather="users"></i> Professional Grade</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="content-section dark-bg">
+            <div class="container animated-element">
+                <div class="section-header"><h3>Contact Us</h3><p>Have questions? We're here to help.</p></div>
+                <p class="section-body">For inquiries, partnerships, or support, please reach out to our team at <a href="mailto:contact@dermamind.ai" class="contact-link">contact@dermamind.ai</a>.</p>
+            </div>
+        </section>
+    </main>
+    
+    <footer class="main-footer">
+        <p>&copy; 2025 DermaMind AI. For informational purposes only.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

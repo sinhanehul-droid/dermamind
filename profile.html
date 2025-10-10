@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Profile - DermaMind AI</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/feather-icons"></script>
+</head>
+<body>
+    <header class="main-header">
+        <nav class="container">
+            <a href="index.html" class="logo-text">DermaMind AI</a>
+            <div class="nav-links">
+                <a href="profile.html">Profile</a>
+                <button id="logoutBtn" class="btn btn-cta-login">Logout</button>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <section class="content-section profile-dashboard">
+            <div class="container animated-element">
+                <div class="profile-header">
+                    <div class="profile-greeting"><h2>User Dashboard</h2><p>Welcome back! Here are your records.</p></div>
+                    <button id="startAnalysisBtn" class="btn btn-cta-header"><i data-feather="plus"></i> Begin New Analysis</button>
+                </div>
+                <div class="profile-tabs">
+                    <button class="tab-link active" data-tab="analyses"><i data-feather="file-text"></i> Past Analyses</button>
+                    <button class="tab-link" data-tab="conversations"><i data-feather="message-square"></i> Conversations</button>
+                    <button class="tab-link" data-tab="prescriptions"><i data-feather="edit"></i> Prescriptions</button>
+                </div>
+                <div class="tab-content">
+                    <div id="analyses" class="tab-pane active"><div class="record-list"><div class="record-card"><div class="record-details"><span class="record-date">October 10, 2025</span><h4 class="record-title">Analysis ID: #8A4B1C</h4><p class="record-summary">Primary Finding: Benign Nevus (Common Mole)</p></div><div class="record-meta"><span class="record-status status-low">Low Risk</span><a href="report.html" class="btn btn-cta-main">View Report</a></div></div></div></div>
+                    <div id="conversations" class="tab-pane"><div class="record-list"><div class="empty-state"><i data-feather="message-square"></i><h4>No Conversations Found</h4><p>Your conversations with specialists will appear here.</p></div></div></div>
+                    <div id="prescriptions" class="tab-pane"><div class="record-list"><div class="empty-state"><i data-feather="folder"></i><h4>No Prescriptions Found</h4><p>Your prescribed medications will appear here.</p></div></div></div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer class="main-footer"><p>&copy; 2025 DermaMind AI. For informational purposes only.</p></footer>
+    <div id="disclaimerModal" class="modal-backdrop hidden"><div class="modal-content"><h3>Important Disclaimer</h3><p>DermaMind AI is not a substitute for professional medical advice.</p><button id="proceedBtn" class="btn btn-cta-header">I Understand & Proceed</button></div></div>
+    <script src="script.js"></script>
+</body>
+</html>
