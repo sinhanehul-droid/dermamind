@@ -10,23 +10,73 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Lato:wght@300;400&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/feather-icons"></script>
 </head>
-<body>
+<body id="reportpage">
     <header class="main-header">
         <nav class="container">
             <a href="index.html" class="logo-text">DermaMind AI</a>
-            <div class="nav-links"><a href="profile.html">Profile</a><button id="logoutBtn" class="btn btn-cta-login">Logout</button></div>
+            <div class="nav-links">
+                <a href="profile.html">Profile</a>
+                <button id="logoutBtn" class="btn btn-cta-login">Logout</button>
+            </div>
         </nav>
     </header>
+
     <main>
         <section class="content-section report-page">
             <div class="container animated-element">
-                <div class="section-header"><h3>Analysis Report</h3><p>Generated on October 10, 2025</p></div>
-                <div class="report-container"></div>
-                <div class="report-actions"><a href="profile.html" class="btn btn-cta-main">Back to Profile</a></div>
+                <div class="section-header">
+                    <h3>Analysis Report</h3>
+                    <p id="reportDate">Loading Report...</p>
+                </div>
+
+                <div class="report-container">
+                    <div class="report-image-panel">
+                        <h4>Submitted Image</h4>
+                        <img src="https://images.unsplash.com/photo-1615565392322-89587498c4d3?q=80&w=2574&auto=format&fit=crop" alt="User submitted skin image for analysis">
+                    </div>
+
+                    <div class="report-details-panel">
+                        <div class="primary-finding-card">
+                            <div class="finding-header">
+                                <i data-feather="check-circle"></i>
+                                <div>
+                                    <h5>Primary Finding</h5>
+                                    <h2 id="reportFinding">Performing AI Analysis...</h2>
+                                </div>
+                            </div>
+                            <div class="finding-metrics">
+                                <div class="metric-item">
+                                    <h6>Confidence Score</h6>
+                                    <p id="reportConfidence" class="confidence-high">--%</p>
+                                </div>
+                                <div class="metric-item">
+                                    <h6>Risk Assessment</h6>
+                                    <p id="reportRisk" class="risk-low">N/A</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="report-recommendation">
+                            <h4><i data-feather="alert-triangle"></i> Recommendation & Disclaimer</h4>
+                            <p>This is not a medical diagnosis. We strongly recommend consulting a qualified dermatologist for a professional evaluation and to discuss these preliminary findings.</p>
+                        </div>
+                    </div>
+                </div>
+                 <div class="report-actions">
+                    <a href="profile.html" class="btn btn-cta-main">Back to Profile</a>
+                </div>
             </div>
         </section>
     </main>
-    <footer class="main-footer"><p>&copy; 2025 DermaMind AI. For informational purposes only.</p></footer>
+    
+    <footer class="main-footer">
+        <p>&copy; 2025 DermaMind AI. For informational purposes only.</p>
+    </footer>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+
     <script src="script.js"></script>
 </body>
 </html>

@@ -3,45 +3,114 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Profile - DermaMind AI</title>
+    <title>My Profile - DermaMind AI</title>
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Lato:wght@300;400&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/feather-icons"></script>
 </head>
-<body>
+<body id="profilepage">
+
     <header class="main-header">
-        <nav class="container">
+        <nav class="nav-container">
             <a href="index.html" class="logo-text">DermaMind AI</a>
-            <div class="nav-links">
-                <a href="profile.html">Profile</a>
-                <button id="logoutBtn" class="btn btn-cta-login">Logout</button>
-            </div>
+            <ul class="nav-links">
+                <li><a href="index.html#about">About</a></li>
+                <li><a href="index.html#how-it-works">How It Works</a></li>
+                <li><a href="index.html#features">Features</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+                <li class="auth-buttons">
+                    <a href="login.html" id="loginBtn" class="btn btn-secondary">Login / Signup</a>
+                    <a href="profile.html" id="profileBtn" class="btn btn-secondary hidden">Profile</a>
+                    <button id="logoutBtn" class="btn btn-secondary hidden">Logout</button>
+                </li>
+            </ul>
         </nav>
     </header>
-    <main>
-        <section class="content-section profile-dashboard">
-            <div class="container animated-element">
-                <div class="profile-header">
-                    <div class="profile-greeting"><h2>User Dashboard</h2><p>Welcome back! Here are your records.</p></div>
-                    <button id="startAnalysisBtn" class="btn btn-cta-header"><i data-feather="plus"></i> Begin New Analysis</button>
-                </div>
-                <div class="profile-tabs">
-                    <button class="tab-link active" data-tab="analyses"><i data-feather="file-text"></i> Past Analyses</button>
-                    <button class="tab-link" data-tab="conversations"><i data-feather="message-square"></i> Conversations</button>
-                    <button class="tab-link" data-tab="prescriptions"><i data-feather="edit"></i> Prescriptions</button>
-                </div>
-                <div class="tab-content">
-                    <div id="analyses" class="tab-pane active"><div class="record-list"><div class="record-card"><div class="record-details"><span class="record-date">October 10, 2025</span><h4 class="record-title">Analysis ID: #8A4B1C</h4><p class="record-summary">Primary Finding: Benign Nevus (Common Mole)</p></div><div class="record-meta"><span class="record-status status-low">Low Risk</span><a href="report.html" class="btn btn-cta-main">View Report</a></div></div></div></div>
-                    <div id="conversations" class="tab-pane"><div class="record-list"><div class="empty-state"><i data-feather="message-square"></i><h4>No Conversations Found</h4><p>Your conversations with specialists will appear here.</p></div></div></div>
-                    <div id="prescriptions" class="tab-pane"><div class="record-list"><div class="empty-state"><i data-feather="folder"></i><h4>No Prescriptions Found</h4><p>Your prescribed medications will appear here.</p></div></div></div>
-                </div>
+
+    <main class="profile-main-content">
+        <div class="profile-header-section">
+            <h1 id="welcomeMessage">Welcome back!</h1>
+            <p>Manage your health records, consultations, and settings here.</p>
+        </div>
+
+        <div class="profile-content-container">
+            <div class="profile-tabs">
+                <a href="#" class="tab-link active" id="recordsTab">My Records</a>
+                <a href="#" class="tab-link" id="conversationsTab">Past Conversations</a>
+                <a href="#" class="tab-link" id="prescriptionsTab">Prescriptions</a>
+                <a href="#" class="tab-link" id="settingsTab">Settings</a>
             </div>
-        </section>
+
+            <div class="profile-tab-content">
+                <div class="tab-pane active" id="recordsPane">
+                    <div class="section-title">
+                        <h3>Your Dermatology Records</h3>
+                        <button id="startAnalysisBtn" class="btn btn-cta-main">Start New Analysis</button>
+                    </div>
+                    <div id="recordList" class="record-list-grid">
+                        </div>
+                    <div id="emptyState" class="empty-state hidden">
+                        <i data-feather="file-text"></i>
+                        <p>No records yet. Start your first analysis!</p>
+                    </div>
+                </div>
+
+                <div class="tab-pane hidden" id="conversationsPane">
+                    <div class="section-title">
+                        <h3>Your Consultation History</h3>
+                        <button class="btn btn-cta-main">Start New Consultation</button>
+                    </div>
+                    <div id="conversationList" class="record-list-grid">
+                        <div class="empty-state">
+                            <i data-feather="message-square"></i>
+                            <p>No past conversations. Start a new one!</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane hidden" id="prescriptionsPane">
+                    <div class="section-title">
+                        <h3>Your Prescriptions</h3>
+                        </div>
+                    <div id="prescriptionList" class="record-list-grid">
+                        <div class="empty-state">
+                            <i data-feather="clipboard"></i>
+                            <p>No active prescriptions. Consult a doctor!</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane hidden" id="settingsPane">
+                    <div class="section-title">
+                        <h3>Account Settings</h3>
+                    </div>
+                    <p>Settings content will go here (e.g., Change Password, Update Profile).</p>
+                    </div>
+
+            </div>
+        </div>
     </main>
-    <footer class="main-footer"><p>&copy; 2025 DermaMind AI. For informational purposes only.</p></footer>
-    <div id="disclaimerModal" class="modal-backdrop hidden"><div class="modal-content"><h3>Important Disclaimer</h3><p>DermaMind AI is not a substitute for professional medical advice.</p><button id="proceedBtn" class="btn btn-cta-header">I Understand & Proceed</button></div></div>
+
+    <footer class="main-footer">
+        <p>&copy; 2024 DermaMind AI. All rights reserved.</p>
+    </footer>
+
+    <div id="disclaimerModal" class="modal hidden animated-element">
+        <div class="modal-content">
+            <h3>Disclaimer</h3>
+            <p>DermaMind AI is an assistive tool and does not provide medical advice. Consult a certified dermatologist for diagnosis and treatment. By proceeding, you agree to these terms.</p>
+            <div class="modal-actions">
+                <button id="cancelBtn" class="btn btn-secondary">Cancel</button>
+                <button id="proceedBtn" class="btn btn-cta-main">Proceed to Analysis</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

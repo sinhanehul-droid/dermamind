@@ -10,7 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Lato:wght@300;400&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/feather-icons"></script>
 </head>
-<body>
+<body id="loginpage">
 
     <div class="login-page-container">
         <div class="login-brand-panel">
@@ -21,77 +21,45 @@
             <div class="form-container animated-element">
                 <h2 id="formTitle">Welcome Back</h2>
                 <form id="authForm">
+                    <p id="errorMessage" class="error-message hidden"></p>
+                    <p id="successMessage" class="success-message hidden"></p>
+                    
                     <div class="input-group">
                         <i data-feather="mail"></i>
-                        <input type="email" id="email" name="email" required autocomplete="email" placeholder="Email Address">
+                        <input type="email" id="email" required autocomplete="email" placeholder="Email Address">
                     </div>
                     <div class="input-group">
                         <i data-feather="lock"></i>
-                        <input type="password" id="password" name="password" required autocomplete="current-password" placeholder="Password">
+                        <input type="password" id="password" required autocomplete="current-password" placeholder="Password">
                     </div>
                     <div class="input-group hidden" id="confirmPasswordGroup">
                         <i data-feather="key"></i>
-                        <input type="password" id="confirmPassword" name="confirmPassword" autocomplete="new-password" placeholder="Confirm Password">
+                        <input type="password" id="confirmPassword" autocomplete="new-password" placeholder="Confirm Password">
                     </div>
+                    
+                    <div class="forgot-password-link">
+                        <a href="#" id="forgotPasswordLink">Forgot Password?</a>
+                    </div>
+
                     <button type="submit" id="formActionBtn" class="btn-modal-action">Login</button>
                 </form>
-                <p id="formToggleText" class="modal-toggle-text">
-                    <span>Don't have an account?</span>
-                    <a href="#" id="switchToSignup">Sign Up</a>
+
+                <div class="divider"><span>OR</span></div>
+                <button type="button" id="googleSignInBtn" class="btn btn-google">
+                    <i data-feather="mail"></i> Sign in with Google
+                </button>
+                <p class="modal-toggle-text">
+                    <span id="formTogglePrompt">Don't have an account?</span> 
+                    <a href="#" id="formToggleAction">Sign Up</a>
                 </p>
             </div>
         </div>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            feather.replace();
-
-            const formContainer = document.querySelector('.form-container');
-            if(formContainer) {
-                formContainer.style.opacity = '0';
-                setTimeout(() => { formContainer.classList.add('is-visible'); }, 100);
-            }
-
-            const authForm = document.getElementById('authForm');
-            const switchToSignup = document.getElementById('switchToSignup');
-            const formTitle = document.getElementById('formTitle');
-            const formActionBtn = document.getElementById('formActionBtn');
-            const formToggleText = document.getElementById('formToggleText');
-            const confirmPasswordGroup = document.getElementById('confirmPasswordGroup');
-            const confirmPasswordInput = document.getElementById('confirmPassword');
-            let isLoginMode = true;
-
-            function setFormMode(isLogin) {
-                isLoginMode = isLogin;
-                if (isLogin) {
-                    formTitle.textContent = 'Welcome Back';
-                    formActionBtn.textContent = 'Login';
-                    formToggleText.querySelector('span').textContent = "Don't have an account?";
-                    switchToSignup.textContent = 'Sign Up';
-                    confirmPasswordGroup.classList.add('hidden');
-                    confirmPasswordInput.required = false;
-                } else {
-                    formTitle.textContent = 'Create Your Account';
-                    formActionBtn.textContent = 'Create Account';
-                    formToggleText.querySelector('span').textContent = "Already have an account?";
-                    switchToSignup.textContent = 'Login';
-                    confirmPasswordGroup.classList.remove('hidden');
-                    confirmPasswordInput.required = true;
-                }
-            }
-
-            switchToSignup.addEventListener('click', (e) => {
-                e.preventDefault();
-                setFormMode(!isLoginMode);
-            });
-
-            authForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                localStorage.setItem('isLoggedIn', 'true');
-                window.location.href = 'profile.html';
-            });
-        });
-    </script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    
+    <script src="script.js"></script>
 </body>
 </html>
