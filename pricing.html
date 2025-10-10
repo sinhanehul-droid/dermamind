@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DermaMind AI - Pricing Plans</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/feather-icons"></script>
+</head>
+<body id="pricing-page">
+
+    <header class="main-header">
+        <nav class="container nav-container">
+            <a href="index.html" class="logo-link">
+                <span class="logo-text">DermaMind AI</span>
+            </a>
+            <a href="index.html" class="btn btn-cta-main">Back to Homepage</a>
+        </nav>
+    </header>
+
+    <main>
+        <section id="plans" class="content-section py-20 text-center">
+            <div class="container mx-auto">
+                <div class="section-header">
+                    <h1 class="text-4xl font-bold text-accent-gold mb-4">Choose a Plan That's Right for You</h1>
+                    <p class="text-lg text-text-secondary mb-12 max-w-2xl mx-auto">
+                        Get more from DermaMind AI with our premium features, including unlimited analyses, priority support, and advanced insights.
+                    </p>
+                </div>
+                
+                <div class="flex flex-col md:flex-row justify-center items-stretch gap-8">
+                    
+                    <div class="pricing-card w-full md:w-1/3 p-8 frosted rounded-xl">
+                        <h3 class="text-2xl font-semibold text-text-primary mb-2">Free</h3>
+                        <p class="text-text-secondary mb-4">For personal use</p>
+                        <div class="text-4xl font-bold text-accent-gold mb-6">$0<span class="text-lg text-text-secondary">/month</span></div>
+                        <ul class="text-left text-text-primary mb-8 space-y-2">
+                            <li class="flex items-center gap-2">
+                                <i data-feather="check-circle" class="w-5 h-5" style="color: var(--accent-gold);"></i>
+                                Limited monthly analyses
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i data-feather="check-circle" class="w-5 h-5" style="color: var(--accent-gold);"></i>
+                                Standard AI insights
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i data-feather="check-circle" class="w-5 h-5" style="color: var(--accent-gold);"></i>
+                                Email support
+                            </li>
+                        </ul>
+                        <a href="login.html" class="btn btn-cta-header w-full py-3">Start for Free</a>
+                    </div>
+                    
+                    <div class="pricing-card w-full md:w-1/3 p-8 frosted rounded-xl relative border-2 border-accent-gold" style="box-shadow: 0 0 30px var(--accent-glow);">
+                        <span class="badge absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-accent-gold text-black font-bold px-3 py-1 rounded-full text-sm">Most Popular</span>
+                        <h3 class="text-2xl font-semibold text-text-primary mb-2">Pro</h3>
+                        <p class="text-text-secondary mb-4">For power users</p>
+                        <div class="text-4xl font-bold text-accent-gold mb-6">$9<span class="text-lg text-text-secondary">/month</span></div>
+                        <ul class="text-left text-text-primary mb-8 space-y-2">
+                            <li class="flex items-center gap-2">
+                                <i data-feather="check-circle" class="w-5 h-5" style="color: var(--accent-gold);"></i>
+                                Unlimited AI analyses
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i data-feather="check-circle" class="w-5 h-5" style="color: var(--accent-gold);"></i>
+                                Advanced diagnostic insights
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i data-feather="check-circle" class="w-5 h-5" style="color: var(--accent-gold);"></i>
+                                Priority chat support
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i data-feather="check-circle" class="w-5 h-5" style="color: var(--accent-gold);"></i>
+                                Save and export all records
+                            </li>
+                        </ul>
+                        <button class="btn btn-modal-action w-full py-3">Get Started</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <footer class="main-footer">
+        <p>&copy; 2024 DermaMind AI. All rights reserved.</p>
+    </footer>
+    
+    <script>
+        feather.replace();
+    </script>
+</body>
+</html>

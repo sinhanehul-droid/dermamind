@@ -1,44 +1,31 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // =================================================================
-    // WARNING: For temporary testing ONLY. Do not use in production.
-    // Replace "YOUR_GEMINI_API_KEY_HERE" with your actual key.
-    const API_KEY = "AIzaSyDpxo_hsmjxZGQkT--7Tk5CV48WPcZiakI";
-    const MODEL_NAME = "gemini-2.5-flash-preview-05-20";
-    const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent?key=${API_KEY}`;
-    // =================================================================
+    // NOTE: Firebase is initialized via script.js, which is loaded before this file.
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+    const storage = firebase.storage();
 
     const analysisForm = document.getElementById('analysis-form');
-    const dropZone = document.getElementById('drop-zone');
     const imageUploader = document.getElementById('image-uploader');
     const imagePreview = document.getElementById('image-preview');
+    const dropZone = document.getElementById('drop-zone');
     const submitBtn = document.getElementById('submit-btn');
     const loader = document.getElementById('loader');
     const resultsContainer = document.getElementById('results-container');
     
     let base64Image = null;
 
+    // --- File Handling ---
     dropZone.addEventListener('click', () => imageUploader.click());
-    dropZone.addEventListener('dragover', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        dropZone.classList.add('dragover');
-    });
-    dropZone.addEventListener('dragleave', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        dropZone.classList.remove('dragover');
-    });
+    dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('dragover'); });
+    dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
     dropZone.addEventListener('drop', (e) => {
         e.preventDefault();
-        e.stopPropagation();
         dropZone.classList.remove('dragover');
-        const files = e.dataTransfer.files;
-        if (files.length) handleFile(files[0]);
+        if (e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]);
     });
     imageUploader.addEventListener('change', (e) => {
         if (e.target.files.length) handleFile(e.target.files[0]);
     });
-
     function handleFile(file) {
         const reader = new FileReader();
         reader.onload = (e) => {
@@ -49,68 +36,117 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         reader.readAsDataURL(file);
     }
-    
-    analysisForm.addEventListener('submit', async (event) => {
+
+    // --- Main Form Submission Logic ---
+    analysisForm.addEventListener('submit', (event) => {
         event.preventDefault();
-        if (!base64Image) {
-            displayError('Please upload an image for analysis.');
-            return;
-        }
-        submitBtn.disabled = true;
-        submitBtn.textContent = 'Analyzing...';
-        loader.classList.remove('hidden');
-        resultsContainer.classList.add('hidden');
-
-        const formData = new FormData(analysisForm);
-        const userAnswers = Object.fromEntries(formData.entries());
         
-        console.log("Starting Gemini API call using Model:", MODEL_NAME);
+        auth.onAuthStateChanged(async (user) => {
+            if (user) {
+                if (!base64Image) {
+                    alert('Please upload an image for analysis.');
+                    return;
+                }
+                
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Analyzing...';
+                loader.classList.remove('hidden');
+                resultsContainer.classList.add('hidden');
 
-        try {
-            const result = await callGeminiAPI(base64Image, userAnswers);
-            displayResults(result);
-        } catch (error) {
-            console.error('API Error:', error);
-            displayError('Analysis failed. Please check the browser console for details (F12 -> Console). Common issues: Invalid API Key or CORS block.');
-        } finally {
-            loader.classList.add('hidden');
-            submitBtn.disabled = false;
-            submitBtn.textContent = 'Analyze My Skin';
-        }
+                try {
+                    await processAndSaveReport(user.uid);
+                } catch (error) {
+                    console.error('Full process failed:', error);
+                    let alertMessage = 'An error occurred during analysis. Please try again.';
+                    if (error.message === "Out of Scope") {
+                        alertMessage = "Couldn't analyze this image. Please upload a clear image of a supported skin concern.";
+                    }
+                    alert(alertMessage);
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Analyze My Skin';
+                    loader.classList.add('hidden');
+                }
+
+            } else {
+                alert('You must be logged in to perform an analysis.');
+                window.location.href = 'login.html';
+            }
+        });
     });
-    
-    async function callGeminiAPI(base64Image, userAnswers) {
+
+    /**
+     * Orchestrates the entire process: API call, parsing, storage, and redirect.
+     */
+    async function processAndSaveReport(userId) {
+        const geminiResponse = await callGeminiAPI();
+        
+        if (geminiResponse.includes("Error: Out of Scope")) {
+            throw new Error("Out of Scope");
+        }
+
+        const reportData = parseGeminiResponse(geminiResponse);
+        
+        if (!reportData.finding) {
+            throw new Error("Could not parse the finding from the AI response.");
+        }
+        
+        const imageUrl = await uploadImageToStorage(userId, base64Image);
+        reportData.imageUrl = imageUrl;
+        
+        const formData = new FormData(analysisForm);
+        reportData.sensation = formData.get('sensation');
+        reportData.duration = formData.get('duration');
+        reportData.description = formData.get('description');
+        
+        const reportId = await saveReportToFirestore(userId, reportData);
+
+        window.location.href = `report.html?id=${reportId}`;
+    }
+
+    /**
+     * Calls the Gemini API with the correct model and payload structure.
+     */
+    async function callGeminiAPI() {
+        // IMPORTANT: Replace with your actual API key
+        const API_KEY = "AIzaSyDpxo_hsmjxZGQkT--7Tk5CV48WPcZiakI"; 
+        
+        // FIXED: Using the latest recommended model
+        const MODEL_NAME = "gemini-1.5-flash-latest";
+        const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent?key=${API_KEY}`;
+        
         const [mimePart, dataPart] = base64Image.split(';base64,');
         const mimeType = mimePart.replace('data:', '');
         
+        const validConditions = "Eczema, Psoriasis, Acne, Seborrheic Keratosis, Ringworm, Rosacea, Dermatitis";
+        const userAnswers = new FormData(analysisForm);
         const promptText = `
-            You are a specialized AI Dermatological Assistant. Your primary goal is to provide a **preliminary finding and risk assessment** based on the visual evidence and patient's subjective input.
+            **Primary Instruction:** You are a specialized AI Dermatological Assistant. Your analysis is strictly limited to the following skin conditions: ${validConditions}.
 
-            **STRICT RESPONSE FORMAT:** Your entire response must be professional, supportive, and contain the following sections using Markdown:
+            **Step 1: Gatekeeping Check.** First, analyze the image. Does it clearly show a potential human skin condition from the list above?
+            - If NO (e.g., it's an object, animal, landscape, or a non-listed condition), your ONLY response MUST be the exact string: "Error: Out of Scope". Do not add any other text.
+            - If YES, and only if yes, proceed to Step 2.
 
-            ### **PRELIMINARY FINDING & RISK ASSESSMENT (MANDATORY)**
-            * **Most Likely Condition (Diagnosis):** [Provide ONE specific dermatological condition, e.g., 'Mild Eczema', 'Psoriasis', 'Seborrheic Keratosis'. If uncertain, state the closest possibility.]
-            * **Confidence Score:** [State a score from 60% to 100% based on visual and textual alignment.]
+            **Step 2: Analysis.** If the image passes the Gatekeeping Check, provide your analysis in the following strict Markdown format:
+
+            ### **PRELIMINARY FINDING & RISK ASSESSMENT**
+            * **Most Likely Condition:** [Provide ONE specific dermatological condition from the list.]
+            * **Confidence Score:** [State a score from 60% to 100%. Just the number.]
             * **Risk Level:** [State LOW, MEDIUM, or HIGH.]
 
             ### **PATIENT INPUT SUMMARY**
-            * **Sensation:** ${userAnswers.sensation}
-            * **Duration:** ${userAnswers.duration}
-            * **Description:** ${userAnswers.description}
+            * **Sensation:** ${userAnswers.get('sensation')}
+            * **Duration:** ${userAnswers.get('duration')}
+            * **Description:** ${userAnswers.get('description')}
 
             ### **NEXT STEPS & DISCLAIMER**
-            * **Recommended Action 1:** [A specific, non-prescription recommendation, e.g., 'Apply a fragrance-free moisturizer twice daily.']
+            * **Recommended Action 1:** [A specific, non-prescription recommendation.]
             * **Recommended Action 2:** [**MANDATORY:** Always recommend consulting a certified doctor.]
-            * **Crucial Disclaimer:** This is NOT a medical diagnosis. Consult a professional dermatologist immediately for definitive treatment.
+            * **Crucial Disclaimer:** This is NOT a medical diagnosis. Consult a professional dermatologist.
         `;
 
         const payload = {
-            contents: [{
-                parts: [
-                    { inlineData: { mimeType: mimeType, data: dataPart } },
-                    { text: promptText }
-                ]
-            }],
+            // FIXED: Using the correct payload key 'inlineData'
+            contents: [{ parts: [{ inlineData: { mimeType: mimeType, data: dataPart } }, { text: promptText }] }],
         };
 
         const response = await fetch(API_URL, {
@@ -121,39 +157,57 @@ document.addEventListener('DOMContentLoaded', () => {
         
         if (!response.ok) {
             const errorBody = await response.json();
-            console.error("API Server Response Error:", errorBody);
-            throw new Error(`API call failed: ${response.statusText}. Details in console.`);
+            console.error("API Error Body:", errorBody);
+            throw new Error(`API call failed: ${response.statusText}`);
         }
         
         const result = await response.json();
         
-        if (!result.candidates || !result.candidates[0] || !result.candidates[0].content || !result.candidates[0].content.parts[0].text) {
-             throw new Error("Received an empty or malformed response from the API.");
+        if (!result.candidates || !result.candidates[0] || !result.candidates[0].content.parts[0].text) {
+            throw new Error("Received an empty or malformed response from the API.");
         }
-        
         return result.candidates[0].content.parts[0].text;
     }
 
-    function displayResults(markdownText) {
-        let htmlContent = markdownText.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-        htmlContent = htmlContent.replace(/\n### (.*?)<br>/g, '<h4 style="color: var(--accent-gold); margin-top: 15px;">$1</h4>');
-        htmlContent = htmlContent.replace(/\n\* (.*?)<br>/g, '<li style="list-style-type: disc; margin-left: 20px;">$1</li>');
-        htmlContent = htmlContent.replace(/\n/g, '<br>');
+    /**
+     * Parses the Markdown response from Gemini into a structured object.
+     */
+    function parseGeminiResponse(markdown) {
+        const data = {};
+        const lines = markdown.split('\n');
         
-        resultsContainer.innerHTML = `
-            <h3>AI Analysis Report</h3>
-            <div style="padding: 15px; background: #222; border-radius: 8px; line-height: 1.8;">
-                ${htmlContent}
-            </div>
-            <a href="doctors.html" id="findDoctorsBtn" class="btn" style="display: block; text-align: center; margin-top: 20px; background-color: var(--accent-gold); color: #000; padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; text-decoration: none;">
-                Find Local Dermatologists
-            </a>
-        `;
-        resultsContainer.classList.remove('hidden');
+        for (const line of lines) {
+            if (line.includes('**Most Likely Condition:**')) {
+                data.finding = line.split(':')[1].replace('[', '').replace(']', '').trim();
+            } else if (line.includes('**Confidence Score:**')) {
+                data.confidence = parseInt(line.split(':')[1].replace('%', '').trim(), 10);
+            } else if (line.includes('**Risk Level:**')) {
+                data.risk = line.split(':')[1].replace('[', '').replace(']', '').trim();
+            }
+        }
+        return data;
     }
 
-    function displayError(message) {
-        resultsContainer.innerHTML = `<p style="color: #ff6347; font-weight: bold; background: #333; padding: 10px; border-radius: 8px;">${message}</p>`;
-        resultsContainer.classList.remove('hidden');
+    /**
+     * Uploads the base64 image string to Firebase Storage and returns the URL.
+     */
+    async function uploadImageToStorage(userId, base64) {
+        const timestamp = Date.now();
+        const storageRef = storage.ref(`reports/${userId}/${timestamp}.jpg`);
+        const snapshot = await storageRef.putString(base64, 'data_url');
+        return await snapshot.ref.getDownloadURL();
+    }
+
+    /**
+     * Saves the final report data to Firestore.
+     */
+    async function saveReportToFirestore(userId, reportData) {
+        const reportPayload = {
+            ...reportData,
+            date: firebase.firestore.FieldValue.serverTimestamp(),
+            userId: userId,
+        };
+        const docRef = await db.collection('users').doc(userId).collection('reports').add(reportPayload);
+        return docRef.id;
     }
 });

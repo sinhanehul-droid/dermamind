@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book a Consultation - DermaMind AI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/feather-icons"></script>
+
+    <style>
+        /* Global Styles & Variables */
+        :root {
+            --bg-dark: #000000;
+            --accent-gold: #cbf9fe;
+            --accent-glow: rgba(203, 249, 254, 0.4);
+            --text-primary: #f0f0f0;
+            --text-secondary: #a0a0a0;
+            --font-heading: 'Poppins', sans-serif;
+            --font-body: 'Lato', sans-serif;
+            --panel-bg: rgba(20, 20, 20, 0.6);
+            --panel-border: rgba(255, 255, 255, 0.1);
+            --panel-blur: 10px;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            background-attachment: fixed;
+            background-size: cover;
+            background-position: center center;
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            margin: 0;
+        }
+        
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 30px; }
+        .hidden { display: none !important; }
+
+        /* Header */
+        .main-header { position: fixed; top: 0; left: 0; width: 100%; z-index: 100; padding: 20px 0; background-color: rgba(0, 0, 0, 0.75); backdrop-filter: blur(var(--panel-blur)); border-bottom: 1px solid var(--panel-border); }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; }
+        .logo-text { font-family: var(--font-heading); font-weight: 700; font-size: 1.5rem; color: var(--accent-gold); text-decoration: none; text-shadow: 0 0 5px var(--accent-glow); }
+        .nav-links a { text-decoration: none; color: var(--text-secondary); margin-left: 20px; }
+
+        /* Main Content */
+        .consultation-main-content { padding-top: 120px; padding-bottom: 60px; min-height: 100vh; }
+        .section-header { text-align: center; margin-bottom: 50px; }
+        .section-header h1 { font-size: 2.5rem; }
+        .section-header p { color: var(--text-secondary); }
+
+        /* Doctor Grid & Cards */
+        .doctor-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        .doctor-card { background: var(--panel-bg); backdrop-filter: blur(var(--panel-blur)); border: 1px solid var(--panel-border); border-radius: 12px; padding: 25px; display: flex; flex-direction: column; text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .doctor-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); border-color: var(--accent-gold); }
+        .doctor-photo { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; margin: 0 auto 20px auto; border: 3px solid var(--accent-gold); }
+        .doctor-card h3 { font-family: var(--font-heading); margin: 0; }
+        .doctor-card .specialty { color: var(--accent-gold); font-size: 0.9rem; margin-bottom: 20px; }
+        .doctor-stats { display: flex; justify-content: space-around; margin-bottom: 20px; padding: 15px 0; border-top: 1px solid var(--panel-border); border-bottom: 1px solid var(--panel-border); }
+        .stat-item { font-size: 0.8rem; color: var(--text-secondary); }
+        .stat-item strong { display: block; font-size: 1.1rem; color: var(--text-primary); }
+        .fee { font-size: 1.5rem; font-family: var(--font-heading); margin-bottom: 25px; }
+        .fee span { font-size: 0.9rem; color: var(--text-secondary); }
+        
+        /* Buttons */
+        .btn { display: inline-block; padding: 10px 22px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: transform 0.2s ease, background-color 0.3s ease; border: none; cursor: pointer; font-family: var(--font-heading); }
+        .btn-cta-header, .btn-modal-action { background-color: var(--accent-gold); color: #000; width: 100%; margin-top: auto; }
+        .btn-cta-header:hover, .btn-modal-action:hover { box-shadow: 0 0 15px var(--accent-glow); transform: translateY(-1px); }
+
+        /* Modal Styles */
+        .modal-backdrop { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.8); backdrop-filter: blur(5px); display: flex; justify-content: center; align-items: center; z-index: 200; opacity: 0; transition: opacity 0.3s ease; pointer-events: none; }
+        .modal-backdrop:not(.hidden) { opacity: 1; pointer-events: auto; }
+        .modal-content { background: var(--panel-bg); border: 1px solid var(--panel-border); padding: 30px 40px; border-radius: 12px; max-width: 450px; width: 90%; position: relative; transform: scale(0.95); transition: transform 0.3s ease; }
+        .modal-backdrop:not(.hidden) .modal-content { transform: scale(1); }
+        .close-btn { position: absolute; top: 15px; right: 15px; background: none; border: none; color: var(--text-secondary); cursor: pointer; padding: 5px; }
+        .modal-content h3 { margin-top: 0; font-family: var(--font-heading); color: var(--accent-gold); text-align: center; font-size: 1.5rem; }
+        .modal-content p { text-align: center; margin-top: -5px; margin-bottom: 25px; color: var(--text-secondary); }
+
+        /* Form Input Styles */
+        .input-group { position: relative; margin-bottom: 20px; }
+        .input-group i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #666; }
+        .input-group input, .input-group select { width: 100%; padding: 14px 14px 14px 50px; background-color: rgba(0,0,0,0.3); border: 1px solid #333; border-radius: 8px; color: #fff; font-size: 1rem; box-sizing: border-box; }
+        .input-group:focus-within i { color: var(--accent-gold); }
+        .input-group input:focus, .input-group select:focus { outline: none; border-color: var(--accent-gold); box-shadow: 0 0 15px var(--accent-glow); }
+        select { appearance: none; -webkit-appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23a0a0a0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 15px center; padding-right: 40px; }
+        input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(0.8); }
+
+        /* Footer */
+        .main-footer { padding: 40px; text-align: center; font-size: 0.9rem; color: var(--text-secondary); border-top: 1px solid #222; margin-top: 60px; }
+    </style>
+</head>
+<body>
+
+    <header class="main-header">
+        <nav class="container nav-container">
+            <a href="#" class="logo-text">DermaMind AI</a>
+            <div class="nav-links">
+                <a href="#">My Profile</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="consultation-main-content">
+        <div class="container">
+            <div class="section-header">
+                <h1>Book a Video Consultation</h1>
+                <p>Choose from our panel of certified dermatologists for a one-on-one video call.</p>
+            </div>
+            <div id="doctor-list" class="doctor-grid">
+                </div>
+        </div>
+    </main>
+
+    <div id="bookingModal" class="modal-backdrop hidden">
+        <div class="modal-content">
+            <button id="closeBookingModalBtn" class="close-btn"><i data-feather="x"></i></button>
+            <h3 id="modalDoctorName">Book Appointment</h3>
+            <p id="modalDoctorSpecialty"></p>
+            <form id="booking-form">
+                <div class="input-group"><i data-feather="user"></i><input type="text" id="patientName" required placeholder="Your Full Name"></div>
+                <div class="input-group"><i data-feather="calendar"></i><input type="date" id="appointmentDate" required></div>
+                <div class="input-group"><i data-feather="clock"></i>
+                    <select id="timeSlot" required>
+                        <option value="" disabled selected>Select a time slot</option>
+                        <option value="10:00 AM">10:00 AM - 10:30 AM</option>
+                        <option value="11:00 AM">11:00 AM - 11:30 AM</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-modal-action">Confirm & Proceed to Pay</button>
+            </form>
+        </div>
+    </div>
+    
+    <div id="paymentModal" class="modal-backdrop hidden">
+        <div class="modal-content">
+            <button id="closePaymentModalBtn" class="close-btn"><i data-feather="x"></i></button>
+            <h3>Complete Your Payment</h3>
+            <p id="paymentAmountText"></p>
+            <form id="payment-form">
+                <div class="input-group"><i data-feather="credit-card"></i><input type="text" id="cardNumber" required placeholder="Card Number (e.g., 1111 1111 1111 1111)"></div>
+                <div class="input-group"><i data-feather="calendar"></i><input type="text" id="expiryDate" required placeholder="MM/YY"></div>
+                <div class="input-group"><i data-feather="lock"></i><input type="text" id="cvv" required placeholder="CVV (e.g., 123)"></div>
+                <button type="submit" id="payBtn" class="btn btn-modal-action">Pay Now</button>
+            </form>
+        </div>
+    </div>
+
+    <footer class="main-footer">
+        <p>&copy; 2025 DermaMind AI. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            feather.replace();
+
+            const doctorsData = [
+                { id: 1, name: 'Dr. Anjali Sharma', specialty: 'MD, Dermatology', experience: '12 Years', rating: '4.9', fee: '800', imageUrl: 'assets/doc1.jpg' },
+                { id: 2, name: 'Dr. Vikram Singh', specialty: 'MBBS, DNB', experience: '8 Years', rating: '4.8', fee: '600', imageUrl: 'assets/doc2.jpg' },
+                { id: 3, name: 'Dr. Priya Mehta', specialty: 'MD, Cosmetology', experience: '15 Years', rating: '4.9', fee: '1000', imageUrl: 'assets/doc3.jpg' }
+            ];
+
+            let selectedDoctorForPayment = null;
+            let bookingDetails = {};
+
+            const doctorListContainer = document.getElementById('doctor-list');
+            
+            const bookingModal = document.getElementById('bookingModal');
+            const closeBookingModalBtn = document.getElementById('closeBookingModalBtn');
+            const bookingForm = document.getElementById('booking-form');
+            const modalDoctorName = document.getElementById('modalDoctorName');
+            const modalDoctorSpecialty = document.getElementById('modalDoctorSpecialty');
+
+            const paymentModal = document.getElementById('paymentModal');
+            const closePaymentModalBtn = document.getElementById('closePaymentModalBtn');
+            const paymentForm = document.getElementById('payment-form');
+            const paymentAmountText = document.getElementById('paymentAmountText');
+            const payBtn = document.getElementById('payBtn');
+
+            function renderDoctors() {
+                if (!doctorListContainer) return;
+                doctorListContainer.innerHTML = '';
+                doctorsData.forEach(doctor => {
+                    const doctorCard = `
+                        <div class="doctor-card">
+                            <img src="${doctor.imageUrl}" alt="${doctor.name}" class="doctor-photo">
+                            <h3>${doctor.name}</h3>
+                            <p class="specialty">${doctor.specialty}</p>
+                            <div class="doctor-stats">
+                                <div class="stat-item"><strong>${doctor.experience}</strong>Experience</div>
+                                <div class="stat-item"><strong>${doctor.rating} ★</strong>Rating</div>
+                            </div>
+                            <p class="fee">₹${doctor.fee} <span>/ session</span></p>
+                            <button class="btn btn-cta-header book-now-btn" data-id="${doctor.id}">Book Now</button>
+                        </div>
+                    `;
+                    doctorListContainer.innerHTML += doctorCard;
+                });
+                feather.replace();
+            }
+
+            function openBookingModal(doctor) {
+                selectedDoctorForPayment = doctor;
+                modalDoctorName.textContent = `Book Appointment with ${doctor.name}`;
+                modalDoctorSpecialty.textContent = doctor.specialty;
+                bookingModal.classList.remove('hidden');
+            }
+
+            function closeBookingModal() {
+                bookingModal.classList.add('hidden');
+                bookingForm.reset();
+            }
+            
+            function openPaymentModal() {
+                paymentAmountText.textContent = `You are paying ₹${selectedDoctorForPayment.fee}`;
+                payBtn.textContent = `Pay ₹${selectedDoctorForPayment.fee}`;
+                paymentModal.classList.remove('hidden');
+            }
+
+            function closePaymentModal() {
+                paymentModal.classList.add('hidden');
+                paymentForm.reset();
+            }
+
+            doctorListContainer.addEventListener('click', (e) => {
+                if (e.target && e.target.classList.contains('book-now-btn')) {
+                    const doctorId = parseInt(e.target.getAttribute('data-id'));
+                    const selectedDoctor = doctorsData.find(doc => doc.id === doctorId);
+                    if (selectedDoctor) openBookingModal(selectedDoctor);
+                }
+            });
+
+            closeBookingModalBtn.addEventListener('click', closeBookingModal);
+            bookingModal.addEventListener('click', (e) => { if (e.target === bookingModal) closeBookingModal(); });
+            
+            closePaymentModalBtn.addEventListener('click', closePaymentModal);
+            paymentModal.addEventListener('click', (e) => { if (e.target === paymentModal) closePaymentModal(); });
+
+            bookingForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                bookingDetails = {
+                    patientName: document.getElementById('patientName').value,
+                    date: document.getElementById('appointmentDate').value,
+                    time: document.getElementById('timeSlot').value,
+                };
+                closeBookingModal();
+                openPaymentModal();
+            });
+            
+            paymentForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                closePaymentModal();
+                alert(`Payment Successful!\n\nYour appointment with ${selectedDoctorForPayment.name} on ${bookingDetails.date} at ${bookingDetails.time} is confirmed.`);
+            });
+            
+            renderDoctors();
+        });
+    </script>
+</body>
+</html>
