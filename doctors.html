@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>DermaMind AI — Find Dermatologists</title>
+    <meta name="description" content="Find top-rated dermatologists near you by state and city." />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <style>
+        /* --- Customized Styles Per User Palette --- */
+        :root {
+            --dm-bg: #000000; /* Primary Background: Pure Black */
+            --dm-panel: rgba(17, 17, 17, 0.8); /* Frosted Dark (similar to 16,16,16 + 0.7 opacity) */
+            --dm-border: rgba(255, 255, 255, 0.15);
+            --dm-fore: #f0f0f0; /* Primary Text */
+            --dm-muted: #a0a0a0; /* Secondary Text */
+            --dm-accent: #cbf9fe; /* Light Blue Accent */
+            --dm-accent-strong: #00c0c0; /* Slightly darker shade for strong contrast/shadow base */
+            --dm-glow: rgba(203, 249, 254, 0.4);
+            --radius: 14px;
+            --font-heading: 'Poppins', sans-serif;
+            --font-body: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+        }
+        html, body { height: 100%; }
+        body {
+            font-family: var(--font-body);
+            background: var(--dm-bg);
+            color: var(--dm-fore);
+        }
+        /* Header (Matching chatbot.html) */
+        .main-header {
+            width: 100%;
+            padding: 20px;
+            background-color: rgba(16, 16, 16, 0.7);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 750px;
+            margin: 0 auto;
+        }
+        .logo-text {
+            font-family: var(--font-heading);
+            font-weight: 700;
+            color: var(--dm-accent);
+            font-size: 1.5rem;
+            text-shadow: 0 0 5px var(--dm-glow);
+        }
+        .btn-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background-color: var(--dm-accent);
+            color: #000;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: background-color 0.2s ease, transform 0.2s ease;
+            font-family: var(--font-heading);
+        }
+        .btn-header:hover {
+            box-shadow: 0 0 10px var(--dm-glow);
+            transform: translateY(-1px);
+        }
+        .header-actions .feather {
+            width: 18px;
+            height: 18px;
+            stroke: #000;
+        }
+        body > .min-h-full {
+            padding-top: 100px;
+        }
+        /* Main Panel Styles */
+        .frosted {
+            background: var(--dm-panel);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--dm-border);
+            border-radius: var(--radius);
+        }
+        .glow-ring {
+            /* Adjusted glow ring color to match accent */
+            box-shadow: 0 0 0 1px var(--dm-border), 0 0 0 6px rgba(203, 249, 254, 0.08); 
+        }
+        .city-card {
+            border: 1px solid var(--dm-border);
+            border-radius: 12px;
+            background: rgba(17, 17, 17, 0.7); /* Darker panel background for card */
+            transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+            cursor: pointer;
+        }
+        .city-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px var(--dm-glow);
+            border-color: var(--dm-accent);
+        }
+        .city-card.selected {
+            border-color: var(--dm-accent);
+            box-shadow: 0 6px 30px rgba(203, 249, 254, 0.25);
+            background: rgba(203, 249, 254, 0.1); /* Light accent fill */
+        }
+        .icon-wrap {
+            height: 64px; width: 64px;
+            display: grid; place-items: center;
+            border-radius: 12px;
+            background: rgba(203, 249, 254, 0.08); /* Accent background */
+            border: 1px solid rgba(203, 249, 254, 0.2);
+        }
+        .badge {
+            border: 1px solid var(--dm-border);
+            border-radius: 999px;
+            padding: 2px 10px;
+            color: var(--dm-muted);
+            font-size: 12px;
+        }
+        /* Button Styles */
+        .btn {
+            border-radius: 12px;
+            padding: 0.875rem 1rem;
+            font-weight: 700;
+            transition: transform .15s ease, box-shadow .2s ease, background .2s ease;
+        }
+        .btn-primary {
+            background: var(--dm-accent); /* Primary Solid Button */
+            color: #000;
+            box-shadow: 0 8px 24px var(--dm-glow);
+            font-family: var(--font-heading);
+        }
+        .btn-primary:disabled {
+            opacity: .6; cursor: not-allowed; box-shadow: none;
+            background: var(--dm-muted);
+        }
+        .btn-primary:hover:not(:disabled) { transform: translateY(-1px); }
+        .sr-only { position: absolute; width: 1px; height: 1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+
+        /* Star Rating Colors */
+        .text-yellow-400 { color: #FFD700; } /* Keeping gold/yellow for star ratings as requested earlier */
+        .text-slate-600 { color: var(--dm-muted); }
+        
+        /* Input Field Styling (re-applying core principles from chatbot) */
+        input[type="text"] {
+             background: var(--dm-panel);
+             border-color: var(--dm-border);
+             color: var(--dm-fore);
+             padding: 0.75rem 1rem; /* Adjusting padding since there's no icon */
+        }
+        input[type="text"]:focus {
+            outline: none;
+            border-color: var(--dm-accent);
+            box-shadow: 0 0 8px var(--dm-glow);
+        }
+    </style>
+</head>
+<body>
+    <header class="main-header">
+        <nav class="nav-container">
+            <a href="index.html"><h1 class="logo-text">DermaMind AI</h1></a>
+            <div class="header-actions">
+                <a href="chatbot.html" class="btn btn-header toggle-btn">
+                    <i data-feather="cpu"></i> Back to Analysis
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <div aria-hidden="true" class="fixed inset-0 -z-10"
+        style="background-image:url('/whatsapp-bg.jpg');background-size:cover;background-position:center;background-repeat:no-repeat;opacity:.55;"></div>
+
+    <div class="min-h-full flex flex-col">
+        <main class="flex-1 pb-16">
+            <section class="max-w-5xl mx-auto px-4 mt-8">
+                <div class="frosted glow-ring p-6 md:p-10">
+                    <div class="flex flex-col md:flex-row md:items-start gap-6 md:gap-8">
+                        <div class="flex-1">
+                            <h2 class="text-2xl md:text-3xl font-extrabold tracking-tight text-white/95" style="font-family: var(--font-heading);">Find a top dermatologist near you</h2>
+                            <p class="text-slate-400 mt-2" style="color: var(--dm-muted);">Start with your State. Then pick a major city via the cards that appear.</p>
+                        </div>
+                    </div>
+
+                    <form id="search-form" class="mt-8" role="search" aria-labelledby="search-heading">
+                        <h3 id="search-heading" class="sr-only">Search by state and city</h3>
+
+                        <label for="state" class="block text-sm font-semibold" style="color: var(--dm-fore);">State</label>
+                        <input
+                            id="state"
+                            name="state"
+                            list="states-list"
+                            placeholder="Type or pick a state (e.g., Maharashtra, Karnataka, Delhi)"
+                            class="mt-2 w-full rounded-lg border border-slate-600/50 bg-slate-900/50 p-3 text-slate-100 placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
+                            autocomplete="off"
+                            aria-describedby="state-help"
+                            style="background-color: var(--dm-panel); border-color: var(--dm-border); color: var(--dm-fore);"
+                        />
+                        <p id="state-help" class="sr-only">Begin typing to filter states, then choose one.</p>
+                        <datalist id="states-list"></datalist>
+
+                        <div id="city-cards-wrap" class="mt-8 hidden">
+                            <div class="flex items-center justify-between mb-3">
+                                <h4 class="text-lg font-bold text-white/95" style="color: var(--dm-fore);">Choose a city</h4>
+                                <span id="state-chip" class="badge"></span>
+                            </div>
+                            <div id="city-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4"></div>
+                        </div>
+
+                        <div class="mt-8 flex items-center gap-3">
+                            <button id="search-btn" type="submit" class="btn btn-primary" disabled aria-label="Search dermatologists">
+                                <span id="search-label">Search Dermatologists</span>
+                                <span id="search-spinner" class="ml-2 hidden">
+                                    <svg class="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                        <circle class="opacity-20" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                        <path class="opacity-90" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+                                    </svg>
+                                </span>
+                            </button>
+                            <button id="clear-btn" type="button" class="btn border border-slate-600/60 text-slate-300 hover:bg-slate-800/50"
+                                style="border-color: var(--dm-border); color: var(--dm-fore); background: var(--dm-panel);"
+                            >Clear</button>
+                        </div>
+                    </form>
+
+                    <div id="results-container" class="mt-10">
+                        <div id="initial-message" class="text-center" style="color: var(--dm-muted);">Your search results will appear here.</div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        feather.replace();
+        document.addEventListener('DOMContentLoaded', () => {
+            const STATE_ABBR = {
+                "ap": "andhra pradesh","as": "assam","br": "bihar","ch": "chandigarh","cg": "chhattisgarh","dl": "delhi",
+                "ga": "goa","gj": "gujarat","hr": "haryana","hp": "himachal pradesh","jh": "jharkhand",
+                "jk": "jammu and kashmir","ka": "karnataka","kl": "kerala","mp": "madhya pradesh","mh": "maharashtra",
+                "od": "odisha","pb": "punjab","rj": "rajasthan","tn": "tamil nadu","ts": "telangana",
+                "up": "uttar pradesh","uk": "uttarakhand","wb": "west bengal"
+            };
+
+            const STATES = [
+                "andhra pradesh","assam","bihar","chandigarh","chhattisgarh","delhi","goa","gujarat","haryana","himachal pradesh",
+                "jammu and kashmir","jharkhand","karnataka","kerala","madhya pradesh","maharashtra","odisha","punjab","rajasthan",
+                "tamil nadu","telangana","uttar pradesh","uttarakhand","west bengal"
+            ];
+
+            const MAJOR_CITIES = {
+                "andhra pradesh": ["visakhapatnam","vijayawada","guntur"],
+                "assam": ["guwahati","dibrugarh"],
+                "bihar": ["patna","gaya"],
+                "chandigarh": ["chandigarh"],
+                "chhattisgarh": ["raipur","bhilai"],
+                "delhi": ["new delhi"],
+                "goa": ["panaji","margao"],
+                "gujarat": ["ahmedabad","surat","vadodara","rajkot"],
+                "haryana": ["gurugram","faridabad","panipat"],
+                "himachal pradesh": ["shimla","mandi"],
+                "jammu and kashmir": ["srinagar","jammu"],
+                "jharkhand": ["ranchi","jamshedpur","dhanbad"],
+                "karnataka": ["bengaluru","mysuru","mangaluru","hubli"],
+                "kerala": ["kochi","thiruvananthapuram","kozhikode"],
+                "madhya pradesh": ["indore","bhopal","jabalpur","gwalior"],
+                "maharashtra": ["mumbai","pune","nagpur","nashik"],
+                "odisha": ["bhubaneswar","cuttack"],
+                "punjab": ["ludhiana","amritsar","jalandhar"],
+                "rajasthan": ["jaipur","jodhpur","udaipur","kota"],
+                "tamil nadu": ["chennai","coimbatore","madurai","salem"],
+                "telangana": ["hyderabad","warangal","karimnagar"],
+                "uttar pradesh": ["lucknow","noida","kanpur","ghaziabad","agra","varanasi","mathura","greater noida"],
+                "uttarakhand": ["dehradun","haridwar"],
+                "west bengal": ["kolkata","siliguri","durgapur","asansol"]
+            };
+
+            const DERMAS = {
+                "andhra pradesh": {
+                    "visakhapatnam": [{ name: "Dr. K. Avinash", clinic: "Dr. Avinash's Skin & Hair Clinic", address: "Santhipuram, Visakhapatnam - 530016", rating: "4.9/5" }, { name: "Dr. S. K. Reddy", clinic: "Aura Skin & Hair Clinic", address: "Lawsons Bay Colony, Visakhapatnam - 530017", rating: "4.8/5" }, { name: "Dr. V. S. N. Murthy", clinic: "Dr. Murthy's Skin Clinic", address: "Ram Nagar, Visakhapatnam - 530002", rating: "4.7/5" }],
+                    "vijayawada": [{ name: "Dr. K. V. T. Gopal", clinic: "Dr. Gopal's Skin, Hair & Laser Clinic", address: "Benz Circle, Vijayawada - 520010", rating: "4.9/5" }, { name: "Dr. P. S. Lakshmi", clinic: "Dr. Lakshmi's Skin Clinic", address: "Labbipet, Vijayawada - 520010", rating: "4.9/5" }, { name: "Dr. G. V. Ramana", clinic: "Dr. Ramana's Skin Clinic", address: "Suryaraopet, Vijayawada - 520002", rating: "4.8/5" }],
+                    "guntur": [{ name: "Dr. S. V. S. Prasad", clinic: "Prasad's Skin & Cosmetology Clinic", address: "Brodipet, Guntur - 522002", rating: "4.8/5" }, { name: "Dr. M. V. Subbarao", clinic: "Dr. Subbarao's Skin Clinic", address: "Kothapet, Guntur - 522001", rating: "4.8/5" }]
+                },
+                "assam": {
+                    "guwahati": [{ name: "Dr. Swapan Kumar Roy", clinic: "Roy's Skin Clinic", address: "Dispur, Guwahati - 781006", rating: "4.8/5" }, { name: "Dr. D. K. Sarma", clinic: "Sarma's Skin Clinic", address: "Ulubari, G.S. Road, Guwahati - 781007", rating: "4.8/5" }],
+                    "dibrugarh": [{ name: "Dr. P. K. Borah", clinic: "Borah Skin Clinic", address: "Graham Bazar, Dibrugarh - 786001", rating: "4.7/5" }, { name: "Dr. N. K. Hazarika", clinic: "Sanjivani Hospital", address: "A.T. Road, Dibrugarh - 786001", rating: "4.7/5" }]
+                },
+                "bihar": {
+                    "patna": [{ name: "Dr. Vikas Shankar", clinic: "Shankar Skin & Hair Clinic", address: "Boring Road, Patna - 800013", rating: "4.9/5" }, { name: "Dr. Abhishek K. Jha", clinic: "Jha Skin, Hair & Laser Clinic", address: "Kankarbagh, Patna - 800020", rating: "4.9/5" }],
+                    "gaya": [{ name: "Dr. A. K. Sinha", clinic: "Sinha Skin Clinic", address: "Swarajpuri Road, Gaya - 823001", rating: "4.8/5" }, { name: "Dr. Rajesh Kumar", clinic: "Rajesh Skin Centre", address: "A.P. Colony, Gaya - 823001", rating: "4.7/5" }]
+                },
+                "chandigarh": {
+                    "chandigarh": [{ name: "Dr. Harmandeep Sidhu", clinic: "Athena Skin & Laser", address: "Sector 9-D, Chandigarh - 160009", rating: "4.9/5" }, { name: "Dr. Vikas Sharma", clinic: "National Skin Centre", address: "Sector 17-C, Chandigarh - 160017", rating: "4.9/5" }]
+                },
+                "chhattisgarh": {
+                    "raipur": [{ name: "Dr. Manisha Sharma", clinic: "Sharma Aesthetic Clinic", address: "Samta Colony, Raipur - 492001", rating: "4.9/5" }, { name: "Dr. Atul Jain", clinic: "Jain Cosmetology Clinic", address: "Shankar Nagar, Raipur - 492007", rating: "4.8/5" }],
+                    "bhilai": [{ name: "Dr. S. K. Jha", clinic: "Jha Skin Clinic", address: "G.E. Road, Bhilai - 490023", rating: "4.8/5" }, { name: "Dr. Alok Jain", clinic: "Jain Skin & Hair", address: "Nehru Nagar, Bhilai - 490020", rating: "4.7/5" }]
+                },
+                "delhi": {
+                    "new delhi": [{ name: "Dr. Nivedita Dadu", clinic: "Dadu Medical Centre", address: "Rajouri Garden, New Delhi - 110027", rating: "4.9/5" }, { name: "Dr. Sirisha Singh", clinic: "The Skin Centre", address: "Safdarjung Enclave, New Delhi - 110029", rating: "4.9/5" }, { name: "Dr. Rohit Batra", clinic: "DermaWorld Skin Clinic", address: "Rajouri Garden, New Delhi - 110027", rating: "4.8/5" }]
+                },
+                "goa": {
+                    "panaji": [{ name: "Dr. Anil D. Dessai", clinic: "Skin & Cosmetology Clinic", address: "Panaji, Goa - 403001", rating: "4.7/5" }, { name: "Dr. R. Morais", clinic: "Morais Skin Clinic", address: "Campal, Panaji - 403001", rating: "4.6/5" }],
+                    "margao": [{ name: "Dr. Pratima S. Kerkar", clinic: "Kerkar Skin Clinic", address: "Fatorda, Margao - 403602", rating: "4.7/5" }, { name: "Dr. P. Kamat", clinic: "Kamat Skin Care", address: "Comba, Margao - 403601", rating: "4.6/5" }]
+                },
+                "gujarat": {
+                    "ahmedabad": [{ name: "Dr. Rupa Tejas Shah", clinic: "Silk Skin Laser Cosmetology", address: "Ambawadi, Ahmedabad - 380006", rating: "4.9/5" }, { name: "Dr. Meeta Desai", clinic: "The Skin Sense", address: "Vastrapur, Ahmedabad - 380015", rating: "4.9/5" }],
+                    "surat": [{ name: "Dr. Surbhi Kapadia", clinic: "Dr. Kapadia's Skin Clinic", address: "Athwa, Surat - 395007", rating: "4.8/5" }, { name: "Dr. A. G. Patel", clinic: "A. G. Skin Clinic", address: "City Light, Surat - 395007", rating: "4.7/5" }],
+                    "vadodara": [{ name: "Dr. Kinjal Shah", clinic: "Dermacare", address: "Alkapuri, Vadodara - 390007", rating: "4.8/5" }, { name: "Dr. Dhruv Patel", clinic: "Derma Point", address: "Akota, Vadodara - 390020", rating: "4.7/5" }],
+                    "rajkot": [{ name: "Dr. Jigar H. Patel", clinic: "Adorn Cosmetic Clinic", address: "Kalawad Road, Rajkot - 360005", rating: "4.8/5" }, { name: "Dr. Vaibhav Shah", clinic: "Shah Skin Clinic", address: "University Road, Rajkot - 360005", rating: "4.7/5" }]
+                },
+                "haryana": {
+                    "gurugram": [{ name: "Dr. Niti Gaur", clinic: "Citrine Clinic", address: "Sector 49, Gurugram - 122018", rating: "4.9/5" }, { name: "Dr. Sachin Dhawan", clinic: "Skin 'n' Smiles", address: "DLF Phase IV, Gurugram - 122002", rating: "4.9/5" }],
+                    "faridabad": [{ name: "Dr. Archit Aggarwal", clinic: "KDC Skin Clinic", address: "Sector 15, Faridabad - 121007", rating: "4.9/5" }, { name: "Dr. Sanjay Gupta", clinic: "Gupta Skin & Hair", address: "Sector 16, Faridabad - 121002", rating: "4.8/5" }],
+                    "panipat": [{ name: "Dr. Rakesh Ahuja", clinic: "Ahuja Skin Clinic", address: "Model Town, Panipat - 132103", rating: "4.7/5" }, { name: "Dr. S. K. Bansal", clinic: "Bansal Skin Centre", address: "Sanauli Road, Panipat - 132103", rating: "4.6/5" }]
+                },
+                "himachal pradesh": {
+                    "shimla": [{ name: "Dr. Anil Gupta", clinic: "Gupta Skin Clinic", address: "Lakkar Bazar, Shimla - 171001", rating: "4.7/5" }, { name: "Dr. Meenakshi Sharma", clinic: "Himachal Skin", address: "Sanjauli, Shimla - 171006", rating: "4.7/5" }],
+                    "mandi": [{ name: "Dr. Pankaj Thakur", clinic: "Thakur Skin Clinic", address: "Seri Bazar, Mandi - 175001", rating: "4.6/5" }]
+                },
+                "jammu and kashmir": {
+                    "srinagar": [{ name: "Dr. Imran Majid", clinic: "Cutis Skin & Laser", address: "Hyderpora, Srinagar - 190014", rating: "4.9/5" }, { name: "Dr. Iffat Hassan", clinic: "IVD Clinic", address: "Karan Nagar, Srinagar - 190010", rating: "4.8/5" }],
+                    "jammu": [{ name: "Dr. Sunil K. Gupta", clinic: "SKG Skin Clinic", address: "Gandhi Nagar, Jammu - 180004", rating: "4.8/5" }]
+                },
+                "jharkhand": {
+                    "ranchi": [{ name: "Dr. R. P. Singh", clinic: "Skin & Laser Clinic", address: "Harmu, Ranchi - 834002", rating: "4.8/5" }],
+                    "jamshedpur": [{ name: "Dr. S. K. Sinha", clinic: "Derma Care", address: "Bistupur, Jamshedpur - 831001", rating: "4.7/5" }],
+                    "dhanbad": [{ name: "Dr. A. K. Mishra", clinic: "Mishra Skin Clinic", address: "Bank More, Dhanbad - 826001", rating: "4.6/5" }]
+                },
+                "karnataka": {
+                    "bengaluru": [{ name: "Dr. Rasya Dixit", clinic: "Dixit Cosmetic Dermatology", address: "Koramangala, Bengaluru - 560034", rating: "4.7/5" }, { name: "Dr. Harish Prasad B R", clinic: "Vitals Skin Klinic", address: "BTM Layout, Bengaluru - 560076", rating: "4.8/5" }],
+                    "mysuru": [{ name: "Dr. N G Raju", clinic: "Raju Skin Clinic", address: "Yadavagiri, Mysuru - 570020", rating: "4.8/5" }],
+                    "mangaluru": [{ name: "Dr. G. S. Pai", clinic: "Pai Skin & Hair", address: "Kodialbail, Mangaluru - 575003", rating: "4.9/5" }],
+                    "hubli": [{ name: "Dr. Sangeeta H.", clinic: "Derma Hubli", address: "Vidyagiri, Hubli - 580021", rating: "4.6/5" }]
+                },
+                "kerala": {
+                    "kochi": [{ name: "Dr. Asha S. Kumar", clinic: "Aster Derma", address: "Edapally, Kochi - 682024", rating: "4.8/5" }],
+                    "thiruvananthapuram": [{ name: "Dr. R. R. Pillai", clinic: "Skin & Cosmetology Centre", address: "Pattom, Thiruvananthapuram - 695004", rating: "4.7/5" }],
+                    "kozhikode": [{ name: "Dr. Nishad P.", clinic: "Derma Care", address: "Mavoor Road, Kozhikode - 673004", rating: "4.7/5" }]
+                },
+                "madhya pradesh": {
+                    "indore": [{ name: "Dr. Amit Porwal", clinic: "Radiance Skin Clinic", address: "Old Palasia, Indore - 452018", rating: "4.8/5" }],
+                    "bhopal": [{ name: "Dr. Neetu Raj", clinic: "Skin City", address: "Arera Colony, Bhopal - 462016", rating: "4.7/5" }],
+                    "jabalpur": [{ name: "Dr. S. K. Tiwari", clinic: "Derma Jabalpur", address: "Napier Town, Jabalpur - 482002", rating: "4.6/5" }],
+                    "gwalior": [{ name: "Dr. Priyanka Agarwal", clinic: "Skin & Aesthetics", address: "City Centre, Gwalior - 474011", rating: "4.6/5" }]
+                },
+                "maharashtra": {
+                    "mumbai": [{ name: "Dr. Jaishree Sharad", clinic: "Skinfinitii", address: "Santacruz West, Mumbai - 400054", rating: "4.8/5" }, { name: "Dr. Rinky Kapoor", clinic: "The Esthetic Clinics", address: "Multiple centres, Mumbai", rating: "4.8/5" }],
+                    "pune": [{ name: "Dr. Pradeep Kumari", clinic: "Skin & Surgery International", address: "Viman Nagar, Pune - 411014", rating: "4.9/5" }, { name: "Dr. Nitin Jain", clinic: "SSI & AIHT", address: "Kothrud, Pune - 411038", rating: "4.8/5" }],
+                    "nagpur": [{ name: "Dr. Vikrant Saoji", clinic: "Saoji Skin Clinic", address: "Dharampeth, Nagpur - 440010", rating: "4.9/5" }],
+                    "nashik": [{ name: "Dr. Siddharth Dhurjad", clinic: "Dhurjad Skin Clinic", address: "College Road, Nashik - 422005", rating: "4.9/5" }]
+                },
+                "odisha": {
+                    "bhubaneswar": [{ name: "Dr. Rachita Nanda", clinic: "Dr. Nanda's Derma Care", address: "Sahid Nagar, Bhubaneswar - 751007", rating: "4.8/5" }],
+                    "cuttack": [{ name: "Dr. Animesh Mishra", clinic: "Skin & Laser Clinic", address: "Badambadi, Cuttack - 753009", rating: "4.7/5" }]
+                },
+                "punjab": {
+                    "ludhiana": [{ name: "Dr. K. C. Kandhari", clinic: "Kandhari Skin Clinic", address: "Sarabha Nagar, Ludhiana - 141001", rating: "4.8/5" }, { name: "Dr. Sunil Gupta", clinic: "Ludhiana Skin Centre", address: "Model Town, Ludhiana - 141002", rating: "4.7/5" }],
+                    "amritsar": [{ name: "Dr. Aman Arora", clinic: "Arora Skin Clinic", address: "Ranjit Avenue, Amritsar - 143001", rating: "4.7/5" }],
+                    "jalandhar": [{ name: "Dr. Vivek Kumar", clinic: "Derma Jalandhar", address: "Model Town, Jalandhar - 144003", rating: "4.7/5" }]
+                },
+                "rajasthan": {
+                    "jaipur": [{ name: "Dr. Shantanu Choudhary", clinic: "Signature Skin Clinic", address: "Vaishali Nagar, Jaipur - 302021", rating: "4.9/5" }, { name: "Dr. Vijendra Kumar", clinic: "Manipal Hospitals", address: "Vidhyadhar Nagar, Jaipur - 302039", rating: "4.8/5" }],
+                    "jodhpur": [{ name: "Dr. Nirmal Panwar", clinic: "Panwar Skin Clinic", address: "Ratanada, Jodhpur - 342001", rating: "4.7/5" }],
+                    "udaipur": [{ name: "Dr. Priyanka Goyal", clinic: "Derma Glow", address: "Hiran Magri, Udaipur - 313001", rating: "4.7/5" }],
+                    "kota": [{ name: "Dr. Rahul Solanki", clinic: "Skin City", address: "Talwandi, Kota - 324005", rating: "4.6/5" }]
+                },
+                "tamil nadu": {
+                    "chennai": [{ name: "Dr. Subhashini Mohan", clinic: "Apollo Spectra", address: "Alwarpet, Chennai - 600018", rating: "4.8/5" }, { name: "Dr. Deepthi Motiram", clinic: "Apollo Clinic", address: "Velachery, Chennai - 600042", rating: "4.8/5" }],
+                    "coimbatore": [{ name: "Dr. S. Raghavendran", clinic: "Derma Coimbatore", address: "Race Course, Coimbatore - 641018", rating: "4.7/5" }],
+                    "madurai": [{ name: "Dr. N. S. Murali", clinic: "Meenakshi Derma", address: "Tallakulam, Madurai - 625002", rating: "4.7/5" }],
+                    "salem": [{ name: "Dr. Praveen Kumar", clinic: "Skin & Hair Centre", address: "Hasthampatti, Salem - 636007", rating: "4.6/5" }]
+                },
+                "telangana": {
+                    "hyderabad": [{ name: "Dr. T N Rekha Singh", clinic: "Oliva Skin & Hair", address: "Secunderabad, Hyderabad - 500003", rating: "4.9/5" }, { name: "Dr. Soumya Podduturi", clinic: "Aria Skin & Hair", address: "Kompally, Hyderabad - 500014", rating: "4.8/5" }],
+                    "warangal": [{ name: "Dr. Anusha Reddy", clinic: "Derma Warangal", address: "Hanamkonda, Warangal - 506001", rating: "4.6/5" }],
+                    "karimnagar": [{ name: "Dr. Sravani Reddy", clinic: "Skin Karimnagar", address: "Vavilalapally, Karimnagar - 505001", rating: "4.6/5" }]
+                },
+                "uttar pradesh": {
+                    "lucknow": [{ name: "Dr. Rajeev Agarwal", clinic: "Aaryash Clinic", address: "Sitapur Road, Lucknow - 226020", rating: "4.9/5" }],
+                    "noida": [{ name: "Dr. Nidhi P.", clinic: "Derma Noida", address: "Sector 62, Noida - 201301", rating: "4.7/5" }],
+                    "kanpur": [{ name: "Dr. Abhinav Kumar", clinic: "Skin Kanpur", address: "Swaroop Nagar, Kanpur - 208002", rating: "4.7/5" }],
+                    "ghaziabad": [{ name: "Dr. R. K. Chhabra", clinic: "Skin & Laser", address: "Kavi Nagar, Ghaziabad - 201002", rating: "4.6/5" }],
+                    "agra": [{ name: "Dr. A. K. Jain", clinic: "Agra Skin Centre", address: "Sanjay Place, Agra - 282002", rating: "4.7/5" }],
+                    "varanasi": [{ name: "Dr. Shailendra Singh", clinic: "Derma Varanasi", address: "Sigra, Varanasi - 221010", rating: "4.7/5" }],
+                    "mathura": [{ name: "Dr. P. K. Gupta", clinic: "Mathura Skin Clinic", address: "Krishna Nagar, Mathura - 281004", rating: "4.6/5" }],
+                    "greater noida": [{ name: "Dr. Aastha Gupta", clinic: "Skin & Aesthetics", address: "Alpha 1, Greater Noida - 201310", rating: "4.7/5" }]
+                },
+                "uttarakhand": {
+                    "dehradun": [{ name: "Dr. Arjun Singh", clinic: "Derma Dehradun", address: "Rajpur Road, Dehradun - 248001", rating: "4.7/5" }],
+                    "haridwar": [{ name: "Dr. Seema Rawat", clinic: "Skin Haridwar", address: "Ranipur More, Haridwar - 249407", rating: "4.6/5" }]
+                },
+                "west bengal": {
+                    "kolkata": [{ name: "Dr. Surajit Gorai", clinic: "Spectronix Skin & Laser", address: "Bidhannagar, Kolkata - 700064", rating: "4.9/5" }, { name: "Dr. Kaushik Lahiri", clinic: "Apollo Multispecialty", address: "EM Bypass, Kolkata - 700054", rating: "4.8/5" }],
+                    "siliguri": [{ name: "Dr. S. K. Bose", clinic: "Bose Skin Clinic", address: "Sevoke Road, Siliguri - 734001", rating: "4.8/5" }],
+                    "durgapur": [{ name: "Dr. Arghya Pradhan", clinic: "Durgapur Skin Clinic", address: "City Centre, Durgapur - 713216", rating: "4.8/5" }],
+                    "asansol": [{ name: "Dr. Ritesh Singh", clinic: "Asansol Derma", address: "Hutton Road, Asansol - 713301", rating: "4.6/5" }]
+                }
+            };
+
+            const stateInput = document.getElementById('state');
+            const datalist = document.getElementById('states-list');
+            const cityWrap = document.getElementById('city-cards-wrap');
+            const cityGrid = document.getElementById('city-grid');
+            const stateChip = document.getElementById('state-chip');
+            const searchForm = document.getElementById('search-form');
+            const searchBtn = document.getElementById('search-btn');
+            const searchSpinner = document.getElementById('search-spinner');
+            const searchLabel = document.getElementById('search-label');
+            const clearBtn = document.getElementById('clear-btn');
+            const resultsContainer = document.getElementById('results-container');
+            const initialMessage = document.getElementById('initial-message');
+
+            let selectedState = '';
+            let selectedCity = '';
+
+            function initStates() {
+                datalist.innerHTML = STATES.map(s => `<option value="${capitalize(s)}"></option>`).join('');
+            }
+
+            function normalizeState(val) {
+                const v = val.trim().toLowerCase();
+                if (!v) return '';
+                return STATE_ABBR[v] || v;
+            }
+
+            function isValidState(s) {
+                return STATES.includes(s);
+            }
+
+            function handleStateChange() {
+                const normalized = normalizeState(stateInput.value);
+                if (isValidState(normalized)) {
+                    selectedState = normalized;
+                    stateChip.textContent = capitalize(selectedState);
+                    renderCityCards(MAJOR_CITIES[selectedState] || []);
+                    cityWrap.classList.remove('hidden');
+                    selectedCity = '';
+                    updateSearchEnabled();
+                } else {
+                    selectedState = '';
+                    cityWrap.classList.add('hidden');
+                    cityGrid.innerHTML = '';
+                    stateChip.textContent = '';
+                    selectedCity = '';
+                    updateSearchEnabled();
+                }
+                clearResults();
+            }
+
+            function updateSearchEnabled() {
+                searchBtn.disabled = !(selectedState && selectedCity);
+            }
+
+            function renderCityCards(cities) {
+                cityGrid.innerHTML = cities.map(c => cityCardHTML(c)).join('');
+                [...cityGrid.querySelectorAll('[data-city]')].forEach(el => {
+                    el.addEventListener('click', () => selectCity(el.getAttribute('data-city')));
+                });
+            }
+
+            function selectCity(city) {
+                selectedCity = city;
+                [...cityGrid.children].forEach(card => {
+                    const c = card.getAttribute('data-city');
+                    if (c === city) card.classList.add('selected');
+                    else card.classList.remove('selected');
+                    const icon = card.querySelector('.icon-wrap');
+                    if (icon) icon.innerHTML = cityIconSVG(c, c === city);
+                });
+                updateSearchEnabled();
+                clearResults();
+            }
+
+            function clearResults() {
+                resultsContainer.innerHTML = `<div id="initial-message" class="text-center" style="color: var(--dm-muted);">Your search results will appear here.</div>`;
+            }
+
+            function showLoading(isLoading) {
+                searchLabel.classList.toggle('hidden', isLoading);
+                searchSpinner.classList.toggle('hidden', !isLoading);
+                searchBtn.disabled = isLoading || !(selectedState && selectedCity);
+            }
+
+            searchForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                if (!(selectedState && selectedCity)) return;
+                showLoading(true);
+                setTimeout(() => {
+                    performSearch(selectedState, selectedCity);
+                    showLoading(false);
+                }, 500);
+            });
+
+            clearBtn.addEventListener('click', () => {
+                stateInput.value = '';
+                selectedState = '';
+                selectedCity = '';
+                cityWrap.classList.add('hidden');
+                cityGrid.innerHTML = '';
+                stateChip.textContent = '';
+                updateSearchEnabled();
+                clearResults();
+            });
+
+            stateInput.addEventListener('input', handleStateChange);
+            stateInput.addEventListener('change', handleStateChange);
+
+            function performSearch(state, city) {
+                const s = (state || '').toLowerCase().trim();
+                const c = (city || '').toLowerCase().trim();
+                const stateData = DERMAS[s] || {};
+                const cityData = stateData[c] || [];
+                const sorted = [...cityData].sort(
+                    (a, b) => (parseFloat(b.rating) || 0) - (parseFloat(a.rating) || 0)
+                );
+                if (sorted.length) {
+                    renderResults(s, c, sorted);
+                } else {
+                    resultsContainer.innerHTML =
+                        `<div class="text-center p-4 rounded-lg border" style="border-color: var(--dm-border); background-color: var(--dm-panel); color: var(--dm-muted);">
+                            Sorry, no top-rated dermatologists found for ${escapeHtml(capitalize(c))}, ${escapeHtml(capitalize(s))}.
+                        </div>`;
+                }
+            }
+
+            function renderResults(state, city, list) {
+                const header = `
+                    <h3 class="text-center text-xl font-bold" style="color: var(--dm-fore); font-family: var(--font-heading); margin-bottom: 1.5rem;">
+                        Showing Results for ${escapeHtml(capitalize(city))}, ${escapeHtml(capitalize(state))}
+                    </h3>
+                `;
+                const cards = list.map((doc, idx) => `
+                    <div class="border rounded-xl p-5 mb-4" style="border-color: var(--dm-border); background-color: rgba(17, 17, 17, 0.9);">
+                        <div class="flex flex-col sm:flex-row items-start justify-between gap-3">
+                            <div>
+                                <h4 class="text-lg font-extrabold" style="color: var(--dm-fore);">${escapeHtml(doc.name)}</h4>
+                                <p class="text-sm font-semibold" style="color: var(--dm-fore); opacity: 0.8;">${escapeHtml(doc.clinic)}</p>
+                                <p class="text-sm mt-1" style="color: var(--dm-muted);">${escapeHtml(doc.address)}</p>
+                            </div>
+                            <div class="flex items-center gap-2 flex-shrink-0">
+                                <span class="font-extrabold" style="color: var(--dm-fore);">${parseFloat(doc.rating).toFixed ? parseFloat(doc.rating).toFixed(1) : escapeHtml(doc.rating.split('/')[0])}</span>
+                                ${generateStars(doc.rating)}
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+                resultsContainer.innerHTML = header + `<div>${cards}</div>`;
+            }
+
+            function capitalize(str) {
+                if (!str) return '';
+                return str.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+            }
+            function escapeHtml(text) {
+                const div = document.createElement('div');
+                div.textContent = text;
+                return div.innerHTML;
+            }
+            function generateStars(rating) {
+                const total = 5;
+                const num = parseFloat((rating + '').split('/')[0]);
+                const roundedHalf = Math.round(num * 2) / 2;
+                const full = Math.floor(roundedHalf);
+                const half = (roundedHalf % 1) !== 0 ? 1 : 0;
+                const empty = total - full - half;
+                let html = '';
+                for (let i=0;i<full;i++) html += fullStar();
+                if (half) html += halfStar();
+                for (let i=0;i<empty;i++) html += emptyStar();
+                return html;
+            }
+            function fullStar() {
+                return `<svg class="w-5 h-5" style="color: #FFD700;" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>`;
+            }
+            function emptyStar() {
+                return `<svg class="w-5 h-5" style="color: var(--dm-muted); opacity: 0.5;" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>`;
+            }
+            function halfStar() {
+                return `<div class="relative inline-block">${emptyStar()}<div class="absolute inset-0 overflow-hidden" style="clip-path: inset(0 50% 0 0)">${fullStar()}</div></div>`;
+            }
+            function cityIconSVG(city, active) {
+                const color = active ? 'currentColor' : 'var(--dm-muted)';
+                const wrap = (svg) => `<div class="icon-wrap" style="color:${active ? 'var(--dm-accent)' : 'var(--dm-muted)'}">${svg}</div>`;
+                switch ((city || '').toLowerCase()) {
+                    case 'mumbai':
+                        return wrap(`<svg width="36" height="36" viewBox="0 0 64 64" fill="none" stroke="${color}" stroke-width="2"><path d="M8 48h48M16 48V28M48 48V28M32 48V18M16 30L32 18 48 30" /></svg>`);
+                    case 'pune':
+                        return wrap(`<svg width="36" height="36" viewBox="0 0 64 64" fill="none" stroke="${color}" stroke-width="2"><rect x="14" y="24" width="36" height="24" rx="3" /><path d="M16 48V28M48 48V28M32 48V18M16 30L32 18 48 30" /></svg>`);
+                    case 'nagpur':
+                        return wrap(`<svg width="36" height="36" viewBox="0 0 64 64" fill="none" stroke="${color}" stroke-width="2"><path d="M30 48V20h4v28M26 48h12M28 20h8M24 20h16" /><circle cx="32" cy="16" r="4" /></svg>`);
+                    case 'nashik':
+                        return wrap(`<svg width="36" height="36" viewBox="0 0 64 64" fill="none" stroke="${color}" stroke-width="2"><path d="M12 48h40M20 48V34l12-10 12 10v14" /><path d="M26 40h12" /></svg>`);
+                    case 'bengaluru':
+                        return wrap(`<svg width="36" height="36" viewBox="0 0 64 64" fill="none" stroke="${color}" stroke-width="2"><rect x="14" y="28" width="12" height="20" /><rect x="30" y="22" width="10" height="26" /><rect x="44" y="30" width="6" height="18" /><path d="M12 50h40" /></svg>`);
+                    case 'mysuru':
+                        return wrap(`<svg width="36" height="36" viewBox="0 0 64 64" fill="none" stroke="${color}" stroke-width="2"><path d="M12 48h40M20 48V38h24v10M28 38v-6h8v6M24 32h16" /><circle cx="32" cy="28" r="2" /></svg>`);
+                    case 'mangaluru':
+                        return wrap(`<svg width="36" height="36" viewBox="0 0 64 64" fill="none" stroke="${color}" stroke-width="2"><path d="M12 44c6 6 22 6 28 0 6 6 10 6 12 6" /><path d="M20 36h16l-4 6H24zM24 36v-6" /></svg>`);
+                    case 'new delhi':
+                        return wrap(`<svg width="36" height="36" viewBox="0 0 64 64" fill="none" stroke="${color}" stroke-width="2"><rect x="18" y="22" width="28" height="22" /><path d="M18 28h28M22 22v-4h20v4" /><circle cx="32" cy="34" r="4" /></svg>`);
+                    case 'kolkata':
+                        return wrap(`<svg width="36" height="36" viewBox="0 0 64 64" fill="none" stroke="${color}" stroke-width="2"><path d="M12 44h40" /><path d="M12 44L28 28l8 8 8-8 8 16" /></svg>`);
+                    case 'siliguri':
+                        return wrap(`<svg width="36" height="36" viewBox="0 0 64 64" fill="none" stroke="${color}" stroke-width="2"><path d="M12 44c10-10 20-10 40 0" /><path d="M30 34c6-8 12-8 18 0" /></svg>`);
+                    case 'durgapur':
+                        return wrap(`<svg width="36" height="36" viewBox="0 0 64 64" fill="none" stroke="${color}" stroke-width="2"><rect x="16" y="28" width="10" height="16" /><path d="M20 28v-6" /><circle cx="40" cy="40" r="6" /><path d="M40 32v2m0 12v2m-8-8h2m12 0h2m-9-5 1.4 1.4M45.6 43.6 44.2 42.2" /></svg>`);
+                    case 'asansol':
+                        return wrap(`<svg width="36" height="36" viewBox="0 0 64 64" fill="none" stroke="${color}" stroke-width="2"><path d="M12 44c10-10 30-10 40 0" /><path d="M16 44h32" /></svg>`);
+                    case 'lucknow':
+                        return wrap(`<svg width="36" height="36" viewBox="0 0 64 64" fill="none" stroke="${color}" stroke-width="2"><path d="M16 48V34a16 16 0 0132 0v14" /><path d="M24 36h16" /></svg>`);
+                    case 'noida':
+                        return wrap(`<svg width="36" height="36" viewBox="0 0 64 64" fill="none" stroke="${color}" stroke-width="2"><rect x="14" y="18" width="14" height="14" /><rect x="36" y="18" width="14" height="14" /><rect x="14" y="36" width="14" height="10" /><rect x="36" y="36" width="14" height="10" /></svg>`);
+                    case 'kanpur':
+                        return wrap(`<svg width="36" height="36" viewBox="0 0 64 64" fill="none" stroke="${color}" stroke-width="2"><path d="M12 36h40M16 36v-6m8 6v-6m8 6v-6m8 6v-6" /><path d="M12 46c6 4 22 4 28 0 6 4 10 4 12 4" /></svg>`);
+                    case 'ghaziabad':
+                        return wrap(`<svg width="36" height="36" viewBox="0 0 64 64" fill="none" stroke="${color}" stroke-width="2"><rect x="26" y="18" width="12" height="24" /><circle cx="32" cy="26" r="3" /><path d="M24 42h16" /></svg>`);
+                    case 'agra':
+                        return wrap(`<svg width="36" height="36" viewBox="0 0 64 64" fill="none" stroke="${color}" stroke-width="2"><path d="M22 44h20v-8a10 10 0 00-20 0v8z" /><path d="M20 44V32m24 12V32" /><path d="M32 24c2 0 4 2 4 4s-2 4-4 4-4-2-4-4 2-4 4-4z" /></svg>`);
+                    case 'gurugram':
+                        return wrap(`<svg width="36" height="36" viewBox="0 0 64 64" fill="none" stroke="${color}" stroke-width="2"><rect x="14" y="26" width="8" height="22" /><rect x="26" y="20" width="10" height="28" /><rect x="40" y="30" width="10" height="18" /><path d="M12 48h40" /></svg>`);
+                    case 'faridabad':
+                        return wrap(`<svg width="36" height="36" viewBox="0 0 64 64" fill="none" stroke="${color}" stroke-width="2"><path d="M16 44h32v-8l-8-6-8 6-8-6-8 6v8z" /><path d="M40 36v-8m-16 8v-8" /></svg>`);
+                    case 'panipat':
+                        return wrap(`<svg width="36" height="36" viewBox="0 0 64 64" fill="none" stroke="${color}" stroke-width="2"><rect x="16" y="24" width="32" height="16" /><path d="M20 24v-6m24 6v-6M20 40v6m24-6v6" /><path d="M22 28h20M22 32h20M22 36h20" /></svg>`);
+                    case 'chennai':
+                        return wrap(`<svg width="36" height="36" viewBox="0 0 64 64" fill="none" stroke="${color}" stroke-width="2"><rect x="14" y="26" width="10" height="22" /><rect x="28" y="18" width="8" height="30" /><rect x="40" y="30" width="10" height="18" /><path d="M12 48h40" /></svg>`);
+                    case 'coimbatore':
+                        return wrap(`<svg width="36" height="36" viewBox="0 0 64 64" fill="none" stroke="${color}" stroke-width="2"><rect x="16" y="28" width="10" height="20" /><rect x="30" y="22" width="8" height="26" /><rect x="44" y="30" width="6" height="18" /><path d="M12 50h40" /></svg>`);
+                    case 'madurai':
+                        return wrap(`<svg width="36" height="36" viewBox="0 0 64 64" fill="none" stroke="${color}" stroke-width="2"><rect x="18" y="22" width="28" height="22" /><path d="M18 28h28M22 22v-4h20v4" /><circle cx="32" cy="34" r="4" /></svg>`);
+                    case 'ahmedabad':
+                        return wrap(`<svg width="36" height="36" viewBox="0 0 64 64" fill="none" stroke="${color}" stroke-width="2"><path d="M12 44h40M20 44V34l12-10 12 10v14" /><path d="M26 40h12" /></svg>`);
+                    case 'surat':
+                        return wrap(`<svg width="36" height="36" viewBox="0 0 64 64" fill="none" stroke="${color}" stroke-width="2"><rect x="14" y="28" width="12" height="20" /><rect x="30" y="22" width="10" height="26" /><rect x="44" y="30" width="6" height="18" /><path d="M12 50h40" /></svg>`);
+                    case 'vadodara':
+                        return wrap(`<svg width="36" height="36" viewBox="0 0 64 64" fill="none" stroke="${color}" stroke-width="2"><rect x="16" y="24" width="32" height="16" /><path d="M20 24v-6m24 6v-6M20 40v6m24-6v6" /><path d="M22 28h20M22 32h20M22 36h20" /></svg>`);
+                    default:
+                        return wrap(`
+                            <svg width="36" height="36" viewBox="0 0 64 64" fill="none" stroke="${color}" stroke-width="2">
+                                <rect x="14" y="26" width="10" height="22" />
+                                <rect x="28" y="18" width="8" height="30" />
+                                <rect x="40" y="30" width="10" height="18" />
+                                <path d="M12 48h40" />
+                            </svg>
+                        `);
+                }
+            }
+
+            function cityCardHTML(city) {
+                const icon = cityIconSVG(city, false);
+                return `
+                    <div class="city-card p-4 flex flex-col items-center text-center" data-city="${escapeHtml(city)}">
+                        ${icon}
+                        <div class="mt-3 font-semibold" style="color: var(--dm-fore);">${escapeHtml(capitalize(city))}</div>
+                    </div>
+                `;
+            }
+
+            initStates();
+        });
+    </script>
+</body>
+</html>

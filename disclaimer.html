@@ -3,81 +3,94 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Disclaimer - DermaMind AI</title>
+    <title>Your Profile - DermaMind AI</title>
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Lato:wght@300;400&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/feather-icons"></script>
 </head>
-<body>
+<body id="profilepage">
 
-    <header class="header">
-        <div class="container">
-            <nav class="navbar">
-                <a href="index.html" class="logo"><img src="assets/Gemini_Generated_Image_hqn5x2hqn5x2hqn5.png">DermaMind AI Logo"></a>
-                <ul class="nav-links">
-                    <li><a href="index.html#about">About</a></li>
-                    <li><a href="index.html#features">For Professionals</a></li>
-                    <li><a href="index.html#faq">FAQ</a></li>
-                    <li><a href="index.html#contact">Contact</a></li>
-                </ul>
-                <a href="#" class="btn btn-primary">Analyze Your Skin</a> </nav>
-        </div>
+    <header class="main-header">
+        <nav class="container">
+            <a href="index.html" class="logo-text">DermaMind AI</a>
+            
+            <div class="nav-links">
+                <a href="#" class="active" id="profileNavLink">Profile</a> 
+                <button id="logoutBtn" class="btn btn-cta-login">Logout</button>
+            </div>
+        </nav>
     </header>
 
     <main>
-        <section class="disclaimer-section">
+        <section class="content-section profile-dashboard">
             <div class="container animated-element">
-                <h1 class="animated-element delay-1">Important Disclaimer</h1>
-                <p class="animated-element delay-2">Please read this carefully before proceeding with DermaMind AI's analysis.</p>
-
-                <div class="disclaimer-content animated-element delay-3">
-                    <h2>DermaMind AI: A Supporting Tool, Not a Diagnostic One</h2>
-                    <p>DermaMind AI is designed to be an **assistive tool** for preliminary skin analysis and educational purposes only. Our advanced algorithms provide insights and identify potential patterns, but they are **not a substitute for professional medical advice, diagnosis, or treatment.**</p>
-
-                    <p>The information and analysis provided by this platform should not be used to self-diagnose or self-treat any health condition. **Always seek the advice of a qualified healthcare professional, such as a dermatologist,** for any questions you may have regarding a medical condition. Never disregard professional medical advice or delay in seeking it because of something you have read or seen on this platform.</p>
-
-                    <h2>Accuracy and Limitations</h2>
-                    <p>While DermaMind AI strives for high accuracy (e.g., "99.2% accuracy" mentioned on the homepage refers to our internal model validation), the results are based on visual input and algorithmic interpretation. Factors such as image quality, lighting, and rare conditions can affect the analysis. The platform cannot account for all clinical factors a doctor would consider.</p>
-
-                    <h2>Your Responsibility</h2>
-                    <p>By using DermaMind AI, you acknowledge and agree that:</p>
-                    <ul>
-                        <li><i data-feather="alert-triangle"></i> You understand that the AI analysis is informational and not a medical diagnosis.</li>
-                        <li><i data-feather="alert-triangle"></i> You will consult with a licensed medical professional for any health concerns.</li>
-                        <li><i data-feather="alert-triangle"></i> DermaMind AI and its creators are not responsible for any actions taken based on the information provided by the platform.</li>
-                    </ul>
-
-                    <div class="disclaimer-actions animated-element delay-4">
-                        <a href="index.html" class="btn btn-light">Go back to Homepage</a>
-                        <a href="#" class="btn btn-dark" id="proceedToAnalysis">I Understand & Proceed to Analysis</a>
+                <div class="profile-header">
+                    <div class="profile-greeting">
+                        <h2>User Dashboard</h2>
+                        <p id="welcomeMessage">Welcome back, User!</p> 
+                    </div>
+                    <button id="startAnalysisBtn" class="btn btn-cta-header"><i data-feather="plus"></i> Begin New Analysis</button>
+                </div>
+                
+                <div class="profile-tabs">
+                    <button class="tab-link active" data-tab="analyses"><i data-feather="file-text"></i> Past Analyses</button>
+                    <button class="tab-link" data-tab="conversations"><i data-feather="message-square"></i> Conversations</button>
+                    <button class="tab-link" data-tab="prescriptions"><i data-feather="edit"></i> Prescriptions</button>
+                </div>
+                
+                <div class="tab-content">
+                    <div id="analyses" class="tab-pane active">
+                        <div id="recordList" class="record-list-grid">
+                            <div id="emptyStateRecords" class="empty-state">
+                                <i data-feather="folder"></i>
+                                <h4>No Analyses Found</h4>
+                                <p>Click "Begin New Analysis" to get started.</p>
+                            </div>
+                            </div>
+                    </div>
+                    
+                    <div id="conversations" class="tab-pane">
+                        <div id="conversationList" class="record-list-grid">
+                            <div id="emptyStateConvos" class="empty-state">
+                                <i data-feather="message-square"></i>
+                                <h4>No Conversations Found</h4>
+                                <p>Start a new analysis to generate conversations.</p>
+                            </div>
+                            </div>
+                    </div>
+                    
+                    <div id="prescriptions" class="tab-pane">
+                        <div id="prescriptionList" class="record-list-grid">
+                            <div id="emptyStatePrescriptions" class="empty-state">
+                                <i data-feather="edit"></i>
+                                <h4>No Prescriptions Found</h4>
+                                <p>Prescriptions will appear here after doctor consultations.</p>
+                            </div>
+                            </div>
                     </div>
                 </div>
             </div>
         </section>
     </main>
-
-    <footer class="footer">
-        <div class="container">
-            <p>&copy; 2025 DermaMind AI. All rights reserved. This is not a substitute for professional medical advice.</p>
-        </div>
+    
+    <footer class="main-footer">
+        <p>&copy; 2025 DermaMind AI. All rights reserved.</p>
     </footer>
 
+    <div id="disclaimerModal" class="modal-backdrop hidden">
+        <div class="modal-content">
+            <h3>Important Disclaimer</h3>
+            <p>DermaMind AI provides information and recommendations based on AI analysis. This is NOT a substitute for professional medical advice, diagnosis, or treatment. Always seek the advice of a qualified healthcare provider for any medical concerns.</p>
+            <button id="proceedBtn" class="btn btn-cta-header">I Understand & Proceed</button>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    
     <script src="script.js"></script>
-    <script>
-      feather.replace()
-      // Optional: Add logic here to actually redirect to the analysis page
-      // once "I Understand & Proceed" is clicked.
-      document.getElementById('proceedToAnalysis').addEventListener('click', function(e) {
-          e.preventDefault(); // Prevent default link behavior for now
-          alert('You would now proceed to the analysis page!');
-          // In a real application, you'd redirect:
-          // window.location.href = 'analysis-page.html';
-      });
-    </script>
 </body>
 </html>

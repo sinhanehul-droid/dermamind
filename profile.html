@@ -14,7 +14,7 @@
 
     <header class="main-header">
         <nav class="nav-container">
-            <a href="index.html" class="logo-text">DermaMind AI</a>
+            <a href="index.html" class="logo-text" id="bshai">DermaMind AI</a>
             <ul class="nav-links">
                 <li><a href="index.html#about">About</a></li>
                 <li><a href="index.html#how-it-works">How It Works</a></li>
@@ -39,7 +39,7 @@
             <div class="profile-tabs">
                 <a href="#" class="tab-link active" id="recordsTab">My Records</a>
                 <a href="#" class="tab-link" id="conversationsTab">Past Conversations</a>
-                <a href="#" class="tab-link" id="prescriptionsTab">Prescriptions</a>
+                <a href="#" class="tab-link" id="prescriptionsTab">Recommendations</a>
                 <a href="#" class="tab-link" id="settingsTab">Settings</a>
             </div>
 
@@ -60,7 +60,7 @@
                 <div class="tab-pane hidden" id="conversationsPane">
                     <div class="section-title">
                         <h3>Your Consultation History</h3>
-                        <button class="btn btn-cta-main">Start New Consultation</button>
+                        <button id="startNewChatBtn" class="btn btn-cta-main">Start New Consultation</button>
                     </div>
                     <div id="conversationList" class="record-list-grid">
                         <div class="empty-state">
@@ -72,12 +72,12 @@
 
                 <div class="tab-pane hidden" id="prescriptionsPane">
                     <div class="section-title">
-                        <h3>Your Prescriptions</h3>
+                        <h3>Your Recommendations & Prescriptions</h3>
                         </div>
                     <div id="prescriptionList" class="record-list-grid">
                         <div class="empty-state">
                             <i data-feather="clipboard"></i>
-                            <p>No active prescriptions. Consult a doctor!</p>
+                            <p>No recommendations found.</p>
                         </div>
                     </div>
                 </div>
@@ -96,14 +96,14 @@
     <footer class="main-footer">
         <p>&copy; 2024 DermaMind AI. All rights reserved.</p>
     </footer>
-
-    <div id="disclaimerModal" class="modal hidden animated-element">
+    
+    <div id="disclaimerModal" class="modal-backdrop hidden">
         <div class="modal-content">
-            <h3>Disclaimer</h3>
-            <p>DermaMind AI is an assistive tool and does not provide medical advice. Consult a certified dermatologist for diagnosis and treatment. By proceeding, you agree to these terms.</p>
+            <h3>Important Disclaimer</h3>
+            <p>DermaMind AI provides preliminary information and recommendations based on AI analysis. It is **NOT** a substitute for professional medical advice, diagnosis, or treatment. Always seek the advice of a qualified healthcare provider for any medical concerns.</p>
             <div class="modal-actions">
                 <button id="cancelBtn" class="btn btn-secondary">Cancel</button>
-                <button id="proceedBtn" class="btn btn-cta-main">Proceed to Analysis</button>
+                <button id="proceedBtn" class="btn btn-cta-main">I Understand & Proceed</button>
             </div>
         </div>
     </div>

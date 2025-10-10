@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Derma Mind - AI Skin Analysis</title>
+    <link rel="stylesheet" href="chatbot.css">
+    <script src="https://unpkg.com/feather-icons"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="main-header">
+        <nav class="nav-container">
+            <a href="index.html"><h1 class="logo-text">DermaMind AI</h1></a>
+            <div class="header-actions">
+                <a href="doctors.html" class="btn btn-header toggle-btn">
+                    <i data-feather="users"></i> Find Doctors
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+        <h1 style="font-size: 2.5rem; margin-top: 0;">Derma Mind</h1>
+        <p class="subtitle">Your AI-Powered Skin Health Assistant</p>
+        
+        <div class="disclaimer">
+            <strong>Medical Disclaimer:</strong> This AI analysis is for informational purposes only and is not a substitute for professional medical advice.
+        </div>
+
+        <form id="analysis-form">
+            <div class="step">
+                <h2>Step 1: Upload a Photo</h2>
+                <div id="drop-zone">
+                    <p>Drag & drop your image here, or click to select a file</p>
+                    <input type="file" id="image-uploader" name="imageFile" accept="image/*">
+                    <img id="image-preview" src="#" alt="Your image preview" />
+                </div>
+            </div>
+
+            <div class="step">
+                <h2>Step 2: Answer Three Questions</h2>
+                <div class="question">
+                    <label for="q1">1. How does the area feel?</label>
+                    <input type="text" id="q1" name="sensation" placeholder="e.g., Itchy, Painful, Burning" required>
+                </div>
+                <div class="question">
+                    <label for="q2">2. How long has this been present?</label>
+                    <input type="text" id="q2" name="duration" placeholder="e.g., a few days, about 2 weeks" required>
+                </div>
+                <div class="question">
+                    <label for="q3">3. Please describe the concern and any recent changes (in color, size, or texture).</label>
+                    <textarea id="q3" name="description" rows="4" placeholder="e.g., It started as a small red dot and has become larger and scaly..." required></textarea>
+                </div>
+            </div>
+            
+            <button type="submit" id="submit-btn">Analyze My Skin</button>
+        </form>
+
+        <div id="status-container">
+            <div id="loader" class="hidden"></div>
+            <div id="results-container" class="hidden"></div>
+        </div>
+    </div>
+    <script src="chatbot.js"></script>
+    <script>feather.replace()</script>
+</body>
+</html>

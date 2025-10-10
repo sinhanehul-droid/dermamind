@@ -18,6 +18,33 @@ const auth = firebase.auth();
 const db = firebase.firestore();
 
 
+// --- Utility Functions ---
+
+/**
+ * Saves a conversation to Firestore.
+ * @param {string} userId - The user's UID.
+ * @param {Array<Object>} chatHistory - Array of {sender: 'user'/'ai', message: string}
+ * @param {string} initialImage - Base64 or identifier of the uploaded image.
+ */
+const saveConversationToFirestore = async (userId, chatHistory, initialImage) => {
+    if (!userId) return console.error("Cannot save conversation: User not authenticated.");
+
+    try {
+        const conversationRef = await db.collection('users').doc(userId).collection('conversations').add({
+            date: firebase.firestore.FieldValue.serverTimestamp(),
+            initialImage: initialImage || 'No image uploaded',
+            chatHistory: chatHistory,
+            subject: chatHistory.length > 0 ? chatHistory[0].message.substring(0, 50) + '...' : 'New Consultation',
+            status: 'Pending Recommendation',
+        });
+        console.log("Conversation saved with ID: ", conversationRef.id);
+        return conversationRef.id;
+    } catch (error) {
+        console.error("Error saving conversation: ", error);
+        return null;
+    }
+};
+
 // --- Main App Logic ---
 document.addEventListener('DOMContentLoaded', function() {
     feather.replace();
@@ -138,12 +165,8 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
         
-        setFormMode(true); // Initialize the form in Login mode
+        setFormMode(true);
     } 
-    // ... (script.js ka existing code - firebase config, auth, db initialization, global auth logic, animations) ...
-
-    // --- Page-Specific Logic ---
-    // ... (loginpage logic remains the same) ...
     
     else if (pageId === 'profilepage') {
         auth.onAuthStateChanged(user => {
@@ -157,7 +180,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 welcomeMessage.textContent = `Welcome back, ${user.email.split('@')[0]}!`;
             }
 
-            // --- Tab Handling Logic (NEW) ---
             const tabLinks = document.querySelectorAll('.profile-tabs .tab-link');
             const tabPanes = document.querySelectorAll('.profile-tab-content .tab-pane');
 
@@ -176,27 +198,29 @@ document.addEventListener('DOMContentLoaded', function() {
             tabLinks.forEach(link => {
                 link.addEventListener('click', (e) => {
                     e.preventDefault();
-                    const tabId = e.target.id.replace('Tab', '');
+                    const tabId = e.target.id.replace('Tab', '').replace('sTab', ''); 
                     activateTab(tabId);
 
-                    // Fetch data specific to the activated tab (if needed)
                     if (tabId === 'records') fetchUserReports(user.uid);
                     if (tabId === 'conversations') fetchUserConversations(user.uid);
                     if (tabId === 'prescriptions') fetchUserPrescriptions(user.uid);
-                    // No explicit fetch for settings yet, as it's static form
                 });
             });
 
-            // --- My Records Tab Logic (Existing, with minor updates) ---
             const startAnalysisBtn = document.getElementById('startAnalysisBtn');
+            const startNewChatBtn = document.getElementById('startNewChatBtn');
             const disclaimerModal = document.getElementById('disclaimerModal');
             const proceedBtn = document.getElementById('proceedBtn');
-            const cancelBtn = document.getElementById('cancelBtn'); // NEW: Cancel button for modal
-            const recordList = document.getElementById('recordList');
-            const emptyStateRecords = document.getElementById('recordsPane').querySelector('.empty-state'); // Specific empty state
-
+            const cancelBtn = document.getElementById('cancelBtn');
+            
             if (startAnalysisBtn) {
                 startAnalysisBtn.addEventListener('click', () => {
+                    if (disclaimerModal) disclaimerModal.classList.remove('hidden');
+                });
+            }
+            
+            if (startNewChatBtn) {
+                 startNewChatBtn.addEventListener('click', () => {
                     if (disclaimerModal) disclaimerModal.classList.remove('hidden');
                 });
             }
@@ -204,221 +228,328 @@ document.addEventListener('DOMContentLoaded', function() {
             if (proceedBtn) {
                 proceedBtn.addEventListener('click', () => {
                     if (disclaimerModal) disclaimerModal.classList.add('hidden');
-                    createDummyReport(user.uid);
+                    window.location.href = 'chatbot.html';
                 });
             }
 
-            if (cancelBtn) { // NEW: Handle cancel button for modal
+            if (cancelBtn) {
                 cancelBtn.addEventListener('click', () => {
                     if (disclaimerModal) disclaimerModal.classList.add('hidden');
                 });
             }
             
+            const recordList = document.getElementById('recordList');
+            const emptyStateRecords = document.getElementById('recordsPane').querySelector('.empty-state');
+            const conversationList = document.getElementById('conversationList');
+            const emptyStateConversations = document.getElementById('conversationsPane').querySelector('.empty-state');
+            const prescriptionList = document.getElementById('prescriptionList');
+            const emptyStatePrescriptions = document.getElementById('prescriptionsPane').querySelector('.empty-state');
+
             const fetchUserReports = (userId) => {
                 if (!userId || !recordList) return;
                 
                 db.collection('users').doc(userId).collection('reports')
                     .orderBy('date', 'desc')
                     .onSnapshot(snapshot => {
-                        recordList.innerHTML = ''; // Clear previous records
-                        if (snapshot.empty) {
-                            if (emptyStateRecords) emptyStateRecords.classList.remove('hidden');
+                        recordList.innerHTML = ''; 
+                        const reports = [];
+                        snapshot.forEach(doc => reports.push({ id: doc.id, ...doc.data() }));
+
+                        if (reports.length === 0) {
+                            emptyStateRecords.classList.remove('hidden');
                         } else {
-                            if (emptyStateRecords) emptyStateRecords.classList.add('hidden');
-                            snapshot.forEach(doc => {
-                                const report = doc.data();
-                                const reportId = doc.id;
-                                const date = report.date.toDate().toLocaleDateString();
+                            emptyStateRecords.classList.add('hidden');
+                            reports.forEach(report => {
+                                const date = (report.date.toDate ? report.date.toDate() : new Date()).toLocaleDateString();
+                                const riskClass = (report.risk || 'low').toLowerCase().replace(' ', '-');
 
                                 const recordCard = document.createElement('div');
                                 recordCard.className = 'record-card animated-element';
                                 recordCard.innerHTML = `
                                     <div>
                                         <h4>Analysis on ${date}</h4>
-                                        <p>${report.finding} <span class="record-status risk-${report.risk.toLowerCase()}">${report.risk} Risk</span></p>
+                                        <p>${report.finding || 'N/A'} <span class="record-status risk-${riskClass}">${report.risk || 'Low'} Risk</span></p>
                                     </div>
-                                    <a href="report.html?id=${reportId}" class="btn btn-cta-main">View Report</a>
+                                    <a href="report.html?id=${report.id}" class="btn btn-cta-main">View Report</a>
                                 `;
                                 recordList.appendChild(recordCard);
-                                observer.observe(recordCard); // Re-observe for animation
+                                observer.observe(recordCard); 
                             });
                         }
                     });
             };
 
-            const createDummyReport = (userId) => {
-                const dummyReports = [
-                    {
-                        date: firebase.firestore.FieldValue.serverTimestamp(),
-                        finding: "Mild Pigmentation Anomaly",
-                        confidence: 85,
-                        risk: "Low",
-                        imageUrl: "https://images.unsplash.com/photo-1615565392322-89587498c4d3?q=80&w=2574&auto=format&fit=crop",
-                        details: "Slightly uneven skin tone observed around the cheek area. No significant inflammation or lesions detected.",
-                        recommendations: ["Maintain good hydration.", "Use SPF 30+ daily.", "Monitor for changes."],
-                        riskBreakdown: [
-                            { aspect: 'Color Irregularity', score: 60, level: 'Moderate' },
-                            { aspect: 'Texture Deviation', score: 30, level: 'Low' }
-                        ],
-                        historicalData: [ // Dummy historical data
-                            { date: new Date('2023-01-15').toISOString(), riskScore: 5 },
-                            { date: new Date('2023-03-20').toISOString(), riskScore: 4 },
-                            { date: new Date('2023-05-25').toISOString(), riskScore: 3 }
-                        ]
-                    },
-                    {
-                        date: firebase.firestore.FieldValue.serverTimestamp(),
-                        finding: "Minor Skin Irritation",
-                        confidence: 78,
-                        risk: "Moderate",
-                        imageUrl: "https://images.unsplash.com/photo-1621370802717-b677a83d7a8d?q=80&w=2609&auto=format&fit=crop",
-                        details: "Localized redness and minor itching reported. Possibly contact dermatitis.",
-                        recommendations: ["Avoid irritants.", "Apply a soothing moisturizer.", "Consult doctor if symptoms persist."],
-                        riskBreakdown: [
-                            { aspect: 'Inflammation', score: 75, level: 'High' },
-                            { aspect: 'Lesion Severity', score: 40, level: 'Low' }
-                        ],
-                        historicalData: [
-                            { date: new Date('2023-02-10').toISOString(), riskScore: 6 },
-                            { date: new Date('2023-04-18').toISOString(), riskScore: 7 },
-                            { date: new Date('2023-06-01').toISOString(), riskScore: 6 }
-                        ]
-                    }
-                ];
-
-                // Add a random dummy report
-                const reportToAdd = dummyReports[Math.floor(Math.random() * dummyReports.length)];
-
-                db.collection('users').doc(userId).collection('reports').add(reportToAdd)
-                    .then(() => {
-                        console.log("Dummy report added successfully!");
-                    })
-                    .catch(error => {
-                        console.error("Error adding dummy report: ", error);
-                    });
-            };
-
-
-            // --- Past Conversations Tab Logic (NEW) ---
-            const conversationList = document.getElementById('conversationList');
-            const emptyStateConversations = document.getElementById('conversationsPane').querySelector('.empty-state');
-
             const fetchUserConversations = (userId) => {
                 if (!userId || !conversationList) return;
 
-                // Ye yahaan Firebase se data fetch karega. Abhi dummy data dikhate hain.
-                // Actual mein ek 'conversations' subcollection hogi users ke andar
-                // For now, simulate async fetch with dummy data
-                conversationList.innerHTML = ''; // Clear previous conversations
+                db.collection('users').doc(userId).collection('conversations')
+                    .orderBy('date', 'desc')
+                    .onSnapshot(snapshot => {
+                        conversationList.innerHTML = '';
+                        const conversations = [];
+                        snapshot.forEach(doc => conversations.push({ id: doc.id, ...doc.data() }));
 
-                const dummyConversations = [
-                    {
-                        id: 'conv1',
-                        date: new Date('2023-07-01'),
-                        subject: 'Regarding persistent rash on arm',
-                        lastMessage: 'Doctor suggested topical cream and follow-up.',
-                        status: 'Resolved'
-                    },
-                    {
-                        id: 'conv2',
-                        date: new Date('2023-06-15'),
-                        subject: 'Inquiry about dry skin patches',
-                        lastMessage: 'AI recommended specific moisturizer brands.',
-                        status: 'Open'
-                    },
-                    {
-                        id: 'conv3',
-                        date: new Date('2023-05-10'),
-                        subject: 'Mole check-up',
-                        lastMessage: 'AI flagged for doctor review, benign confirmed.',
-                        status: 'Resolved'
-                    }
-                ];
-
-                if (dummyConversations.length === 0) {
-                    if (emptyStateConversations) emptyStateConversations.classList.remove('hidden');
-                } else {
-                    if (emptyStateConversations) emptyStateConversations.classList.add('hidden');
-                    dummyConversations.sort((a, b) => b.date - a.date).forEach(conv => {
-                        const convCard = document.createElement('div');
-                        convCard.className = 'record-card animated-element'; // Reuse record-card style
-                        convCard.innerHTML = `
-                            <div>
-                                <h4>${conv.subject}</h4>
-                                <p>Date: ${conv.date.toLocaleDateString()}</p>
-                                <p>${conv.lastMessage}</p>
-                                <span class="record-status">${conv.status}</span>
-                            </div>
-                            <button class="btn btn-secondary">View Chat</button>
-                        `;
-                        conversationList.appendChild(convCard);
-                        observer.observe(convCard); // Re-observe for animation
+                        if (conversations.length === 0) {
+                            emptyStateConversations.classList.remove('hidden');
+                        } else {
+                            emptyStateConversations.classList.add('hidden');
+                            conversations.forEach(conv => {
+                                const date = (conv.date.toDate ? conv.date.toDate() : new Date()).toLocaleDateString();
+                                const convCard = document.createElement('div');
+                                convCard.className = 'record-card animated-element'; 
+                                convCard.innerHTML = `
+                                    <div>
+                                        <h4>${conv.subject || 'Consultation'}</h4>
+                                        <p>Date: ${date}</p>
+                                        <p>Status: <span class="record-status">${conv.status || 'Complete'}</span></p>
+                                    </div>
+                                    <a href="chatbot.html?convId=${conv.id}" class="btn btn-secondary">View Chat</a>
+                                `;
+                                conversationList.appendChild(convCard);
+                                observer.observe(convCard);
+                            });
+                        }
                     });
-                }
             };
-
-
-            // --- Prescriptions Tab Logic (NEW) ---
-            const prescriptionList = document.getElementById('prescriptionList');
-            const emptyStatePrescriptions = document.getElementById('prescriptionsPane').querySelector('.empty-state');
 
             const fetchUserPrescriptions = (userId) => {
                 if (!userId || !prescriptionList) return;
-
-                // Ye bhi abhi dummy data hai
-                prescriptionList.innerHTML = ''; // Clear previous prescriptions
-
+                prescriptionList.innerHTML = ''; 
+                
                 const dummyPrescriptions = [
-                    {
-                        id: 'rx1',
-                        dateIssued: new Date('2023-07-05'),
-                        medication: 'Hydrocortisone Cream 1%',
-                        dosage: 'Apply thin layer twice daily',
-                        duration: '7 days',
-                        prescribedBy: 'Dr. AI Bot (Simulated)',
-                        status: 'Active'
-                    },
-                    {
-                        id: 'rx2',
-                        dateIssued: new Date('2023-06-20'),
-                        medication: 'Moisturizing Lotion',
-                        dosage: 'Apply as needed',
-                        duration: 'Ongoing',
-                        prescribedBy: 'Dr. AI Bot (Simulated)',
-                        status: 'Completed'
-                    }
+                    { id: 'rx1', dateIssued: new Date(), medication: 'Custom Moisturizer Plan', dosage: 'Morning and Evening Application', status: 'Active' },
+                    { id: 'rx2', dateIssued: new Date('2023-06-20'), medication: 'Sunscreen Protocol', dosage: 'Apply every 2 hours when exposed to sun', status: 'Completed' }
                 ];
 
                 if (dummyPrescriptions.length === 0) {
-                    if (emptyStatePrescriptions) emptyStatePrescriptions.classList.remove('hidden');
+                    emptyStatePrescriptions.classList.remove('hidden');
                 } else {
-                    if (emptyStatePrescriptions) emptyStatePrescriptions.classList.add('hidden');
+                    emptyStatePrescriptions.classList.add('hidden');
                     dummyPrescriptions.sort((a, b) => b.dateIssued - a.dateIssued).forEach(rx => {
                         const rxCard = document.createElement('div');
-                        rxCard.className = 'record-card animated-element'; // Reuse style
+                        rxCard.className = 'record-card animated-element'; 
                         rxCard.innerHTML = `
                             <div>
                                 <h4>${rx.medication}</h4>
                                 <p>Issued: ${rx.dateIssued.toLocaleDateString()}</p>
                                 <p>Dosage: ${rx.dosage}</p>
-                                <p>Duration: ${rx.duration}</p>
-                                <p>Prescribed by: ${rx.prescribedBy}</p>
-                                <span class="record-status">${rx.status}</span>
+                                <p>Status: <span class="record-status">${rx.status}</span></p>
                             </div>
                             <button class="btn btn-secondary">Details</button>
                         `;
                         prescriptionList.appendChild(rxCard);
-                        observer.observe(rxCard); // Re-observe for animation
+                        observer.observe(rxCard);
                     });
                 }
             };
             
 
-            // Initialize with the records tab active on page load
             activateTab('records');
-            fetchUserReports(user.uid); // Fetch records initially
+            fetchUserReports(user.uid); 
         });
     }
-    // ... (Other page logic like 'reportpage' remains correct) ...
-});
+
+    else if (pageId === 'chatbotpage') {
+        const chatWindow = document.getElementById('chat-window');
+        const userInput = document.getElementById('user-input');
+        const sendBtn = document.getElementById('send-btn');
+        const imageUpload = document.getElementById('imageUpload');
+        const previewImage = document.getElementById('previewImage');
+        const fileNameSpan = document.getElementById('fileName');
+        const findDoctorsBtn = document.getElementById('findDoctorsBtn');
+
+        let chatHistory = [];
+        let uploadedImageBase64 = null;
+        const urlParams = new URLSearchParams(window.location.search);
+        const conversationId = urlParams.get('convId');
+
+        if (conversationId) {
+             auth.onAuthStateChanged(user => {
+                if (user) {
+                    db.collection('users').doc(user.uid).collection('conversations').doc(conversationId).get()
+                        .then(doc => {
+                            if (doc.exists) {
+                                const convData = doc.data();
+                                chatHistory = convData.chatHistory;
+                                chatHistory.forEach(msg => appendMessage(msg.sender, msg.message));
+                                // Show doctors button after loading old chat
+                                findDoctorsBtn.classList.remove('hidden');
+                            } else {
+                                appendMessage('system', 'Conversation not found.');
+                            }
+                        });
+                }
+            });
+        }
+
+
+        const appendMessage = (sender, message) => {
+            const msgDiv = document.createElement('div');
+            msgDiv.className = `message ${sender}`;
+            const icon = sender === 'user' ? 'user' : 'cpu';
+            msgDiv.innerHTML = `
+                <div class="icon"><i data-feather="${icon}"></i></div>
+                <div class="text"><p>${message}</p></div>
+            `;
+            chatWindow.appendChild(msgDiv);
+            feather.replace();
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+        };
+
+        imageUpload.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                fileNameSpan.textContent = file.name;
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    previewImage.src = e.target.result;
+                    previewImage.classList.remove('hidden');
+                    uploadedImageBase64 = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        const getAiResponse = async (userMessage) => {
+            appendMessage('ai', 'Thinking...');
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            if(chatWindow.lastChild) chatWindow.lastChild.remove();
+            
+            let aiResponseText;
+            
+            if (!uploadedImageBase64) {
+                 aiResponseText = "Image upload nahi hua hai. Analysis shuru karne ke liye kripya pehle ek image upload karein aur apne skin concern ke baare mein bataayein. Main iske baad aapko doctors ke paas jaane ki salaah de sakta hoon.";
+            } else {
+                 aiResponseText = "Image analysis complete. Based on our preliminary AI assessment, we advise you to consult a certified dermatologist for a definitive diagnosis. Main ab aapko is area ke liye **recommended doctors** dikha sakta hoon.";
+            }
+
+            appendMessage('ai', aiResponseText);
+            
+            findDoctorsBtn.classList.remove('hidden');
+        };
+
+        const sendMessage = () => {
+            const message = userInput.value.trim();
+            if (message === '') return;
+
+            appendMessage('user', message);
+            chatHistory.push({ sender: 'user', message: message });
+            userInput.value = '';
+
+            getAiResponse(message);
+        };
+
+        sendBtn.addEventListener('click', sendMessage);
+        userInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        findDoctorsBtn.addEventListener('click', async () => {
+            const user = auth.currentUser;
+            if (user) {
+                const imageRef = uploadedImageBase64 ? 'Image Uploaded' : 'No Image';
+                const conversationId = await saveConversationToFirestore(user.uid, chatHistory, imageRef);
+                window.location.href = `doctors.html?convId=${conversationId}`; 
+            } else {
+                window.location.href = 'doctors.html';
+            }
+        });
+    }
     
+    else if (pageId === 'doctorspage') {
+        const detectLocationBtn = document.getElementById('detectLocationBtn');
+        const searchDoctorsBtn = document.getElementById('searchDoctorsBtn');
+        const locationInput = document.getElementById('locationInput');
+        const doctorList = document.getElementById('doctorList');
+        const statusMessage = document.getElementById('statusMessage');
+        const loadingState = document.getElementById('loadingState');
+        const emptyState = document.getElementById('emptyState');
+
+        const DUMMY_DOCTORS = [
+            { name: "Dr. Anjali Sharma", specialty: "Dermatologist & Cosmetologist", rating: 4.9, address: "123 Skin Care Ave, Near City Center" },
+            { name: "Dr. Rohan Gupta", specialty: "Clinical Dermatology", rating: 4.5, address: "45 Health Rd, Downtown Area" },
+            { name: "Dr. Priya Singh", specialty: "Pediatric Dermatology", rating: 4.8, address: "789 Wellness St, North End" },
+            { name: "Dr. Vikram Rao", specialty: "Dermato-Oncology", rating: 4.7, address: "101 Cure Ln, Innovation Park" },
+        ];
+
+        const displayDoctors = (doctors) => {
+            doctorList.innerHTML = '';
+            loadingState.classList.add('hidden');
+            if (doctors.length === 0) {
+                emptyState.classList.remove('hidden');
+            } else {
+                emptyState.classList.add('hidden');
+                doctors.forEach(doc => {
+                    const card = document.createElement('div');
+                    card.className = 'doctor-card animated-element is-visible';
+                    const stars = '★'.repeat(Math.round(doc.rating));
+                    card.innerHTML = `
+                        <h4>${doc.name}</h4>
+                        <p>${doc.specialty}</p>
+                        <p class="rating">${stars} (${doc.rating})</p>
+                        <p>${doc.address}</p>
+                        <a href="#" class="btn btn-cta-main">Book Appointment</a>
+                    `;
+                    doctorList.appendChild(card);
+                });
+            }
+        };
+
+        const fetchDoctors = (location) => {
+            loadingState.classList.remove('hidden');
+            emptyState.classList.add('hidden');
+            statusMessage.textContent = `Finding specialists in ${location}...`;
+
+            setTimeout(() => {
+                statusMessage.textContent = `Found ${DUMMY_DOCTORS.length} dermatologists near ${location}.`;
+                displayDoctors(DUMMY_DOCTORS);
+            }, 1500);
+        };
+
+        detectLocationBtn.addEventListener('click', () => {
+            if (navigator.geolocation) {
+                statusMessage.textContent = 'Detecting location...';
+                loadingState.classList.remove('hidden');
+                navigator.geolocation.getCurrentPosition(position => {
+                    const lat = position.coords.latitude;
+                    const lon = position.coords.longitude;
+                    const mockLocation = `(Lat: ${lat.toFixed(2)}, Lon: ${lon.toFixed(2)})`;
+                    locationInput.value = 'Current Location';
+                    fetchDoctors('Your Current Location');
+                }, error => {
+                    console.error("Geolocation error:", error);
+                    statusMessage.textContent = 'Error: Geolocation failed. Please enter your location manually.';
+                    loadingState.classList.add('hidden');
+                });
+            } else {
+                statusMessage.textContent = 'Geolocation is not supported by your browser.';
+            }
+        });
+
+        searchDoctorsBtn.addEventListener('click', () => {
+            const location = locationInput.value.trim();
+            if (location) {
+                fetchDoctors(location);
+            } else {
+                statusMessage.textContent = 'Please enter a location.';
+            }
+        });
+
+        locationInput.addEventListener('input', () => {
+            if (locationInput.value.trim().length > 2) {
+                searchDoctorsBtn.classList.remove('hidden');
+                detectLocationBtn.classList.add('hidden');
+            } else {
+                searchDoctorsBtn.classList.add('hidden');
+                detectLocationBtn.classList.remove('hidden');
+                doctorList.innerHTML = '';
+                emptyState.classList.remove('hidden');
+                loadingState.classList.add('hidden');
+                statusMessage.textContent = '';
+            }
+        });
+        displayDoctors([]);
+    }
+});
