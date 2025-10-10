@@ -254,154 +254,502 @@
             ];
 
             const MAJOR_CITIES = {
-                "andhra pradesh": ["visakhapatnam","vijayawada","guntur"],
-                "assam": ["guwahati","dibrugarh"],
-                "bihar": ["patna","gaya"],
-                "chandigarh": ["chandigarh"],
-                "chhattisgarh": ["raipur","bhilai"],
-                "delhi": ["new delhi"],
-                "goa": ["panaji","margao"],
-                "gujarat": ["ahmedabad","surat","vadodara","rajkot"],
-                "haryana": ["gurugram","faridabad","panipat"],
-                "himachal pradesh": ["shimla","mandi"],
-                "jammu and kashmir": ["srinagar","jammu"],
-                "jharkhand": ["ranchi","jamshedpur","dhanbad"],
-                "karnataka": ["bengaluru","mysuru","mangaluru","hubli"],
-                "kerala": ["kochi","thiruvananthapuram","kozhikode"],
-                "madhya pradesh": ["indore","bhopal","jabalpur","gwalior"],
-                "maharashtra": ["mumbai","pune","nagpur","nashik"],
-                "odisha": ["bhubaneswar","cuttack"],
-                "punjab": ["ludhiana","amritsar","jalandhar"],
-                "rajasthan": ["jaipur","jodhpur","udaipur","kota"],
-                "tamil nadu": ["chennai","coimbatore","madurai","salem"],
-                "telangana": ["hyderabad","warangal","karimnagar"],
-                "uttar pradesh": ["lucknow","noida","kanpur","ghaziabad","agra","varanasi","mathura","greater noida"],
-                "uttarakhand": ["dehradun","haridwar"],
-                "west bengal": ["kolkata","siliguri","durgapur","asansol"]
-            };
+      "andhra pradesh": ["visakhapatnam","vijayawada","guntur"],
+      "assam": ["guwahati","dibrugarh"],
+      "bihar": ["patna","gaya"],
+      "chandigarh": ["chandigarh"],
+      "chhattisgarh": ["raipur","bhilai"],
+      "delhi": ["new delhi"],
+      "goa": ["panaji","margao"],
+      "gujarat": ["ahmedabad","surat","vadodara","rajkot"],
+      "haryana": ["gurugram","faridabad","panipat"],
+      "himachal pradesh": ["shimla","mandi"],
+      "jammu and kashmir": ["srinagar","jammu"],
+      "jharkhand": ["ranchi","jamshedpur","dhanbad"],
+      "karnataka": ["bengaluru","mysuru","mangaluru","hubli"],
+      "kerala": ["kochi","thiruvananthapuram","kozhikode"],
+      "madhya pradesh": ["indore","bhopal","jabalpur","gwalior"],
+      "maharashtra": ["mumbai","pune","nagpur","nashik"],
+      "odisha": ["bhubaneswar","cuttack"],
+      "punjab": ["ludhiana","amritsar","jalandhar"],
+      "rajasthan": ["jaipur","jodhpur","udaipur","kota"],
+      "tamil nadu": ["chennai","coimbatore","madurai","salem"],
+      "telangana": ["hyderabad","warangal","karimnagar"],
+      "uttar pradesh": ["lucknow","noida","kanpur","ghaziabad","agra","varanasi","mathura","greater noida"],
+      "uttarakhand": ["dehradun","haridwar"],
+      "west bengal": ["kolkata","siliguri","durgapur","asansol"]
+    };
 
-            const DERMAS = {
-                "andhra pradesh": {
-                    "visakhapatnam": [{ name: "Dr. K. Avinash", clinic: "Dr. Avinash's Skin & Hair Clinic", address: "Santhipuram, Visakhapatnam - 530016", rating: "4.9/5" }, { name: "Dr. S. K. Reddy", clinic: "Aura Skin & Hair Clinic", address: "Lawsons Bay Colony, Visakhapatnam - 530017", rating: "4.8/5" }, { name: "Dr. V. S. N. Murthy", clinic: "Dr. Murthy's Skin Clinic", address: "Ram Nagar, Visakhapatnam - 530002", rating: "4.7/5" }],
-                    "vijayawada": [{ name: "Dr. K. V. T. Gopal", clinic: "Dr. Gopal's Skin, Hair & Laser Clinic", address: "Benz Circle, Vijayawada - 520010", rating: "4.9/5" }, { name: "Dr. P. S. Lakshmi", clinic: "Dr. Lakshmi's Skin Clinic", address: "Labbipet, Vijayawada - 520010", rating: "4.9/5" }, { name: "Dr. G. V. Ramana", clinic: "Dr. Ramana's Skin Clinic", address: "Suryaraopet, Vijayawada - 520002", rating: "4.8/5" }],
-                    "guntur": [{ name: "Dr. S. V. S. Prasad", clinic: "Prasad's Skin & Cosmetology Clinic", address: "Brodipet, Guntur - 522002", rating: "4.8/5" }, { name: "Dr. M. V. Subbarao", clinic: "Dr. Subbarao's Skin Clinic", address: "Kothapet, Guntur - 522001", rating: "4.8/5" }]
-                },
-                "assam": {
-                    "guwahati": [{ name: "Dr. Swapan Kumar Roy", clinic: "Roy's Skin Clinic", address: "Dispur, Guwahati - 781006", rating: "4.8/5" }, { name: "Dr. D. K. Sarma", clinic: "Sarma's Skin Clinic", address: "Ulubari, G.S. Road, Guwahati - 781007", rating: "4.8/5" }],
-                    "dibrugarh": [{ name: "Dr. P. K. Borah", clinic: "Borah Skin Clinic", address: "Graham Bazar, Dibrugarh - 786001", rating: "4.7/5" }, { name: "Dr. N. K. Hazarika", clinic: "Sanjivani Hospital", address: "A.T. Road, Dibrugarh - 786001", rating: "4.7/5" }]
-                },
-                "bihar": {
-                    "patna": [{ name: "Dr. Vikas Shankar", clinic: "Shankar Skin & Hair Clinic", address: "Boring Road, Patna - 800013", rating: "4.9/5" }, { name: "Dr. Abhishek K. Jha", clinic: "Jha Skin, Hair & Laser Clinic", address: "Kankarbagh, Patna - 800020", rating: "4.9/5" }],
-                    "gaya": [{ name: "Dr. A. K. Sinha", clinic: "Sinha Skin Clinic", address: "Swarajpuri Road, Gaya - 823001", rating: "4.8/5" }, { name: "Dr. Rajesh Kumar", clinic: "Rajesh Skin Centre", address: "A.P. Colony, Gaya - 823001", rating: "4.7/5" }]
-                },
-                "chandigarh": {
-                    "chandigarh": [{ name: "Dr. Harmandeep Sidhu", clinic: "Athena Skin & Laser", address: "Sector 9-D, Chandigarh - 160009", rating: "4.9/5" }, { name: "Dr. Vikas Sharma", clinic: "National Skin Centre", address: "Sector 17-C, Chandigarh - 160017", rating: "4.9/5" }]
-                },
-                "chhattisgarh": {
-                    "raipur": [{ name: "Dr. Manisha Sharma", clinic: "Sharma Aesthetic Clinic", address: "Samta Colony, Raipur - 492001", rating: "4.9/5" }, { name: "Dr. Atul Jain", clinic: "Jain Cosmetology Clinic", address: "Shankar Nagar, Raipur - 492007", rating: "4.8/5" }],
-                    "bhilai": [{ name: "Dr. S. K. Jha", clinic: "Jha Skin Clinic", address: "G.E. Road, Bhilai - 490023", rating: "4.8/5" }, { name: "Dr. Alok Jain", clinic: "Jain Skin & Hair", address: "Nehru Nagar, Bhilai - 490020", rating: "4.7/5" }]
-                },
-                "delhi": {
-                    "new delhi": [{ name: "Dr. Nivedita Dadu", clinic: "Dadu Medical Centre", address: "Rajouri Garden, New Delhi - 110027", rating: "4.9/5" }, { name: "Dr. Sirisha Singh", clinic: "The Skin Centre", address: "Safdarjung Enclave, New Delhi - 110029", rating: "4.9/5" }, { name: "Dr. Rohit Batra", clinic: "DermaWorld Skin Clinic", address: "Rajouri Garden, New Delhi - 110027", rating: "4.8/5" }]
-                },
-                "goa": {
-                    "panaji": [{ name: "Dr. Anil D. Dessai", clinic: "Skin & Cosmetology Clinic", address: "Panaji, Goa - 403001", rating: "4.7/5" }, { name: "Dr. R. Morais", clinic: "Morais Skin Clinic", address: "Campal, Panaji - 403001", rating: "4.6/5" }],
-                    "margao": [{ name: "Dr. Pratima S. Kerkar", clinic: "Kerkar Skin Clinic", address: "Fatorda, Margao - 403602", rating: "4.7/5" }, { name: "Dr. P. Kamat", clinic: "Kamat Skin Care", address: "Comba, Margao - 403601", rating: "4.6/5" }]
-                },
-                "gujarat": {
-                    "ahmedabad": [{ name: "Dr. Rupa Tejas Shah", clinic: "Silk Skin Laser Cosmetology", address: "Ambawadi, Ahmedabad - 380006", rating: "4.9/5" }, { name: "Dr. Meeta Desai", clinic: "The Skin Sense", address: "Vastrapur, Ahmedabad - 380015", rating: "4.9/5" }],
-                    "surat": [{ name: "Dr. Surbhi Kapadia", clinic: "Dr. Kapadia's Skin Clinic", address: "Athwa, Surat - 395007", rating: "4.8/5" }, { name: "Dr. A. G. Patel", clinic: "A. G. Skin Clinic", address: "City Light, Surat - 395007", rating: "4.7/5" }],
-                    "vadodara": [{ name: "Dr. Kinjal Shah", clinic: "Dermacare", address: "Alkapuri, Vadodara - 390007", rating: "4.8/5" }, { name: "Dr. Dhruv Patel", clinic: "Derma Point", address: "Akota, Vadodara - 390020", rating: "4.7/5" }],
-                    "rajkot": [{ name: "Dr. Jigar H. Patel", clinic: "Adorn Cosmetic Clinic", address: "Kalawad Road, Rajkot - 360005", rating: "4.8/5" }, { name: "Dr. Vaibhav Shah", clinic: "Shah Skin Clinic", address: "University Road, Rajkot - 360005", rating: "4.7/5" }]
-                },
-                "haryana": {
-                    "gurugram": [{ name: "Dr. Niti Gaur", clinic: "Citrine Clinic", address: "Sector 49, Gurugram - 122018", rating: "4.9/5" }, { name: "Dr. Sachin Dhawan", clinic: "Skin 'n' Smiles", address: "DLF Phase IV, Gurugram - 122002", rating: "4.9/5" }],
-                    "faridabad": [{ name: "Dr. Archit Aggarwal", clinic: "KDC Skin Clinic", address: "Sector 15, Faridabad - 121007", rating: "4.9/5" }, { name: "Dr. Sanjay Gupta", clinic: "Gupta Skin & Hair", address: "Sector 16, Faridabad - 121002", rating: "4.8/5" }],
-                    "panipat": [{ name: "Dr. Rakesh Ahuja", clinic: "Ahuja Skin Clinic", address: "Model Town, Panipat - 132103", rating: "4.7/5" }, { name: "Dr. S. K. Bansal", clinic: "Bansal Skin Centre", address: "Sanauli Road, Panipat - 132103", rating: "4.6/5" }]
-                },
-                "himachal pradesh": {
-                    "shimla": [{ name: "Dr. Anil Gupta", clinic: "Gupta Skin Clinic", address: "Lakkar Bazar, Shimla - 171001", rating: "4.7/5" }, { name: "Dr. Meenakshi Sharma", clinic: "Himachal Skin", address: "Sanjauli, Shimla - 171006", rating: "4.7/5" }],
-                    "mandi": [{ name: "Dr. Pankaj Thakur", clinic: "Thakur Skin Clinic", address: "Seri Bazar, Mandi - 175001", rating: "4.6/5" }]
-                },
-                "jammu and kashmir": {
-                    "srinagar": [{ name: "Dr. Imran Majid", clinic: "Cutis Skin & Laser", address: "Hyderpora, Srinagar - 190014", rating: "4.9/5" }, { name: "Dr. Iffat Hassan", clinic: "IVD Clinic", address: "Karan Nagar, Srinagar - 190010", rating: "4.8/5" }],
-                    "jammu": [{ name: "Dr. Sunil K. Gupta", clinic: "SKG Skin Clinic", address: "Gandhi Nagar, Jammu - 180004", rating: "4.8/5" }]
-                },
-                "jharkhand": {
-                    "ranchi": [{ name: "Dr. R. P. Singh", clinic: "Skin & Laser Clinic", address: "Harmu, Ranchi - 834002", rating: "4.8/5" }],
-                    "jamshedpur": [{ name: "Dr. S. K. Sinha", clinic: "Derma Care", address: "Bistupur, Jamshedpur - 831001", rating: "4.7/5" }],
-                    "dhanbad": [{ name: "Dr. A. K. Mishra", clinic: "Mishra Skin Clinic", address: "Bank More, Dhanbad - 826001", rating: "4.6/5" }]
-                },
-                "karnataka": {
-                    "bengaluru": [{ name: "Dr. Rasya Dixit", clinic: "Dixit Cosmetic Dermatology", address: "Koramangala, Bengaluru - 560034", rating: "4.7/5" }, { name: "Dr. Harish Prasad B R", clinic: "Vitals Skin Klinic", address: "BTM Layout, Bengaluru - 560076", rating: "4.8/5" }],
-                    "mysuru": [{ name: "Dr. N G Raju", clinic: "Raju Skin Clinic", address: "Yadavagiri, Mysuru - 570020", rating: "4.8/5" }],
-                    "mangaluru": [{ name: "Dr. G. S. Pai", clinic: "Pai Skin & Hair", address: "Kodialbail, Mangaluru - 575003", rating: "4.9/5" }],
-                    "hubli": [{ name: "Dr. Sangeeta H.", clinic: "Derma Hubli", address: "Vidyagiri, Hubli - 580021", rating: "4.6/5" }]
-                },
-                "kerala": {
-                    "kochi": [{ name: "Dr. Asha S. Kumar", clinic: "Aster Derma", address: "Edapally, Kochi - 682024", rating: "4.8/5" }],
-                    "thiruvananthapuram": [{ name: "Dr. R. R. Pillai", clinic: "Skin & Cosmetology Centre", address: "Pattom, Thiruvananthapuram - 695004", rating: "4.7/5" }],
-                    "kozhikode": [{ name: "Dr. Nishad P.", clinic: "Derma Care", address: "Mavoor Road, Kozhikode - 673004", rating: "4.7/5" }]
-                },
-                "madhya pradesh": {
-                    "indore": [{ name: "Dr. Amit Porwal", clinic: "Radiance Skin Clinic", address: "Old Palasia, Indore - 452018", rating: "4.8/5" }],
-                    "bhopal": [{ name: "Dr. Neetu Raj", clinic: "Skin City", address: "Arera Colony, Bhopal - 462016", rating: "4.7/5" }],
-                    "jabalpur": [{ name: "Dr. S. K. Tiwari", clinic: "Derma Jabalpur", address: "Napier Town, Jabalpur - 482002", rating: "4.6/5" }],
-                    "gwalior": [{ name: "Dr. Priyanka Agarwal", clinic: "Skin & Aesthetics", address: "City Centre, Gwalior - 474011", rating: "4.6/5" }]
-                },
-                "maharashtra": {
-                    "mumbai": [{ name: "Dr. Jaishree Sharad", clinic: "Skinfinitii", address: "Santacruz West, Mumbai - 400054", rating: "4.8/5" }, { name: "Dr. Rinky Kapoor", clinic: "The Esthetic Clinics", address: "Multiple centres, Mumbai", rating: "4.8/5" }],
-                    "pune": [{ name: "Dr. Pradeep Kumari", clinic: "Skin & Surgery International", address: "Viman Nagar, Pune - 411014", rating: "4.9/5" }, { name: "Dr. Nitin Jain", clinic: "SSI & AIHT", address: "Kothrud, Pune - 411038", rating: "4.8/5" }],
-                    "nagpur": [{ name: "Dr. Vikrant Saoji", clinic: "Saoji Skin Clinic", address: "Dharampeth, Nagpur - 440010", rating: "4.9/5" }],
-                    "nashik": [{ name: "Dr. Siddharth Dhurjad", clinic: "Dhurjad Skin Clinic", address: "College Road, Nashik - 422005", rating: "4.9/5" }]
-                },
-                "odisha": {
-                    "bhubaneswar": [{ name: "Dr. Rachita Nanda", clinic: "Dr. Nanda's Derma Care", address: "Sahid Nagar, Bhubaneswar - 751007", rating: "4.8/5" }],
-                    "cuttack": [{ name: "Dr. Animesh Mishra", clinic: "Skin & Laser Clinic", address: "Badambadi, Cuttack - 753009", rating: "4.7/5" }]
-                },
-                "punjab": {
-                    "ludhiana": [{ name: "Dr. K. C. Kandhari", clinic: "Kandhari Skin Clinic", address: "Sarabha Nagar, Ludhiana - 141001", rating: "4.8/5" }, { name: "Dr. Sunil Gupta", clinic: "Ludhiana Skin Centre", address: "Model Town, Ludhiana - 141002", rating: "4.7/5" }],
-                    "amritsar": [{ name: "Dr. Aman Arora", clinic: "Arora Skin Clinic", address: "Ranjit Avenue, Amritsar - 143001", rating: "4.7/5" }],
-                    "jalandhar": [{ name: "Dr. Vivek Kumar", clinic: "Derma Jalandhar", address: "Model Town, Jalandhar - 144003", rating: "4.7/5" }]
-                },
-                "rajasthan": {
-                    "jaipur": [{ name: "Dr. Shantanu Choudhary", clinic: "Signature Skin Clinic", address: "Vaishali Nagar, Jaipur - 302021", rating: "4.9/5" }, { name: "Dr. Vijendra Kumar", clinic: "Manipal Hospitals", address: "Vidhyadhar Nagar, Jaipur - 302039", rating: "4.8/5" }],
-                    "jodhpur": [{ name: "Dr. Nirmal Panwar", clinic: "Panwar Skin Clinic", address: "Ratanada, Jodhpur - 342001", rating: "4.7/5" }],
-                    "udaipur": [{ name: "Dr. Priyanka Goyal", clinic: "Derma Glow", address: "Hiran Magri, Udaipur - 313001", rating: "4.7/5" }],
-                    "kota": [{ name: "Dr. Rahul Solanki", clinic: "Skin City", address: "Talwandi, Kota - 324005", rating: "4.6/5" }]
-                },
-                "tamil nadu": {
-                    "chennai": [{ name: "Dr. Subhashini Mohan", clinic: "Apollo Spectra", address: "Alwarpet, Chennai - 600018", rating: "4.8/5" }, { name: "Dr. Deepthi Motiram", clinic: "Apollo Clinic", address: "Velachery, Chennai - 600042", rating: "4.8/5" }],
-                    "coimbatore": [{ name: "Dr. S. Raghavendran", clinic: "Derma Coimbatore", address: "Race Course, Coimbatore - 641018", rating: "4.7/5" }],
-                    "madurai": [{ name: "Dr. N. S. Murali", clinic: "Meenakshi Derma", address: "Tallakulam, Madurai - 625002", rating: "4.7/5" }],
-                    "salem": [{ name: "Dr. Praveen Kumar", clinic: "Skin & Hair Centre", address: "Hasthampatti, Salem - 636007", rating: "4.6/5" }]
-                },
-                "telangana": {
-                    "hyderabad": [{ name: "Dr. T N Rekha Singh", clinic: "Oliva Skin & Hair", address: "Secunderabad, Hyderabad - 500003", rating: "4.9/5" }, { name: "Dr. Soumya Podduturi", clinic: "Aria Skin & Hair", address: "Kompally, Hyderabad - 500014", rating: "4.8/5" }],
-                    "warangal": [{ name: "Dr. Anusha Reddy", clinic: "Derma Warangal", address: "Hanamkonda, Warangal - 506001", rating: "4.6/5" }],
-                    "karimnagar": [{ name: "Dr. Sravani Reddy", clinic: "Skin Karimnagar", address: "Vavilalapally, Karimnagar - 505001", rating: "4.6/5" }]
-                },
-                "uttar pradesh": {
-                    "lucknow": [{ name: "Dr. Rajeev Agarwal", clinic: "Aaryash Clinic", address: "Sitapur Road, Lucknow - 226020", rating: "4.9/5" }],
-                    "noida": [{ name: "Dr. Nidhi P.", clinic: "Derma Noida", address: "Sector 62, Noida - 201301", rating: "4.7/5" }],
-                    "kanpur": [{ name: "Dr. Abhinav Kumar", clinic: "Skin Kanpur", address: "Swaroop Nagar, Kanpur - 208002", rating: "4.7/5" }],
-                    "ghaziabad": [{ name: "Dr. R. K. Chhabra", clinic: "Skin & Laser", address: "Kavi Nagar, Ghaziabad - 201002", rating: "4.6/5" }],
-                    "agra": [{ name: "Dr. A. K. Jain", clinic: "Agra Skin Centre", address: "Sanjay Place, Agra - 282002", rating: "4.7/5" }],
-                    "varanasi": [{ name: "Dr. Shailendra Singh", clinic: "Derma Varanasi", address: "Sigra, Varanasi - 221010", rating: "4.7/5" }],
-                    "mathura": [{ name: "Dr. P. K. Gupta", clinic: "Mathura Skin Clinic", address: "Krishna Nagar, Mathura - 281004", rating: "4.6/5" }],
-                    "greater noida": [{ name: "Dr. Aastha Gupta", clinic: "Skin & Aesthetics", address: "Alpha 1, Greater Noida - 201310", rating: "4.7/5" }]
-                },
-                "uttarakhand": {
-                    "dehradun": [{ name: "Dr. Arjun Singh", clinic: "Derma Dehradun", address: "Rajpur Road, Dehradun - 248001", rating: "4.7/5" }],
-                    "haridwar": [{ name: "Dr. Seema Rawat", clinic: "Skin Haridwar", address: "Ranipur More, Haridwar - 249407", rating: "4.6/5" }]
-                },
-                "west bengal": {
-                    "kolkata": [{ name: "Dr. Surajit Gorai", clinic: "Spectronix Skin & Laser", address: "Bidhannagar, Kolkata - 700064", rating: "4.9/5" }, { name: "Dr. Kaushik Lahiri", clinic: "Apollo Multispecialty", address: "EM Bypass, Kolkata - 700054", rating: "4.8/5" }],
-                    "siliguri": [{ name: "Dr. S. K. Bose", clinic: "Bose Skin Clinic", address: "Sevoke Road, Siliguri - 734001", rating: "4.8/5" }],
-                    "durgapur": [{ name: "Dr. Arghya Pradhan", clinic: "Durgapur Skin Clinic", address: "City Centre, Durgapur - 713216", rating: "4.8/5" }],
-                    "asansol": [{ name: "Dr. Ritesh Singh", clinic: "Asansol Derma", address: "Hutton Road, Asansol - 713301", rating: "4.6/5" }]
-                }
-            };
+    const DERMAS = {
+        // Andhra Pradesh
+        "andhra pradesh": {
+            "visakhapatnam": [
+                { name: "Dr. K. Avinash", clinic: "Dr. Avinash's Skin & Hair Clinic", address: "Santhipuram, Visakhapatnam - 530016", rating: "4.9/5" },
+                { name: "Dr. S. K. Reddy", clinic: "Aura Skin & Hair Clinic", address: "Lawsons Bay Colony, Visakhapatnam - 530017", rating: "4.8/5" },
+                { name: "Dr. V. S. N. Murthy", clinic: "Dr. Murthy's Skin Clinic", address: "Ram Nagar, Visakhapatnam - 530002", rating: "4.7/5" },
+                { name: "Dr. Lakshmi S.", clinic: "Vizag Derma Care", address: "MVP Colony, Visakhapatnam - 530017", rating: "4.8/5" },
+                { name: "Dr. Ramesh Babu", clinic: "Coastal Skin Center", address: "Seethammadhara, Visakhapatnam - 530013", rating: "4.7/5" }
+            ],
+            "vijayawada": [
+                { name: "Dr. K. V. T. Gopal", clinic: "Dr. Gopal's Skin, Hair & Laser Clinic", address: "Benz Circle, Vijayawada - 520010", rating: "4.9/5" },
+                { name: "Dr. P. S. Lakshmi", clinic: "Dr. Lakshmi's Skin Clinic", address: "Labbipet, Vijayawada - 520010", rating: "4.9/5" },
+                { name: "Dr. G. V. Ramana", clinic: "Dr. Ramana's Skin Clinic", address: "Suryaraopet, Vijayawada - 520002", rating: "4.8/5" },
+                { name: "Dr. Chaitanya K.", clinic: "Amaravati Skin Institute", address: "Moghalrajpuram, Vijayawada - 520010", rating: "4.8/5" }
+            ],
+            "guntur": [
+                { name: "Dr. S. V. S. Prasad", clinic: "Prasad's Skin & Cosmetology Clinic", address: "Brodipet, Guntur - 522002", rating: "4.8/5" },
+                { name: "Dr. M. V. Subbarao", clinic: "Dr. Subbarao's Skin Clinic", address: "Kothapet, Guntur - 522001", rating: "4.8/5" },
+                { name: "Dr. T. Sridevi", clinic: "La Skin & Hair Clinic", address: "Arundelpet, Guntur - 522002", rating: "4.7/5" }
+            ]
+        },
+
+        // Assam
+        "assam": {
+            "guwahati": [
+                { name: "Dr. Swapan Kumar Roy", clinic: "Roy's Skin Clinic", address: "Dispur, Guwahati - 781006", rating: "4.8/5" },
+                { name: "Dr. D. K. Sarma", clinic: "Sarma's Skin Clinic", address: "Ulubari, G.S. Road, Guwahati - 781007", rating: "4.8/5" },
+                { name: "Dr. Bhaswati K.", clinic: "Aesthetics Guwahati", address: "Six Mile, Guwahati - 781022", rating: "4.9/5" }
+            ],
+            "dibrugarh": [
+                { name: "Dr. P. K. Borah", clinic: "Borah Skin Clinic", address: "Graham Bazar, Dibrugarh - 786001", rating: "4.7/5" },
+                { name: "Dr. N. K. Hazarika", clinic: "Sanjivani Hospital", address: "A.T. Road, Dibrugarh - 786001", rating: "4.7/5" },
+                { name: "Dr. Anjali Dutta", clinic: "Brahmaputra Skin Care", address: "Mancotta Road, Dibrugarh - 786001", rating: "4.8/5" }
+            ]
+        },
+
+        // Bihar
+        "bihar": {
+            "patna": [
+                { name: "Dr. Vikas Shankar", clinic: "Shankar Skin & Hair Clinic", address: "Boring Road, Patna - 800013", rating: "4.9/5" },
+                { name: "Dr. Abhishek K. Jha", clinic: "Jha Skin, Hair & Laser Clinic", address: "Kankarbagh, Patna - 800020", rating: "4.9/5" },
+                { name: "Dr. Alok Kumar", clinic: "Patna Skin Centre", address: "Raja Bazar, Patna - 800014", rating: "4.8/5" }
+            ],
+            "gaya": [
+                { name: "Dr. A. K. Sinha", clinic: "Sinha Skin Clinic", address: "Swarajpuri Road, Gaya - 823001", rating: "4.8/5" },
+                { name: "Dr. Rajesh Kumar", clinic: "Rajesh Skin Centre", address: "A.P. Colony, Gaya - 823001", rating: "4.7/5" },
+                { name: "Dr. P. Sharma", clinic: "Magadh Derma", address: "Station Road, Gaya - 823002", rating: "4.6/5" }
+            ]
+        },
+
+        // Chandigarh
+        "chandigarh": {
+            "chandigarh": [
+                { name: "Dr. Harmandeep Sidhu", clinic: "Athena Skin & Laser", address: "Sector 9-D, Chandigarh - 160009", rating: "4.9/5" },
+                { name: "Dr. Vikas Sharma", clinic: "National Skin Centre", address: "Sector 17-C, Chandigarh - 160017", rating: "4.9/5" },
+                { name: "Dr. Sachin Mahajan", clinic: "Dermacare", address: "Sector 35-C, Chandigarh - 160022", rating: "4.8/5" },
+                { name: "Dr. Tripat Mehta", clinic: "Mehta Skin Clinic", address: "Sector 22-B, Chandigarh - 160022", rating: "4.8/5" }
+            ]
+        },
+
+        // Chhattisgarh
+        "chhattisgarh": {
+            "raipur": [
+                { name: "Dr. Manisha Sharma", clinic: "Sharma Aesthetic Clinic", address: "Samta Colony, Raipur - 492001", rating: "4.9/5" },
+                { name: "Dr. Atul Jain", clinic: "Jain Cosmetology Clinic", address: "Shankar Nagar, Raipur - 492007", rating: "4.8/5" },
+                { name: "Dr. Rakesh Gupta", clinic: "Raipur Skin Centre", address: "Pandri, Raipur - 492004", rating: "4.7/5" }
+            ],
+            "bhilai": [
+                { name: "Dr. S. K. Jha", clinic: "Jha Skin Clinic", address: "G.E. Road, Bhilai - 490023", rating: "4.8/5" },
+                { name: "Dr. Alok Jain", clinic: "Jain Skin & Hair", address: "Nehru Nagar, Bhilai - 490020", rating: "4.7/5" },
+                { name: "Dr. Verma", clinic: "Steel City Skin Care", address: "Civic Centre, Bhilai - 490006", rating: "4.6/5" }
+            ]
+        },
+
+        // Delhi (New Delhi)
+        "delhi": {
+            "new delhi": [
+                { name: "Dr. Nivedita Dadu", clinic: "Dadu Medical Centre", address: "Rajouri Garden, New Delhi - 110027", rating: "4.9/5" },
+                { name: "Dr. Sirisha Singh", clinic: "The Skin Centre", address: "Safdarjung Enclave, New Delhi - 110029", rating: "4.9/5" },
+                { name: "Dr. Rohit Batra", clinic: "DermaWorld Skin Clinic", address: "Qutab Institutional Area, New Delhi - 110016", rating: "4.8/5" },
+                { name: "Dr. Deepali Bhardwaj", clinic: "Skin & Hair Clinic", address: "Defence Colony, New Delhi - 110024", rating: "4.8/5" },
+                { name: "Dr. S. K. Kashyap", clinic: "Kashyap Skin Clinic", address: "Dwarka, New Delhi - 110075", rating: "4.7/5" },
+                { name: "Dr. Vandana Chatrath", clinic: "Kubba Skin Clinic", address: "New Friends Colony, New Delhi - 110025", rating: "4.9/5" }
+            ]
+        },
+
+        // Goa
+        "goa": {
+            "panaji": [
+                { name: "Dr. Anil D. Dessai", clinic: "Skin & Cosmetology Clinic", address: "Panaji, Goa - 403001", rating: "4.7/5" },
+                { name: "Dr. R. Morais", clinic: "Morais Skin Clinic", address: "Campal, Panaji - 403001", rating: "4.6/5" },
+                { name: "Dr. Sonali G.", clinic: "Goa Aesthetica", address: "Miramar, Panaji - 403001", rating: "4.8/5" }
+            ],
+            "margao": [
+                { name: "Dr. Pratima S. Kerkar", clinic: "Kerkar Skin Clinic", address: "Fatorda, Margao - 403602", rating: "4.7/5" },
+                { name: "Dr. P. Kamat", clinic: "Kamat Skin Care", address: "Comba, Margao - 403601", rating: "4.6/5" },
+                { name: "Dr. Naik", clinic: "South Goa Skin Clinic", address: "Aquem, Margao - 403601", rating: "4.7/5" }
+            ]
+        },
+
+        // Gujarat
+        "gujarat": {
+            "ahmedabad": [
+                { name: "Dr. Rupa Tejas Shah", clinic: "Silk Skin Laser Cosmetology", address: "Ambawadi, Ahmedabad - 380006", rating: "4.9/5" },
+                { name: "Dr. Meeta Desai", clinic: "The Skin Sense", address: "Vastrapur, Ahmedabad - 380015", rating: "4.9/5" },
+                { name: "Dr. Anshul Warman", clinic: "Body Science", address: "Bodakdev, Ahmedabad - 380054", rating: "4.8/5" }
+            ],
+            "surat": [
+                { name: "Dr. Surbhi Kapadia", clinic: "Dr. Kapadia's Skin Clinic", address: "Athwa, Surat - 395007", rating: "4.8/5" },
+                { name: "Dr. A. G. Patel", clinic: "A. G. Skin Clinic", address: "City Light, Surat - 395007", rating: "4.7/5" },
+                { name: "Dr. Jagdish Sakhiya", clinic: "Sakhiya Skin Clinic", address: "Vesu, Surat - 395007", rating: "4.9/5" }
+            ],
+            "vadodara": [
+                { name: "Dr. Kinjal Shah", clinic: "Dermacare", address: "Alkapuri, Vadodara - 390007", rating: "4.8/5" },
+                { name: "Dr. Dhruv Patel", clinic: "Derma Point", address: "Akota, Vadodara - 390020", rating: "4.7/5" },
+                { name: "Dr. R. C. Shah", clinic: "Baroda Skin Clinic", address: "Race Course Circle, Vadodara - 390007", rating: "4.8/5" }
+            ],
+            "rajkot": [
+                { name: "Dr. Jigar H. Patel", clinic: "Adorn Cosmetic Clinic", address: "Kalawad Road, Rajkot - 360005", rating: "4.8/5" },
+                { name: "Dr. Vaibhav Shah", clinic: "Shah Skin Clinic", address: "University Road, Rajkot - 360005", rating: "4.7/5" },
+                { name: "Dr. Parmar", clinic: "Saurashtra Skin Centre", address: "Tagore Road, Rajkot - 360001", rating: "4.7/5" }
+            ]
+        },
+
+        // Haryana
+        "haryana": {
+            "gurugram": [
+                { name: "Dr. Niti Gaur", clinic: "Citrine Clinic", address: "Sector 49, Gurugram - 122018", rating: "4.9/5" },
+                { name: "Dr. Sachin Dhawan", clinic: "Skin 'n' Smiles", address: "DLF Phase IV, Gurugram - 122002", rating: "4.9/5" },
+                { name: "Dr. Geetika Mittal Gupta", clinic: "ISAAC Luxe", address: "Sector 29, Gurugram - 122002", rating: "4.8/5" }
+            ],
+            "faridabad": [
+                { name: "Dr. Archit Aggarwal", clinic: "KDC Skin Clinic", address: "Sector 15, Faridabad - 121007", rating: "4.9/5" },
+                { name: "Dr. Sanjay Gupta", clinic: "Gupta Skin & Hair", address: "Sector 16, Faridabad - 121002", rating: "4.8/5" },
+                { name: "Dr. Neha Sharma", clinic: "Aesthetica Skin", address: "Sector 21C, Faridabad - 121001", rating: "4.8/5" }
+            ],
+            "panipat": [
+                { name: "Dr. Rakesh Ahuja", clinic: "Ahuja Skin Clinic", address: "Model Town, Panipat - 132103", rating: "4.7/5" },
+                { name: "Dr. S. K. Bansal", clinic: "Bansal Skin Centre", address: "Sanauli Road, Panipat - 132103", rating: "4.6/5" },
+                { name: "Dr. Vikas", clinic: "Panipat Derma Care", address: "G.T. Road, Panipat - 132103", rating: "4.7/5" }
+            ]
+        },
+
+        // Himachal Pradesh
+        "himachal pradesh": {
+            "shimla": [
+                { name: "Dr. Anil Gupta", clinic: "Gupta Skin Clinic", address: "Lakkar Bazar, Shimla - 171001", rating: "4.7/5" },
+                { name: "Dr. Meenakshi Sharma", clinic: "Himachal Skin", address: "Sanjauli, Shimla - 171006", rating: "4.7/5" },
+                { name: "Dr. Chauhan", clinic: "Himalayan Derma", address: "The Mall, Shimla - 171001", rating: "4.6/5" }
+            ],
+            "mandi": [
+                { name: "Dr. Pankaj Thakur", clinic: "Thakur Skin Clinic", address: "Seri Bazar, Mandi - 175001", rating: "4.6/5" },
+                { name: "Dr. R. Kumar", clinic: "Mandi Skin Center", address: "Indira Market, Mandi - 175001", rating: "4.5/5" },
+                { name: "Dr. S. Singh", clinic: "Valley Skin Care", address: "School Bazar, Mandi - 175001", rating: "4.6/5" }
+            ]
+        },
+
+        // Jammu & Kashmir
+        "jammu and kashmir": {
+            "srinagar": [
+                { name: "Dr. Imran Majid", clinic: "Cutis Skin & Laser", address: "Hyderpora, Srinagar - 190014", rating: "4.9/5" },
+                { name: "Dr. Iffat Hassan", clinic: "IVD Clinic", address: "Karan Nagar, Srinagar - 190010", rating: "4.8/5" },
+                { name: "Dr. Saleem", clinic: "Kashmir Skin Clinic", address: "Rajbagh, Srinagar - 190008", rating: "4.7/5" }
+            ],
+            "jammu": [
+                { name: "Dr. Sunil K. Gupta", clinic: "SKG Skin Clinic", address: "Gandhi Nagar, Jammu - 180004", rating: "4.8/5" },
+                { name: "Dr. A. S. Bindra", clinic: "Bindra Skin Clinic", address: "Trikuta Nagar, Jammu - 180012", rating: "4.7/5" },
+                { name: "Dr. Vikas Sharma", clinic: "Jammu Derma Centre", address: "Bakshi Nagar, Jammu - 180001", rating: "4.7/5" }
+            ]
+        },
+
+        // Jharkhand
+        "jharkhand": {
+            "ranchi": [
+                { name: "Dr. R. P. Singh", clinic: "Skin & Laser Clinic", address: "Harmu, Ranchi - 834002", rating: "4.8/5" },
+                { name: "Dr. Shashi Kumar", clinic: "Derma Care Ranchi", address: "Lalpur, Ranchi - 834001", rating: "4.7/5" },
+                { name: "Dr. Abhishek", clinic: "Elite Skin Clinic", address: "Kanke Road, Ranchi - 834008", rating: "4.8/5" }
+            ],
+            "jamshedpur": [
+                { name: "Dr. S. K. Sinha", clinic: "Derma Care", address: "Bistupur, Jamshedpur - 831001", rating: "4.7/5" },
+                { name: "Dr. R. Kumar", clinic: "Tata Main Hospital", address: "Sakchi, Jamshedpur - 831001", rating: "4.8/5" },
+                { name: "Dr. P. Singh", clinic: "Steel City Dermatology", address: "Kadma, Jamshedpur - 831005", rating: "4.6/5" }
+            ],
+            "dhanbad": [
+                { name: "Dr. A. K. Mishra", clinic: "Mishra Skin Clinic", address: "Bank More, Dhanbad - 826001", rating: "4.6/5" },
+                { name: "Dr. N. Singh", clinic: "Coalfield Skin Center", address: "Saraidhela, Dhanbad - 828127", rating: "4.7/5" },
+                { name: "Dr. Gupta", clinic: "Dhanbad Skin Care", address: "Hirapur, Dhanbad - 826001", rating: "4.5/5" }
+            ]
+        },
+
+        // Karnataka
+        "karnataka": {
+            "bengaluru": [
+                { name: "Dr. Rasya Dixit", clinic: "Dixit Cosmetic Dermatology", address: "Koramangala, Bengaluru - 560034", rating: "4.7/5" },
+                { name: "Dr. Harish Prasad B R", clinic: "Vitals Skin Klinic", address: "BTM Layout, Bengaluru - 560076", rating: "4.8/5" },
+                { name: "Dr. Anjali Verma", clinic: "Radiance Skin & Hair Clinic", address: "Indiranagar, Bengaluru - 560038", rating: "4.9/5" },
+                { name: "Dr. Vikram Reddy", clinic: "Cutis Clinic", address: "Jayanagar, Bengaluru - 560041", rating: "4.8/5" },
+                { name: "Dr. Sneha Patel", clinic: "Derma Solutions", address: "Whitefield, Bengaluru - 560066", rating: "4.7/5" },
+                { name: "Dr. Manish Kumar", clinic: "Artisanal Aesthetics", address: "HSR Layout, Bengaluru - 560102", rating: "4.9/5" }
+            ],
+            "mysuru": [
+                { name: "Dr. N G Raju", clinic: "Raju Skin Clinic", address: "Yadavagiri, Mysuru - 570020", rating: "4.8/5" },
+                { name: "Dr. C.D. Sreenivasa", clinic: "Mysore Skin Centre", address: "Kuvempunagar, Mysuru - 570023", rating: "4.7/5" },
+                { name: "Dr. Sandhya", clinic: "Heritage City Derma", address: "Saraswathipuram, Mysuru - 570009", rating: "4.8/5" }
+            ],
+            "mangaluru": [
+                { name: "Dr. G. S. Pai", clinic: "Pai Skin & Hair", address: "Kodialbail, Mangaluru - 575003", rating: "4.9/5" },
+                { name: "Dr. Narendra J. Shetty", clinic: "Tvak Clinic", address: "Kadri, Mangaluru - 575002", rating: "4.8/5" },
+                { name: "Dr. Ramesh H", clinic: "Coastal Derma", address: "Attavar, Mangaluru - 575001", rating: "4.7/5" }
+            ],
+            "hubli": [
+                { name: "Dr. Sangeeta H.", clinic: "Derma Hubli", address: "Vidyagiri, Hubli - 580021", rating: "4.6/5" },
+                { name: "Dr. S. B. Patil", clinic: "Patil Skin Clinic", address: "Vidyanagar, Hubli - 580021", rating: "4.7/5" },
+                { name: "Dr. G. Desai", clinic: "Hubli Skin Care", address: "Keshwapur, Hubli - 580023", rating: "4.5/5" }
+            ]
+        },
+
+        // Kerala
+        "kerala": {
+            "kochi": [
+                { name: "Dr. Asha S. Kumar", clinic: "Aster Derma", address: "Edapally, Kochi - 682024", rating: "4.8/5" },
+                { name: "Dr. Feroz K", clinic: "La Skin", address: "Palarivattom, Kochi - 682025", rating: "4.9/5" },
+                { name: "Dr. Anoop", clinic: "Cochin Skin Clinic", address: "Kaloor, Kochi - 682017", rating: "4.8/5" }
+            ],
+            "thiruvananthapuram": [
+                { name: "Dr. R. R. Pillai", clinic: "Skin & Cosmetology Centre", address: "Pattom, Thiruvananthapuram - 695004", rating: "4.7/5" },
+                { name: "Dr. Anu J", clinic: "Trivandrum Skin Clinic", address: "Sasthamangalam, Thiruvananthapuram - 695010", rating: "4.8/5" },
+                { name: "Dr. Girish", clinic: "Capital Derma", address: "Vellayambalam, Thiruvananthapuram - 695010", rating: "4.7/5" }
+            ],
+            "kozhikode": [
+                { name: "Dr. Nishad P.", clinic: "Derma Care", address: "Mavoor Road, Kozhikode - 673004", rating: "4.7/5" },
+                { name: "Dr. K. Ali", clinic: "Calicut Skin Centre", address: "Arayidathupalam, Kozhikode - 673004", rating: "4.8/5" },
+                { name: "Dr. Sandhya", clinic: "Malabar Skin Clinic", address: "Kannur Road, Kozhikode - 673001", rating: "4.6/5" }
+            ]
+        },
+
+        // Madhya Pradesh
+        "madhya pradesh": {
+            "indore": [
+                { name: "Dr. Amit Porwal", clinic: "Radiance Skin Clinic", address: "Old Palasia, Indore - 452018", rating: "4.8/5" },
+                { name: "Dr. Sunil Kumar", clinic: "Indore Skin Centre", address: "AB Road, Indore - 452010", rating: "4.7/5" },
+                { name: "Dr. S. Jain", clinic: "Aastha Skin Clinic", address: "Vijay Nagar, Indore - 452010", rating: "4.9/5" }
+            ],
+            "bhopal": [
+                { name: "Dr. Neetu Raj", clinic: "Skin City", address: "Arera Colony, Bhopal - 462016", rating: "4.7/5" },
+                { name: "Dr. A. K. Tiwari", clinic: "Bhopal Skin Institute", address: "M.P. Nagar, Bhopal - 462011", rating: "4.8/5" },
+                { name: "Dr. Sharma", clinic: "Lake City Derma", address: "New Market, Bhopal - 462003", rating: "4.6/5" }
+            ],
+            "jabalpur": [
+                { name: "Dr. S. K. Tiwari", clinic: "Derma Jabalpur", address: "Napier Town, Jabalpur - 482002", rating: "4.6/5" },
+                { name: "Dr. V. K. Jain", clinic: "Jain Skin Clinic", address: "Wright Town, Jabalpur - 482002", rating: "4.7/5" },
+                { name: "Dr. Richa", clinic: "Marble City Skin Care", address: "Civil Lines, Jabalpur - 482001", rating: "4.5/5" }
+            ],
+            "gwalior": [
+                { name: "Dr. Priyanka Agarwal", clinic: "Skin & Aesthetics", address: "City Centre, Gwalior - 474011", rating: "4.6/5" },
+                { name: "Dr. S. K. Gupta", clinic: "Gwalior Skin Centre", address: "Lashkar, Gwalior - 474001", rating: "4.7/5" },
+                { name: "Dr. Ajay", clinic: "Fort View Derma", address: "Phool Bagh, Gwalior - 474002", rating: "4.5/5" }
+            ]
+        },
+
+        // Maharashtra
+        "maharashtra": {
+            "mumbai": [
+                { name: "Dr. Jaishree Sharad", clinic: "Skinfinitii", address: "Santacruz West, Mumbai - 400054", rating: "4.8/5" },
+                { name: "Dr. Rinky Kapoor", clinic: "The Esthetic Clinics", address: "Andheri West, Mumbai - 400053", rating: "4.8/5" },
+                { name: "Dr. Madhuri Agarwal", clinic: "Yavana Aesthetics Clinic", address: "Bandra West, Mumbai - 400050", rating: "4.9/5" },
+                { name: "Dr. Apratim Goel", clinic: "Cutis Skin Studio", address: "Juhu, Mumbai - 400049", rating: "4.8/5" }
+            ],
+            "pune": [
+                { name: "Dr. Pradeep Kumari", clinic: "Skin & Surgery International", address: "Viman Nagar, Pune - 411014", rating: "4.9/5" },
+                { name: "Dr. Nitin Jain", clinic: "SSI & AIHT", address: "Kothrud, Pune - 411038", rating: "4.8/5" },
+                { name: "Dr. Keerthi", clinic: "The Skin Doctors", address: "Koregaon Park, Pune - 411001", rating: "4.9/5" }
+            ],
+            "nagpur": [
+                { name: "Dr. Vikrant Saoji", clinic: "Saoji Skin Clinic", address: "Dharampeth, Nagpur - 440010", rating: "4.9/5" },
+                { name: "Dr. Suresh Chaware", clinic: "Chaware Skin Clinic", address: "Ramdaspeth, Nagpur - 440010", rating: "4.8/5" },
+                { name: "Dr. A. Deshmukh", clinic: "Orange City Skin Care", address: "Sitabuldi, Nagpur - 440012", rating: "4.7/5" }
+            ],
+            "nashik": [
+                { name: "Dr. Siddharth Dhurjad", clinic: "Dhurjad Skin Clinic", address: "College Road, Nashik - 422005", rating: "4.9/5" },
+                { name: "Dr. S. Patil", clinic: "Nashik Skin Centre", address: "Gangapur Road, Nashik - 422013", rating: "4.8/5" },
+                { name: "Dr. Vidya", clinic: "Godavari Derma", address: "Indira Nagar, Nashik - 422009", rating: "4.7/5" }
+            ]
+        },
+
+        // Odisha
+        "odisha": {
+            "bhubaneswar": [
+                { name: "Dr. Rachita Nanda", clinic: "Dr. Nanda's Derma Care", address: "Sahid Nagar, Bhubaneswar - 751007", rating: "4.8/5" },
+                { name: "Dr. Manas R. Puhan", clinic: "Radiance Skin & Hair Clinic", address: "Kharabela Nagar, Bhubaneswar - 751001", rating: "4.7/5" },
+                { name: "Dr. Biswanath", clinic: "Kalinga Skin Centre", address: "Nayapalli, Bhubaneswar - 751012", rating: "4.8/5" }
+            ],
+            "cuttack": [
+                { name: "Dr. Animesh Mishra", clinic: "Skin & Laser Clinic", address: "Badambadi, Cuttack - 753009", rating: "4.7/5" },
+                { name: "Dr. P. K. Sahoo", clinic: "Cuttack Skin Clinic", address: "Link Road, Cuttack - 753012", rating: "4.6/5" },
+                { name: "Dr. Jena", clinic: "Silver City Derma", address: "Buxi Bazar, Cuttack - 753001", rating: "4.7/5" }
+            ]
+        },
+
+        // Punjab
+        "punjab": {
+            "ludhiana": [
+                { name: "Dr. K. C. Kandhari", clinic: "Kandhari Skin Clinic", address: "Sarabha Nagar, Ludhiana - 141001", rating: "4.8/5" },
+                { name: "Dr. Sunil Gupta", clinic: "Ludhiana Skin Centre", address: "Model Town, Ludhiana - 141002", rating: "4.7/5" },
+                { name: "Dr. Amarjit", clinic: "A-One Skin Clinic", address: "Dugri, Ludhiana - 141013", rating: "4.8/5" }
+            ],
+            "amritsar": [
+                { name: "Dr. Aman Arora", clinic: "Arora Skin Clinic", address: "Ranjit Avenue, Amritsar - 143001", rating: "4.7/5" },
+                { name: "Dr. J. S. Pasricha", clinic: "Pasricha Skin Centre", address: "Lawrence Road, Amritsar - 143001", rating: "4.8/5" },
+                { name: "Dr. Kaur", clinic: "Golden Temple Skin Care", address: "Mall Road, Amritsar - 143001", rating: "4.6/5" }
+            ],
+            "jalandhar": [
+                { name: "Dr. Vivek Kumar", clinic: "Derma Jalandhar", address: "Model Town, Jalandhar - 144003", rating: "4.7/5" },
+                { name: "Dr. H. Singh", clinic: "Punjab Skin Clinic", address: "Civil Lines, Jalandhar - 144001", rating: "4.8/5" },
+                { name: "Dr. Mittal", clinic: "Acu-Derma", address: "Urban Estate Phase II, Jalandhar - 144022", rating: "4.6/5" }
+            ]
+        },
+
+        // Rajasthan
+        "rajasthan": {
+            "jaipur": [
+                { name: "Dr. Shantanu Choudhary", clinic: "Signature Skin Clinic", address: "Vaishali Nagar, Jaipur - 302021", rating: "4.9/5" },
+                { name: "Dr. Vijendra Kumar", clinic: "Manipal Hospitals", address: "Vidhyadhar Nagar, Jaipur - 302039", rating: "4.8/5" },
+                { name: "Dr. Vishal Chugh", clinic: "Radiant Skin Clinic", address: "C-Scheme, Jaipur - 302001", rating: "4.8/5" }
+            ],
+            "jodhpur": [
+                { name: "Dr. Nirmal Panwar", clinic: "Panwar Skin Clinic", address: "Ratanada, Jodhpur - 342001", rating: "4.7/5" },
+                { name: "Dr. Dilip Kachhawa", clinic: "Kachhawa Skin Clinic", address: "Sardarpura, Jodhpur - 342003", rating: "4.8/5" },
+                { name: "Dr. Rathore", clinic: "Sun City Derma", address: "Shastri Nagar, Jodhpur - 342003", rating: "4.6/5" }
+            ],
+            "udaipur": [
+                { name: "Dr. Priyanka Goyal", clinic: "Derma Glow", address: "Hiran Magri, Udaipur - 313001", rating: "4.7/5" },
+                { name: "Dr. I. K. Jain", clinic: "Udaipur Skin Centre", address: "Ashok Nagar, Udaipur - 313001", rating: "4.8/5" },
+                { name: "Dr. Mathur", clinic: "Lake City Skin Care", address: "Fatehpura, Udaipur - 313001", rating: "4.6/5" }
+            ],
+            "kota": [
+                { name: "Dr. Rahul Solanki", clinic: "Skin City", address: "Talwandi, Kota - 324005", rating: "4.6/5" },
+                { name: "Dr. S. K. Gupta", clinic: "Kota Skin Clinic", address: "Gumanpura, Kota - 324007", rating: "4.7/5" },
+                { name: "Dr. Bansal", clinic: "Chambal Derma", address: "Vigyan Nagar, Kota - 324005", rating: "4.5/5" }
+            ]
+        },
+
+        // Tamil Nadu
+        "tamil nadu": {
+            "chennai": [
+                { name: "Dr. Subhashini Mohan", clinic: "Apollo Spectra", address: "Alwarpet, Chennai - 600018", rating: "4.8/5" },
+                { name: "Dr. Deepthi Motiram", clinic: "Apollo Clinic", address: "Velachery, Chennai - 600042", rating: "4.8/5" },
+                { name: "Dr. Maya Vedamurthy", clinic: "RSV Skin Clinic", address: "T. Nagar, Chennai - 600017", rating: "4.9/5" }
+            ],
+            "coimbatore": [
+                { name: "Dr. S. Raghavendran", clinic: "Derma Coimbatore", address: "Race Course, Coimbatore - 641018", rating: "4.7/5" },
+                { name: "Dr. B. K. Nirmala", clinic: "KC Derma", address: "R.S. Puram, Coimbatore - 641002", rating: "4.8/5" },
+                { name: "Dr. S. Murugan", clinic: "Kovai Skin Centre", address: "Saibaba Colony, Coimbatore - 641011", rating: "4.7/5" }
+            ],
+            "madurai": [
+                { name: "Dr. N. S. Murali", clinic: "Meenakshi Derma", address: "Tallakulam, Madurai - 625002", rating: "4.7/5" },
+                { name: "Dr. G. R. Ratnavel", clinic: "Ratnavel Skin Centre", address: "Anna Nagar, Madurai - 625020", rating: "4.8/5" },
+                { name: "Dr. Pandian", clinic: "Temple City Skin Care", address: "Simmakkal, Madurai - 625001", rating: "4.6/5" }
+            ],
+            "salem": [
+                { name: "Dr. Praveen Kumar", clinic: "Skin & Hair Centre", address: "Hasthampatti, Salem - 636007", rating: "4.6/5" },
+                { name: "Dr. A. S. Kumar", clinic: "Salem Skin Clinic", address: "Fairlands, Salem - 636016", rating: "4.7/5" },
+                { name: "Dr. R. Palani", clinic: "Steel City Dermatology", address: "Omalur Main Road, Salem - 636009", rating: "4.5/5" }
+            ]
+        },
+
+        // Telangana
+        "telangana": {
+            "hyderabad": [
+                { name: "Dr. T N Rekha Singh", clinic: "Oliva Skin & Hair", address: "Secunderabad, Hyderabad - 500003", rating: "4.9/5" },
+                { name: "Dr. Soumya Podduturi", clinic: "Aria Skin & Hair", address: "Kompally, Hyderabad - 500014", rating: "4.8/5" },
+                { name: "Dr. Swapna Priya", clinic: "Care Hospitals", address: "Banjara Hills, Hyderabad - 500034", rating: "4.8/5" },
+                { name: "Dr. P. S. Reddy", clinic: "Amberpet Skin Clinic", address: "Amberpet, Hyderabad - 500013", rating: "4.7/5" }
+            ],
+            "warangal": [
+                { name: "Dr. Anusha Reddy", clinic: "Derma Warangal", address: "Hanamkonda, Warangal - 506001", rating: "4.6/5" },
+                { name: "Dr. V. Srinivas", clinic: "Kakatiya Skin Centre", address: "Nakkalagutta, Warangal - 506001", rating: "4.7/5" },
+                { name: "Dr. Kumar", clinic: "Warangal Skin Care", address: "Subedari, Warangal - 506001", rating: "4.5/5" }
+            ],
+            "karimnagar": [
+                { name: "Dr. Sravani Reddy", clinic: "Skin Karimnagar", address: "Vavilalapally, Karimnagar - 505001", rating: "4.6/5" },
+                { name: "Dr. R. Rao", clinic: "Karimnagar Derma", address: "Mukarampura, Karimnagar - 505001", rating: "4.7/5" },
+                { name: "Dr. P. Swathi", clinic: "Satavahana Skin Clinic", address: "Ramagundam Road, Karimnagar - 505001", rating: "4.5/5" }
+            ]
+        },
+
+        // Uttar Pradesh
+        "uttar pradesh": {
+            "lucknow": [
+                { name: "Dr. Rajeev Agarwal", clinic: "Aaryash Clinic", address: "Sitapur Road, Lucknow - 226020", rating: "4.9/5" },
+                { name: "Dr. Sumit Gupta", clinic: "Lucknow Skin Centre", address: "Gomti Nagar, Lucknow - 226010", rating: "4.8/5" },
+                { name: "Dr. Neeraj", clinic: "Nawab City Derma", address: "Hazratganj, Lucknow - 226001", rating: "4.8/5" }
+            ],
+            "noida": [
+                { name: "Dr. Nidhi P.", clinic: "Derma Noida", address: "Sector 62, Noida - 201301", rating: "4.7/5" },
+                { name: "Dr. Ankur Sharma", clinic: "Elysian Skin Clinic", address: "Sector 18, Noida - 201301", rating: "4.8/5" },
+                { name: "Dr. Priya Singh", clinic: "The Derma Co.", address: "Sector 50, Noida - 201301", rating: "4.9/5" },
+                { name: "Dr. Sameer Gupta", clinic: "Noida Skin Institute", address: "Sector 27, Noida - 201301", rating: "4.7/5" }
+            ],
+            "kanpur": [
+                { name: "Dr. Abhinav Kumar", clinic: "Skin Kanpur", address: "Swaroop Nagar, Kanpur - 208002", rating: "4.7/5" },
+                { name: "Dr. R. K. Gupta", clinic: "Kanpur Skin Clinic", address: "The Mall, Kanpur - 208001", rating: "4.8/5" },
+                { name: "Dr. A. Singh", clinic: "Ganga Derma Centre", address: "Arya Nagar, Kanpur - 208002", rating: "4.6/5" }
+            ],
+            "ghaziabad": [
+                { name: "Dr. R. K. Chhabra", clinic: "Skin & Laser", address: "Kavi Nagar, Ghaziabad - 201002", rating: "4.6/5" },
+                { name: "Dr. Anil Agarwal", clinic: "Ghaziabad Skin Centre", address: "Raj Nagar, Ghaziabad - 201002", rating: "4.7/5" },
+                { name: "Dr. Seema", clinic: "Indirapuram Skin Clinic", address: "Indirapuram, Ghaziabad - 201014", rating: "4.8/5" }
+            ],
+            "agra": [
+                { name: "Dr. A. K. Jain", clinic: "Agra Skin Centre", address: "Sanjay Place, Agra - 282002", rating: "4.7/5" },
+                { name: "Dr. S. K. Singh", clinic: "Taj City Derma", address: "Khandari, Agra - 282005", rating: "4.6/5" },
+                { name: "Dr. Mehra", clinic: "Agra Derma Care", address: "Civil Lines, Agra - 282002", rating: "4.8/5" }
+            ],
+            "varanasi": [
+                { name: "Dr. Shailendra Singh", clinic: "Derma Varanasi", address: "Sigra, Varanasi - 221010", rating: "4.7/5" },
+                { name: "Dr. A. K. Rai", clinic: "Kashi Skin Clinic", address: "Lanka, Varanasi - 221005", rating: "4.8/5" },
+                { name: "Dr. Mishra", clinic: "Ghats Derma Centre", address: "Mahmoorganj, Varanasi - 221010", rating: "4.6/5" }
+            ],
+            "mathura": [
+                { name: "Dr. P. K. Gupta", clinic: "Mathura Skin Clinic", address: "Krishna Nagar, Mathura - 281004", rating: "4.6/5" },
+                { name: "Dr. S. Agarwal", clinic: "Braj Derma Care", address: "Dampier Nagar, Mathura - 281001", rating: "4.7/5" },
+                { name: "Dr. Verma", clinic: "Yamuna Skin Centre", address: "NH2, Mathura - 281004", rating: "4.5/5" }
+            ],
+            "greater noida": [
+                { name: "Dr. Aastha Gupta", clinic: "Skin & Aesthetics", address: "Alpha 1, Greater Noida - 201310", rating: "4.7/5" },
+                { name: "Dr. Sandeep", clinic: "Greater Noida Skin Clinic", address: "Pari Chowk, Greater Noida - 201310", rating: "4.8/5" },
+                { name: "Dr. Richa", clinic: "Aesthetic Derma", address: "Omega 2, Greater Noida - 201308", rating: "4.7/5" }
+            ]
+        },
+
+        // Uttarakhand
+        "uttarakhand": {
+            "dehradun": [
+                { name: "Dr. Arjun Singh", clinic: "Derma Dehradun", address: "Rajpur Road, Dehradun - 248001", rating: "4.7/5" },
+                { name: "Dr. S. K. Tyagi", clinic: "Doon Skin Centre", address: "Ballupur, Dehradun - 248001", rating: "4.8/5" },
+                { name: "Dr. Kalra", clinic: "Valley Skin & Hair", address: "Race Course, Dehradun - 248001", rating: "4.6/5" }
+            ],
+            "haridwar": [
+                { name: "Dr. Seema Rawat", clinic: "Skin Haridwar", address: "Ranipur More, Haridwar - 249407", rating: "4.6/5" },
+                { name: "Dr. Ashok", clinic: "Ganga Skin Clinic", address: "Kankhal, Haridwar - 249408", rating: "4.7/5" },
+                { name: "Dr. Gupta", clinic: "Har Ki Pauri Derma", address: "Upper Road, Haridwar - 249401", rating: "4.5/5" }
+            ]
+        },
+
+        // West Bengal
+        "west bengal": {
+            "kolkata": [
+                { name: "Dr. Surajit Gorai", clinic: "Spectronix Skin & Laser", address: "Bidhannagar, Kolkata - 700064", rating: "4.9/5" },
+                { name: "Dr. Kaushik Lahiri", clinic: "Apollo Multispecialty", address: "EM Bypass, Kolkata - 700054", rating: "4.8/5" },
+                { name: "Dr. Sachin Varma", clinic: "Dermawave", address: "Salt Lake City, Kolkata - 700091", rating: "4.9/5" }
+            ],
+            "siliguri": [
+                { name: "Dr. S. K. Bose", clinic: "Bose Skin Clinic", address: "Sevoke Road, Siliguri - 734001", rating: "4.8/5" },
+                { name: "Dr. P. Roy", clinic: "Himalayan Derma", address: "Pradhan Nagar, Siliguri - 734003", rating: "4.7/5" },
+                { name: "Dr. Chhetri", clinic: "North Bengal Skin Care", address: "Hill Cart Road, Siliguri - 734001", rating: "4.6/5" }
+            ],
+            "durgapur": [
+                { name: "Dr. Arghya Pradhan", clinic: "Durgapur Skin Clinic", address: "City Centre, Durgapur - 713216", rating: "4.8/5" },
+                { name: "Dr. A. Banerjee", clinic: "Steel City Derma", address: "Benachity, Durgapur - 713213", rating: "4.7/5" },
+                { name: "Dr. S. Ghosh", clinic: "The Skin Affair", address: "Bidhan Nagar, Durgapur - 713212", rating: "4.7/5" }
+            ],
+            "asansol": [
+                { name: "Dr. Ritesh Singh", clinic: "Asansol Derma", address: "Hutton Road, Asansol - 713301", rating: "4.6/5" },
+                { name: "Dr. P. Sen", clinic: "Coalfield Skin Centre", address: "S.B. Gorai Road, Asansol - 713304", rating: "4.7/5" },
+                { name: "Dr. Majumder", clinic: "Asansol Skin Care", address: "G.T. Road, Asansol - 713301", rating: "4.5/5" }
+            ]
+        }
+    };
 
             const stateInput = document.getElementById('state');
             const datalist = document.getElementById('states-list');
