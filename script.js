@@ -264,45 +264,77 @@ document.addEventListener('DOMContentLoaded', function() {
             fetchUserReports(user.uid); 
         });
     }
-    else if (pageId === 'reportpage') {
-        auth.onAuthStateChanged(user => {
-            if (!user) {
-                window.location.href = 'login.html';
-                return;
-            }
+    else if (pageId === 'profilepage') {
+    auth.onAuthStateChanged(user => {
+        if (!user) {
+            window.location.href = 'login.html';
+            return;
+        }
+        
+        const welcomeMessage = document.getElementById('welcomeMessage');
+        if(welcomeMessage) welcomeMessage.textContent = `Welcome back, ${user.email.split('@')[0]}!`;
 
-            const urlParams = new URLSearchParams(window.location.search);
-            const reportId = urlParams.get('id');
+        const recordList = document.getElementById('recordList');
+        const emptyState = document.getElementById('emptyState');
 
-            const reportImage = document.getElementById('reportImage');
-            const reportFinding = document.getElementById('reportFinding');
-            const reportConfidence = document.getElementById('reportConfidence');
-            const reportRisk = document.getElementById('reportRisk');
-            const reportDate = document.getElementById('reportDate');
+        // Real-time listener: Jaise hi nayi report aayegi, list apne aap update hogi
+        db.collection('users').doc(user.uid).collection('reports').orderBy('date', 'desc')
+            .onSnapshot(snapshot => {
+                if (snapshot.empty) {
+                    recordList.innerHTML = '';
+                    emptyState.classList.remove('hidden');
+                    return;
+                }
+                
+                emptyState.classList.add('hidden');
+                recordList.innerHTML = '';
+                snapshot.forEach(doc => {
+                    const report = doc.data();
+                    const card = document.createElement('div');
+                    card.className = 'record-card';
+                    card.innerHTML = `
+                        <div>
+                            <h4>${report.finding}</h4>
+                            <p>Date: ${report.date.toDate().toLocaleDateString()}</p>
+                        </div>
+                        <a href="report.html?id=${doc.id}" class="btn btn-cta-main">View Details</a>
+                    `;
+                    recordList.appendChild(card);
+                });
+            });
+    });
+}
+else if (pageId === 'reportpage') {
+    auth.onAuthStateChanged(user => {
+        if (!user) {
+            window.location.href = 'login.html';
+            return;
+        }
 
-            if (!reportId) {
-                reportFinding.textContent = 'Report Not Found';
-                return;
-            }
-            
-            const reportRef = db.collection('users').doc(user.uid).collection('reports').doc(reportId);
-            reportRef.get().then(doc => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const reportId = urlParams.get('id');
+
+        if (!reportId) {
+            document.body.innerHTML = '<h1>Report not found.</h1>';
+            return;
+        }
+        
+        // Firestore se report ka data fetch karo
+        db.collection('users').doc(user.uid).collection('reports').doc(reportId).get()
+            .then(doc => {
                 if (doc.exists) {
                     const data = doc.data();
-                    reportFinding.textContent = data.finding || 'N/A';
-                    reportConfidence.textContent = `${data.confidence || '--'}%`;
-                    reportRisk.textContent = data.risk || 'N/A';
-                    reportImage.src = data.imageUrl || 'assets/placeholder.png';
-                    if (data.date) {
-                       reportDate.textContent = `Generated on ${data.date.toDate().toLocaleDateString()}`;
-                    }
+                    // Ab is data ko page par dikhao
+                    document.getElementById('reportFinding').textContent = data.finding;
+                    document.getElementById('reportConfidence').textContent = `${data.confidence}%`;
+                    document.getElementById('reportRisk').textContent = data.risk;
+                    document.getElementById('reportImage').src = data.imageUrl;
+                    document.getElementById('reportDate').textContent = `Generated on ${data.date.toDate().toLocaleDateString()}`;
                 } else {
-                    reportFinding.textContent = 'Report data could not be found.';
+                    console.log("No such document!");
                 }
-            }).catch(error => {
-                console.error("Error getting report:", error);
-                reportFinding.textContent = 'Error loading report.';
             });
-        });
-    }
+    });
+}
+
 });

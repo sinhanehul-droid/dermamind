@@ -9,33 +9,71 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Lato:wght@300;400&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/feather-icons"></script>
+    
+    <style>
+        /* Slimmer Header Section */
+        .profile-header-section {
+            text-align: center;
+            padding: 20px 0;
+            margin-bottom: 30px;
+        }
+        .profile-header-section h1 {
+            font-size: 2.2rem; /* Reduced font size */
+            margin: 0;
+        }
+
+        /* Aesthetically Pleasing Navigation */
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+        .nav-center-links {
+            display: flex;
+            gap: 30px;
+        }
+        .nav-center-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        .nav-center-links a:hover {
+            color: var(--text-primary);
+        }
+        .nav-user-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+    </style>
 </head>
 <body id="profilepage">
 
     <header class="main-header">
-        <nav class="nav-container">
-            <a href="index.html" class="logo-text" id="bshai">DermaMind AI</a>
-            <ul class="nav-links">
-                <li><a href="index.html#about">About</a></li>
-                <li><a href="index.html#how-it-works">How It Works</a></li>
-                <li><a href="index.html#features">Features</a></li>
-                <li><a href="index.html#contact">Contact</a></li>
-                <li class="auth-buttons">
-                    <a href="login.html" id="loginBtn" class="btn btn-secondary">Login / Signup</a>
-                    <a href="profile.html" id="profileBtn" class="btn btn-secondary hidden">Profile</a>
-                    <button id="logoutBtn" class="btn btn-secondary hidden">Logout</button>
-                </li>
-            </ul>
+        <nav class="container nav-container">
+            <a href="index.html" class="logo-text">DermaMind AI</a>
+            
+            <div class="nav-center-links">
+                <a href="index.html#features">Features</a>
+                <a href="consultation.html">Consultation</a>
+                <a href="contact.html">Contact</a>
+            </div>
+            
+            <div class="nav-user-actions">
+                <a href="profile.html" id="profileBtn" class="btn btn-cta-main">My Records</a>
+                <button id="logoutBtn" class="btn btn-secondary">Logout</button>
+            </div>
         </nav>
     </header>
 
     <main class="profile-main-content">
         <div class="profile-header-section">
-            <h1 id="welcomeMessage">Welcome back!</h1>
-            <p>Manage your health records, consultations, and settings here.</p>
+            <h1 id="welcomeMessage">Welcome Back!</h1>
         </div>
 
-        <div class="profile-content-container">
+        <div class="profile-content-container frosted">
             <div class="profile-tabs">
                 <a href="#" class="tab-link active" id="recordsTab">My Records</a>
                 <a href="#" class="tab-link" id="conversationsTab">Past Conversations</a>
@@ -47,7 +85,7 @@
                 <div class="tab-pane active" id="recordsPane">
                     <div class="section-title">
                         <h3>Your Dermatology Records</h3>
-                        <button id="startAnalysisBtn" class="btn btn-cta-main">Start New Analysis</button>
+                        <button id="startAnalysisBtn" class="btn btn-cta-header">Start New Analysis</button>
                     </div>
                     <div id="recordList" class="record-list-grid">
                         </div>
@@ -60,12 +98,12 @@
                 <div class="tab-pane hidden" id="conversationsPane">
                     <div class="section-title">
                         <h3>Your Consultation History</h3>
-                        <button id="startNewChatBtn" class="btn btn-cta-main">Start New Consultation</button>
+                        <a href="consultation.html" class="btn btn-cta-header">Book New Consultation</a>
                     </div>
                     <div id="conversationList" class="record-list-grid">
                         <div class="empty-state">
                             <i data-feather="message-square"></i>
-                            <p>No past conversations. Start a new one!</p>
+                            <p>No past conversations found.</p>
                         </div>
                     </div>
                 </div>
@@ -73,7 +111,7 @@
                 <div class="tab-pane hidden" id="prescriptionsPane">
                     <div class="section-title">
                         <h3>Your Recommendations & Prescriptions</h3>
-                        </div>
+                    </div>
                     <div id="prescriptionList" class="record-list-grid">
                         <div class="empty-state">
                             <i data-feather="clipboard"></i>
@@ -87,20 +125,63 @@
                         <h3>Account Settings</h3>
                     </div>
                     <p>Settings content will go here (e.g., Change Password, Update Profile).</p>
-                    </div>
-
+                </div>
             </div>
         </div>
     </main>
 
-    <footer class="main-footer">
-        <p>&copy; 2024 DermaMind AI. All rights reserved.</p>
-    </footer>
+    <footer class="main-footer new-footer">
+    <div class="container">
+        <div class="footer-grid">
+            <div class="footer-col about-col">
+                <a href="index.html" class="logo-text">DermaMind AI</a>
+                <p>
+                    AI-powered skin analysis that helps you take control of your health. Your first step towards informed dermatological care.
+                </p>
+            </div>
+
+            <div class="footer-col">
+                <h4>Socials</h4>
+                <div class="social-links">
+                    <a href="#" class="linkedin" aria-label="LinkedIn"><i data-feather="linkedin"></i></a>
+                    <a href="#" class="instagram" aria-label="Instagram"><i data-feather="instagram"></i></a>
+                    <a href="#" class="youtube" aria-label="YouTube"><i data-feather="youtube"></i></a>
+                </div>
+            </div>
+
+            <div class="footer-col">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="index.html#about">About</a></li>
+                    <li><a href="our team.html">Our Team</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#" class="btn-verify">Verify My Certificate →</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Contact</h4>
+                <ul>
+                    <li>Email: team@dermamind.ai</li>
+                    <li>Phone: +91 82736 19318</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom-bar">
+        <div class="container bottom-bar-content">
+            <p>&copy; 2025 DermaMind AI . All rights reserved.</p>
+            <p class="powered-by">Powered By Gemini</p>
+        </div>
+    </div>
+</footer>
     
     <div id="disclaimerModal" class="modal-backdrop hidden">
         <div class="modal-content">
             <h3>Important Disclaimer</h3>
-            <p>DermaMind AI provides preliminary information and recommendations based on AI analysis. It is **NOT** a substitute for professional medical advice, diagnosis, or treatment. Always seek the advice of a qualified healthcare provider for any medical concerns.</p>
+            <p>DermaMind AI provides preliminary information... (rest of your disclaimer)</p>
             <div class="modal-actions">
                 <button id="cancelBtn" class="btn btn-secondary">Cancel</button>
                 <button id="proceedBtn" class="btn btn-cta-main">I Understand & Proceed</button>
@@ -112,5 +193,8 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
     <script src="script.js"></script>
+    <script>
+        feather.replace();
+    </script>
 </body>
 </html>

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Team - DermaMind AI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/feather-icons"></script>
+    <style>
+        /* --- Global Styles & Variables (from your style.css) --- */
+        :root {
+            --bg-dark: #000000;
+            --accent-gold: #cbf9fe;
+            --accent-glow: rgba(203, 249, 254, 0.4);
+            --text-primary: #f0f0f0;
+            --text-secondary: #a0a0a0;
+            --font-heading: 'Poppins', sans-serif;
+            --font-body: 'Lato', sans-serif;
+            --panel-bg: rgba(20, 20, 20, 0.6);
+            --panel-border: rgba(255, 255, 255, 0.1);
+            --panel-blur: 10px;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            background-image: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.75)), url('assets/background.jpg');
+            background-attachment: fixed;
+            background-size: cover;
+            background-position: center center;
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 30px; }
+        .frosted { background: var(--panel-bg); backdrop-filter: blur(var(--panel-blur)); -webkit-backdrop-filter: blur(var(--panel-blur)); border: 1px solid var(--panel-border); border-radius: 15px; }
+
+        /* --- Header --- */
+        .main-header { position: fixed; top: 0; left: 0; width: 100%; z-index: 100; padding: 20px 0; background-color: rgba(0, 0, 0, 0.75); backdrop-filter: blur(var(--panel-blur)); border-bottom: 1px solid var(--panel-border); }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; }
+        .logo-text { font-family: var(--font-heading); font-weight: 700; font-size: 1.5rem; color: var(--accent-gold); text-decoration: none; text-shadow: 0 0 5px var(--accent-glow); }
+        .nav-links a { text-decoration: none; color: var(--text-secondary); margin-left: 20px; }
+        
+        /* --- Page Specific Styles --- */
+        .team-main-content { padding-top: 120px; padding-bottom: 60px; min-height: 100vh; }
+        .section-header { text-align: center; margin-bottom: 50px; }
+        .section-header h1 { font-size: 2.5rem; }
+        .section-header p { color: var(--text-secondary); max-width: 600px; margin: 10px auto 0; }
+        
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .team-card {
+            padding: 30px 20px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .team-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border-color: var(--accent-gold);
+        }
+
+        .team-photo {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 20px auto;
+            border: 4px solid var(--accent-gold);
+        }
+
+        .team-card h3 {
+            margin: 0 0 5px 0;
+            font-family: var(--font-heading);
+            font-size: 1.3rem;
+            color: var(--text-primary);
+        }
+
+        .team-card .role {
+            color: var(--accent-gold);
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .social-links a {
+            color: var(--text-secondary);
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        .social-links a:hover {
+            color: var(--accent-gold);
+            transform: scale(1.1);
+        }
+
+        /* --- Footer --- */
+        .main-footer { padding: 40px; text-align: center; font-size: 0.9rem; color: var(--text-secondary); border-top: 1px solid #222; margin-top: 60px; }
+    </style>
+</head>
+<body>
+
+    <header class="main-header">
+        <nav class="container nav-container">
+            <a href="index.html" class="logo-text">DermaMind AI</a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="consultation.html">Consultation</a>
+                <a href="contact.html">Contact</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="team-main-content">
+        <div class="container">
+            <div class="section-header">
+                <h1>Meet Our Team</h1>
+                <p>The passionate minds behind DermaMind AI, dedicated to revolutionizing skin health accessibility through technology.</p>
+            </div>
+
+            <div class="team-grid">
+                <div class="team-card frosted">
+                    <img src="assets/nehul.jpg" alt="Nehul Sinha" class="team-photo">
+                    <h3>Nehul Sinha</h3>
+                    <p class="role">Team Lead</p>
+                    <div class="social-links">
+                        <a href="#" target="_blank" aria-label="LinkedIn"><i data-feather="linkedin"></i></a>
+                        <a href="#" target="_blank" aria-label="Instagram"><i data-feather="instagram"></i></a>
+                    </div>
+                </div>
+
+                <div class="team-card frosted">
+                    <img src="assets/aradhay.jpg" alt="AradhayMohan Shrangi" class="team-photo">
+                    <h3>AradhayMohan Shrangi</h3>
+                    <p class="role">Lead Developer</p>
+                    <div class="social-links">
+                        <a href="#" target="_blank" aria-label="LinkedIn"><i data-feather="linkedin"></i></a>
+                        <a href="#" target="_blank" aria-label="Instagram"><i data-feather="instagram"></i></a>
+                    </div>
+                </div>
+
+                <div class="team-card frosted">
+                    <img src="assets/anubhav.jpg" alt="Anubhav Singh" class="team-photo">
+                    <h3>Anubhav Singh</h3>
+                    <p class="role">AI/ML Specialist</p>
+                    <div class="social-links">
+                        <a href="#" target="_blank" aria-label="LinkedIn"><i data-feather="linkedin"></i></a>
+                        <a href="#" target="_blank" aria-label="Instagram"><i data-feather="instagram"></i></a>
+                    </div>
+                </div>
+
+                <div class="team-card frosted">
+                    <img src="assets/vania.jpg" alt="Vania Marwah" class="team-photo">
+                    <h3>Vania Marwah</h3>
+                    <p class="role">UI/UX Designer</p>
+                    <div class="social-links">
+                        <a href="#" target="_blank" aria-label="LinkedIn"><i data-feather="linkedin"></i></a>
+                        <a href="#" target="_blank" aria-label="Instagram"><i data-feather="instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="main-footer">
+        <p>&copy; 2025 DermaMind AI. All rights reserved.</p>
+    </footer>
+
+    <script>
+        feather.replace();
+    </script>
+</body>
+</html>
