@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact Us - DermaMind AI</title>
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Lato:wght@300;400&display=swap" rel="stylesheet">
@@ -81,20 +82,33 @@
         @media (max-width: 900px) {
             .contact-grid { grid-template-columns: 1fr; }
         }
+        
     </style>
 </head>
 <body id="contactpage">
 
     <header class="main-header">
         <nav class="container nav-container">
-            <a href="index.html" class="logo-text">DermaMind AI</a>
+            <!-- HEADER LOGO -->
+            <a href="index.html" class="logo-link">
+                <span class="logo-text" id="bshai">DermaMind AI</span>
+            </a>
+            
+            <!-- MAIN NAVIGATION LINKS -->
             <div class="nav-links desktop-nav">
-                <a href="index.html#about">About</a>
-                <a href="consultation.html">Consultation</a>
-                <a href="profile.html">Profile</a>
+                <a href="#about">About</a>
+                <a href="#process">How It Works</a>
+                <a href="#features">Features</a>
+                <a href="#pricing">Pricing</a>
+                <a href="#contact">Contact</a>
+                <div class="auth-buttons">
+                    <a href="login.html" id="loginBtn" class="btn btn-secondary">Login / Signup</a>
+                </div>
             </div>
         </nav>
     </header>
+
+    <main>
 
     <main class="contact-main-content">
         <div class="container">

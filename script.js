@@ -221,8 +221,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
             }
             if (proceedBtn) {
-                proceedBtn.addEventListener('click', () => { window.location.href = 'chatbot.html'; });
-            }
+    proceedBtn.addEventListener('click', () => {
+        // Change the URL to the new path
+        window.location.href = 'derma-mind-python/static/index.html'; 
+    });
+}
             if (cancelBtn) {
                 cancelBtn.addEventListener('click', () => {
                     if (disclaimerModal) disclaimerModal.classList.add('hidden');
