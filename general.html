@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DermaMind AI — General Skincare Tips</title>
+  <meta name="description" content="General skincare tips for achieving and maintaining healthy, glowing skin." />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --dm-bg: #111827; /* Dark Gray-Blue */
+      --dm-fore: #F9FAFB;
+      --dm-muted: #9CA3AF;
+      --dm-border: rgba(255, 255, 255, 0.1);
+      --dm-panel-bg: rgba(17, 24, 39, 0.8); /* Slightly transparent dark background for panels */
+      --dm-accent-blue: #60A5FA; /* A brighter blue for accents */
+    }
+    html, body {
+      scroll-behavior: smooth;
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #0d111c; /* A darker base for the overlay effect */
+      color: var(--dm-fore);
+      background-image: url('https://i.imgur.com/g0t6S67.jpeg'); /* The background from the image */
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed; /* Keeps the background fixed on scroll */
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.7); /* Dark overlay */
+      z-index: -1;
+    }
+
+    .nav-link {
+      position: relative;
+      color: var(--dm-muted);
+      transition: color 0.2s ease;
+      font-size: 0.875rem;
+      padding: 0.5rem 0;
+    }
+    .nav-link:hover {
+      color: var(--dm-fore);
+    }
+    .btn-primary {
+      background-color: var(--dm-accent-blue);
+      color: white;
+      padding: 0.6rem 1.25rem;
+      border-radius: 6px;
+      font-weight: 500;
+      transition: background-color 0.2s ease;
+    }
+    .btn-primary:hover {
+      background-color: #3b82f6; /* A slightly darker blue on hover */
+    }
+    .btn-outline {
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: var(--dm-fore);
+        padding: 0.6rem 1.25rem;
+        border-radius: 6px;
+        font-weight: 500;
+        transition: background-color 0.2s ease, border-color 0.2s ease;
+    }
+    .btn-outline:hover {
+        background-color: rgba(255, 255, 255, 0.08);
+        border-color: rgba(255, 255, 255, 0.3);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="min-h-screen flex flex-col">
+    <header class="py-4 sticky top-0 z-10 bg-black/30 backdrop-blur-md border-b border-gray-700/50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <h1 class="text-xl font-bold tracking-tight">DermaMind <span class="text-gray-400">AI</span></h1>
+        </div>
+        <div class="flex items-center space-x-6">
+          <a href="#" class="nav-link">Features</a>
+          <a href="#" class="nav-link">Consultation</a>
+          <a href="#" class="nav-link">Contact</a>
+          <a href="#" class="btn-primary">My Records</a>
+          <a href="#" class="btn-outline">Logout</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="flex-1 pb-16">
+      <section class="max-w-4xl mx-auto px-4 mt-12">
+        
+        <div class="text-center mb-16">
+          <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-slate-200 to-slate-400">
+            Your Guide to Healthy, Glowing Skin
+          </h1>
+          <p class="mt-4 max-w-2xl mx-auto text-lg text-slate-400">
+            Achieving radiant skin is a journey of consistency. Here are the fundamental tips to build a routine that works for you.
+          </p>
+        </div>
+
+        <div class="mb-16">
+          <h2 class="text-3xl font-bold text-center text-white/95 mb-8">The Cornerstone: Your Daily Routine</h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="bg-gray-900/70 backdrop-blur-sm border border-gray-700/50 rounded-xl p-6">
+              <h3 class="text-xl font-bold text-blue-300 mb-2">1. Cleanse</h3>
+              <p class="text-slate-300">
+                <strong class="text-white">When:</strong> Morning and night. <br>
+                <strong class="text-white">Why:</strong> To remove dirt, oil, and impurities that clog pores. Consider a double cleanse at night to effectively break down makeup and sunscreen.
+              </p>
+            </div>
+            <div class="bg-gray-900/70 backdrop-blur-sm border border-gray-700/50 rounded-xl p-6">
+              <h3 class="text-xl font-bold text-blue-300 mb-2">2. Tone</h3>
+              <p class="text-slate-300">
+                <strong class="text-white">When:</strong> After cleansing. <br>
+                <strong class="text-white">Why:</strong> It removes lingering impurities, balances your skin's pH, and preps it for serums and moisturizers.
+              </p>
+            </div>
+            <div class="bg-gray-900/70 backdrop-blur-sm border border-gray-700/50 rounded-xl p-6">
+              <h3 class="text-xl font-bold text-blue-300 mb-2">3. Moisturize</h3>
+              <p class="text-slate-300">
+                <strong class="text-white">When:</strong> Morning and night. <br>
+                <strong class="text-white">Why:</strong> Moisturizers hydrate, lock in moisture, and form a protective barrier. Use lighter gels for oily skin and richer creams for dry skin.
+              </p>
+            </div>
+            <div class="bg-gray-900/70 backdrop-blur-sm border border-gray-700/50 rounded-xl p-6">
+              <h3 class="text-xl font-bold text-blue-300 mb-2">4. Protect</h3>
+              <p class="text-slate-300">
+                <strong class="text-white">When:</strong> Every morning (last step). <br>
+                <strong class="text-white">Why:</strong> Sunscreen (SPF 30+) is non-negotiable. It protects against UV rays that cause premature aging, wrinkles, and skin cancer.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="mb-16">
+            <h2 class="text-3xl font-bold text-center text-white/95 mb-8">Level Up: Enhancing Your Routine</h2>
+            <div class="space-y-6">
+                <div class="bg-gray-900/70 backdrop-blur-sm border border-gray-700/50 rounded-xl p-6">
+                    <h3 class="text-xl font-bold text-blue-300 mb-2">Exfoliate (1-2 times a week)</h3>
+                    <p class="text-slate-300">Exfoliation removes dead skin cells, revealing brighter skin and improving product absorption. Choose between gentle physical scrubs or chemical exfoliants (AHAs/BHAs). Be careful not to overdo it.</p>
+                </div>
+                <div class="bg-gray-900/70 backdrop-blur-sm border border-gray-700/50 rounded-xl p-6">
+                    <h3 class="text-xl font-bold text-blue-300 mb-2">Apply Serums (Before Moisturizer)</h3>
+                    <p class="text-slate-300">Serums are concentrated treatments for specific concerns. A Vitamin C serum can brighten, while a Hyaluronic Acid serum provides intense hydration.</p>
+                </div>
+                <div class="bg-gray-900/70 backdrop-blur-sm border border-gray-700/50 rounded-xl p-6">
+                    <h3 class="text-xl font-bold text-blue-300 mb-2">Use Eye Cream</h3>
+                    <p class="text-slate-300">The delicate skin around your eyes needs special care. Eye creams target dark circles, puffiness, and fine lines. Gently pat a small amount around the orbital bone with your ring finger.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-16">
+            <h2 class="text-3xl font-bold text-center text-white/95 mb-8">Beyond the Bottle: Lifestyle Habits</h2>
+            <div class="bg-gray-900/70 backdrop-blur-sm border border-gray-700/50 rounded-xl p-8">
+                <ul class="space-y-4">
+                    <li class="flex items-start gap-4"><span class="text-blue-400 mt-1">&#10003;</span><span><strong class="text-white">Eat a Healthy Diet:</strong> A balanced diet rich in fruits, vegetables, and antioxidants (like berries and leafy greens) nourishes your skin from within.</span></li>
+                    <li class="flex items-start gap-4"><span class="text-blue-400 mt-1">&#10003;</span><span><strong class="text-white">Stay Hydrated:</strong> Drinking plenty of water keeps your skin hydrated and plump.</span></li>
+                    <li class="flex items-start gap-4"><span class="text-blue-400 mt-1">&#10003;</span><span><strong class="text-white">Get Enough Sleep:</strong> Aim for 7-9 hours per night. Your skin repairs and regenerates itself while you sleep.</span></li>
+                    <li class="flex items-start gap-4"><span class="text-blue-400 mt-1">&#10003;</span><span><strong class="text-white">Manage Stress:</strong> High stress can trigger acne and eczema. Practice yoga, meditation, or deep breathing.</span></li>
+                    <li class="flex items-start gap-4"><span class="text-blue-400 mt-1">&#10003;</span><span><strong class="text-white">Avoid Smoking:</strong> Smoking accelerates aging, leading to wrinkles and a dull complexion.</span></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div>
+            <h2 class="text-3xl font-bold text-center text-white/95 mb-8">Common Skincare Mistakes to Avoid</h2>
+            <div class="space-y-4">
+                <div class="bg-red-900/20 border border-red-500/30 rounded-xl p-6">
+                    <h4 class="text-lg font-bold text-red-300">Skipping Sunscreen</h4>
+                    <p class="text-red-200/80">This is the most significant mistake. Daily sun protection is crucial for preventing premature aging and skin cancer.</p>
+                </div>
+                <div class="bg-gray-900/70 backdrop-blur-sm border border-gray-700/50 rounded-xl p-6">
+                    <p><strong class="text-white">Over-Exfoliating:</strong> This can damage your skin's protective barrier, leading to irritation and sensitivity.</p>
+                </div>
+                <div class="bg-gray-900/70 backdrop-blur-sm border border-gray-700/50 rounded-xl p-6">
+                    <p><strong class="text-white">Using the Wrong Products:</strong> Ensure your products are suited for your specific skin type (oily, dry, combination, sensitive).</p>
+                </div>
+                <div class="bg-gray-900/70 backdrop-blur-sm border border-gray-700/50 rounded-xl p-6">
+                    <p><strong class="text-white">Popping Pimples:</strong> This can lead to permanent scarring and infection. Let them heal or use a targeted spot treatment.</p>
+                </div>
+            </div>
+        </div>
+
+      </section>
+    </main>
+  </div>
+</body>
+</html>

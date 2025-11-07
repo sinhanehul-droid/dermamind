@@ -14,12 +14,10 @@
 
     <header class="main-header">
         <nav class="container nav-container">
-            <!-- HEADER LOGO -->
             <a href="index.html" class="logo-link">
                 <span class="logo-text" id="bshai">DermaMind AI</span>
             </a>
             
-            <!-- MAIN NAVIGATION LINKS -->
             <div class="nav-links desktop-nav">
                 <a href="#about">About</a>
                 <a href="#process">How It Works</a>
@@ -28,35 +26,53 @@
                 <a href="#contact">Contact</a>
                 <div class="auth-buttons">
                     <a href="login.html" id="loginBtn" class="btn btn-secondary">Login / Signup</a>
+                    <a href="profile.html" id="profileBtn" class="btn btn-cta-main hidden">My Records</a>
+                    <button id="logoutBtn" class="btn btn-secondary hidden">Logout</button>
                 </div>
             </div>
+            
+            <button class="menu-toggle" id="mobile-menu-btn">
+                <i data-feather="menu"></i>
+            </button>
         </nav>
+        
+        <div id="mobile-menu-overlay" class="mobile-menu-overlay hidden">
+            <a href="#about">About</a>
+            <a href="#process">How It Works</a>
+            <a href="#features">Features</a>
+            <a href="#pricing">Pricing</a>
+            <a href="#contact">Contact</a>
+            <div class="auth-buttons-mobile">
+                <a href="login.html" id="mobileLoginBtn" class="btn btn-cta-main">Login / Signup</a>
+                <a href="profile.html" id="mobileProfileBtn" class="btn btn-cta-main hidden">My Records</a>
+                <button id="mobileLogoutBtn" class="btn btn-secondary hidden">Logout</button>
+            </div>
+        </div>
     </header>
 
     <main>
-        <!-- HERO SECTION -->
         <section class="hero-section" id="hero">
             <div class="container hero-content">
                 <h1 class="font-extrabold text-white">The Future of Dermatology is Here.</h1>
                 <p class="subheading">AI-powered skin analysis that helps you take control of your health.</p>
-                <a href="login.html" id="heroAuthBtn" class="btn btn-cta-header">Start Your Free Analysis</a>
+                
+                <div class="hero-buttons">
+                    <a href="login.html" id="heroAuthBtn" class="btn btn-cta-header">Start Your Free Analysis</a>
+                    <a href="consultation.html" class="btn btn-cta-main">Book a Consultation</a>
+                </div>
             </div>
         </section>
 
-        <!-- ABOUT SECTION -->
         <section class="content-section dark-bg" id="about">
-            <div class="container">
-                 <div class="section-header">
+            <div class="container frosted"> <div class="section-header">
                     <h2>About DermaMind AI</h2>
                     <p>DermaMind AI is your personal assistant for preliminary skin health analysis. Our platform uses advanced AI models to help you understand your skin concerns by analyzing images and patient information. It is designed to be a first step, not a definitive diagnosis, empowering you to have more informed conversations with your dermatologist.</p>
                  </div>
             </div>
         </section>
 
-        <!-- PROCESS/HOW IT WORKS SECTION -->
         <section class="content-section" id="process">
-            <div class="container">
-                 <div class="section-header">
+            <div class="container frosted"> <div class="section-header">
                     <h2>How It Works</h2>
                     <p>Getting your analysis is quick and easy. Follow these simple steps to get started.</p>
                 </div>
@@ -80,10 +96,8 @@
             </div>
         </section>
         
-        <!-- FEATURES SECTION -->
         <section class="content-section" id="features">
-            <div class="container">
-                <div class="section-header">
+            <div class="container frosted"> <div class="section-header">
                     <h2>Features</h2>
                     <p>Our platform is built to provide you with a seamless and insightful experience.</p>
                 </div>
@@ -117,7 +131,16 @@
             </div>
         </section>
 
-        <!-- NEW: SIMPLE PRICING SECTION -->
+        <section class="content-section" id="health-tips">
+            <div class="container frosted text-center">
+                <div class="section-header">
+                    <h2>General Derma-Care Tips</h2>
+                    <p>Simple daily habits for healthy and glowing skin.</p>
+                </div>
+                <a href="general.html" class="btn btn-cta-main">See More</a>
+            </div>
+        </section>
+
         <section id="pricing" class="content-section">
             <div class="container frosted text-center p-8">
                 <h2 class="text-3xl font-extrabold text-accent-gold mb-4">Unlock the Full Potential of DermaMind AI</h2>
@@ -127,82 +150,61 @@
                 <a href="pricing.html" class="btn btn-cta-main py-3 px-8 text-lg font-bold">Explore Plans</a>
             </div>
         </section>
-        <section class="hero-section" id="hero">
-    <div class="container hero-content">
-        <h1 class="font-extrabold text-white">The Future of Dermatology is Here.</h1>
-        <p class="subheading">AI-powered skin analysis that helps you take control of your health.</p>
-        
-        <div class="hero-buttons">
-            <a href="login.html" id="heroAuthBtn" class="btn btn-cta-header">Start Your Free Analysis</a>
-            <a href="consultation.html" class="btn btn-cta-main">Book a Consultation</a>
-        </div>
-    </div>
-</section>
 
-        <!-- CONTACT SECTION -->
         <section class="content-section dark-bg" id="contact">
-            <div class="container">
-                <div class="section-header">
+            <div class="container frosted"> <div class="section-header">
                     <h2>Get In Touch</h2>
                     <p>Have questions? We'd love to hear from you. Contact our team and we'll get back to you as soon as possible.</p>
                 </div>
-                <form id="contact-form" class="max-w-xl mx-auto mt-8">
-                    <!-- Contact form fields here -->
-                    <div class="text-center">
-                        <a href="contact.html" id="haibs" class="btn btn-cta-main py-3 px-8 text-lg font-bold">Contact Us</a>
-                    </div>
-                </form>
+                <div class="text-center">
+                    <a href="contact.html" class="btn btn-cta-main py-3 px-8 text-lg font-bold">Contact Us</a>
+                </div>
             </div>
         </section>
     </main>
 
     <footer class="main-footer new-footer">
-    <div class="container">
-        <div class="footer-grid">
-            <div class="footer-col about-col">
-                <a href="index.html" class="logo-text">DermaMind AI</a>
-                <p>
-                    AI-powered skin analysis that helps you take control of your health. Your first step towards informed dermatological care.
-                </p>
-            </div>
-
-            <div class="footer-col">
-                <h4>Socials</h4>
-                <div class="social-links">
-                    <a href="#" class="linkedin" aria-label="LinkedIn"><i data-feather="linkedin"></i></a>
-                    <a href="#" class="instagram" aria-label="Instagram"><i data-feather="instagram"></i></a>
-                    <a href="#" class="youtube" aria-label="YouTube"><i data-feather="youtube"></i></a>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col about-col">
+                    <a href="index.html" class="logo-text">DermaMind AI</a>
+                    <p>AI-powered skin analysis that helps you take control of your health. Your first step towards informed dermatological care.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Socials</h4>
+                    <div class="social-links">
+                        <a href="#" class="linkedin" aria-label="LinkedIn"><i data-feather="linkedin"></i></a>
+                        <a href="#" class="instagram" aria-label="Instagram"><i data-feather="instagram"></i></a>
+                        <a href="#" class="youtube" aria-label="YouTube"><i data-feather="youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="index.html#about">About</a></li>
+                        <li><a href="our team.html">Our Team</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#" class="btn-verify">Verify My Certificate →</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Contact</h4>
+                    <ul>
+                        <li>Email: team@dermamind.ai</li>
+                        <li>Phone: +91 82736 19318</li>
+                    </ul>
                 </div>
             </div>
-
-            <div class="footer-col">
-                <h4>Quick Links</h4>
-                <ul>
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="index.html#about">About</a></li>
-                    <li><a href="our team.html">Our Team</a></li>
-                    <li><a href="#">Privacy Policy</a></li>
-                    <li><a href="#">Terms of Service</a></li>
-                    <li><a href="#" class="btn-verify">Verify My Certificate →</a></li>
-                </ul>
-            </div>
-
-            <div class="footer-col">
-                <h4>Contact</h4>
-                <ul>
-                    <li>Email: team@dermamind.ai</li>
-                    <li>Phone: +91 82736 19318</li>
-                </ul>
+        </div>
+        <div class="footer-bottom-bar">
+            <div class="container bottom-bar-content">
+                <p>&copy; 2025 DermaMind AI 🔥. All rights reserved.</p>
+                <p class="powered-by">Powered By Gemini</p>
             </div>
         </div>
-    </div>
-    <div class="footer-bottom-bar">
-        <div class="container bottom-bar-content">
-            <p>&copy; 2025 DermaMind AI 🔥. All rights reserved.</p>
-            <p class="powered-by">Powered By Gemini</p>
-        </div>
-    </div>
-</footer>
+    </footer>
     
     <script src="script.js"></script>
     <script>

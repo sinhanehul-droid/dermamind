@@ -23,26 +23,41 @@ document.addEventListener('DOMContentLoaded', function() {
     const pageId = document.body.id;
 
     // --- Global Auth & UI Logic ---
+    // Desktop buttons
     const allLoginBtns = document.querySelectorAll('#loginBtn');
     const allProfileBtns = document.querySelectorAll('#profileBtn');
     const allLogoutBtns = document.querySelectorAll('#logoutBtn');
+    
+    // Mobile buttons
+    const mobileLoginBtn = document.getElementById('mobileLoginBtn');
+    const mobileProfileBtn = document.getElementById('mobileProfileBtn');
+    const mobileLogoutBtn = document.getElementById('mobileLogoutBtn');
+    
+    // Hero button
+    const heroAuthBtn = document.getElementById('heroAuthBtn');
 
     auth.onAuthStateChanged(user => {
         const isLoggedIn = !!user;
+
+        // Toggle Desktop Buttons
         allLoginBtns.forEach(btn => btn.classList.toggle('hidden', isLoggedIn));
         allProfileBtns.forEach(btn => btn.classList.toggle('hidden', !isLoggedIn));
         allLogoutBtns.forEach(btn => btn.classList.toggle('hidden', !isLoggedIn));
+        
+        // Toggle Mobile Buttons
+        if (mobileLoginBtn) mobileLoginBtn.classList.toggle('hidden', isLoggedIn);
+        if (mobileProfileBtn) mobileProfileBtn.classList.toggle('hidden', !isLoggedIn);
+        if (mobileLogoutBtn) mobileLogoutBtn.classList.toggle('hidden', !isLoggedIn);
 
-        if (document.body.id === 'homepage') {
-            const heroAuthBtn = document.getElementById('heroAuthBtn');
-            if (heroAuthBtn) {
-                heroAuthBtn.textContent = isLoggedIn ? 'Go to Profile' : 'Login / Signup';
-                heroAuthBtn.href = isLoggedIn ? 'profile.html' : 'login.html';
-            }
+        // Update Hero Button on Homepage
+        if (pageId === 'homepage' && heroAuthBtn) {
+            heroAuthBtn.textContent = isLoggedIn ? 'Go to Profile' : 'Login / Signup';
+            heroAuthBtn.href = isLoggedIn ? 'profile.html' : 'login.html';
         }
     });
 
-    allLogoutBtns.forEach(btn => {
+    // Logout functionality for ALL logout buttons
+    document.querySelectorAll('#logoutBtn, #mobileLogoutBtn').forEach(btn => {
         btn.addEventListener('click', () => {
             auth.signOut().then(() => {
                 window.location.href = 'index.html';
@@ -50,6 +65,23 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
+    // --- Mobile Menu Toggle ---
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
+    if (mobileMenuBtn && mobileMenuOverlay) {
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenuOverlay.classList.toggle('hidden');
+            // Change icon
+            const icon = mobileMenuBtn.querySelector('i');
+            if (mobileMenuOverlay.classList.contains('hidden')) {
+                icon.setAttribute('data-feather', 'menu');
+            } else {
+                icon.setAttribute('data-feather', 'x');
+            }
+            feather.replace(); // Redraw icons
+        });
+    }
+
     // --- Animations ---
     const animatedElements = document.querySelectorAll('.animated-element');
     const observer = new IntersectionObserver((entries) => {
@@ -192,11 +224,19 @@ document.addEventListener('DOMContentLoaded', function() {
             const tabPanes = document.querySelectorAll('.profile-tab-content .tab-pane');
             function activateTab(tabId) {
                 tabLinks.forEach(link => link.classList.remove('active'));
-                tabPanes.forEach(pane => pane.classList.add('hidden'));
+                tabPanes.forEach(pane => {
+                    pane.classList.add('hidden'); // Hide all
+                    pane.classList.remove('active'); // Remove active
+                });
+                
                 const activeTabLink = document.getElementById(`${tabId}Tab`);
                 const activeTabPane = document.getElementById(`${tabId}Pane`);
+                
                 if (activeTabLink) activeTabLink.classList.add('active');
-                if (activeTabPane) activeTabPane.classList.remove('hidden');
+                if (activeTabPane) {
+                    activeTabPane.classList.remove('hidden'); // Show target
+                    activeTabPane.classList.add('active'); // Mark as active
+                }
             }
 
             tabLinks.forEach(link => {
@@ -221,11 +261,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
             }
             if (proceedBtn) {
-    proceedBtn.addEventListener('click', () => {
-        // Change the URL to the new path
-        window.location.href = 'derma-mind-python/static/index.html'; 
-    });
-}
+                proceedBtn.addEventListener('click', () => {
+                    window.location.href = 'derma-mind-python/static/index.html'; 
+                });
+            }
             if (cancelBtn) {
                 cancelBtn.addEventListener('click', () => {
                     if (disclaimerModal) disclaimerModal.classList.add('hidden');
@@ -233,111 +272,75 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             const recordList = document.getElementById('recordList');
-            const emptyStateRecords = document.getElementById('recordsPane').querySelector('.empty-state');
+            const emptyStateRecords = document.getElementById('emptyStateRecords');
             const fetchUserReports = (userId) => {
                 db.collection('users').doc(userId).collection('reports').orderBy('date', 'desc')
                     .onSnapshot(snapshot => {
-                        recordList.innerHTML = '';
+                        recordList.innerHTML = ''; // Clear list
                         emptyStateRecords.classList.toggle('hidden', !snapshot.empty);
                         snapshot.forEach(doc => {
                             const report = doc.data();
                             const card = document.createElement('div');
                             card.className = 'record-card';
-                            card.innerHTML = `<h4>Analysis: ${report.finding}</h4><p>Date: ${report.date.toDate().toLocaleDateString()}</p><a href="report.html?id=${doc.id}" class="btn btn-cta-main">View Details</a>`;
+                            card.innerHTML = `
+                                <div>
+                                    <h4>${report.finding}</h4>
+                                    <p>Date: ${report.date.toDate().toLocaleDateString()}</p>
+                                </div>
+                                <a href="report.html?id=${doc.id}" class="btn btn-cta-main">View Details</a>
+                            `;
                             recordList.appendChild(card);
                         });
                     });
             };
 
             const conversationList = document.getElementById('conversationList');
-            const emptyStateConvos = document.getElementById('conversationsPane').querySelector('.empty-state');
+            const emptyStateConvos = document.getElementById('emptyStateConvos');
             const fetchUserConversations = (userId) => {
-                conversationList.innerHTML = '';
-                emptyStateConvos.classList.remove('hidden');
+                conversationList.innerHTML = ''; // Clear list
+                emptyStateConvos.classList.remove('hidden'); // Show empty state
             };
 
             const prescriptionList = document.getElementById('prescriptionList');
-            const emptyStatePrescriptions = document.getElementById('prescriptionsPane').querySelector('.empty-state');
+            const emptyStatePrescriptions = document.getElementById('emptyStatePrescriptions');
             const fetchUserPrescriptions = (userId) => {
-                prescriptionList.innerHTML = '';
-                emptyStatePrescriptions.classList.remove('hidden');
+                prescriptionList.innerHTML = ''; // Clear list
+                emptyStatePrescriptions.classList.remove('hidden'); // Show empty state
             };
             
-            activateTab('records');
-            fetchUserReports(user.uid); 
+            activateTab('records'); // Start on the records tab
+            // fetchUserReports(user.uid); // Already called by activateTab
         });
     }
-    else if (pageId === 'profilepage') {
-    auth.onAuthStateChanged(user => {
-        if (!user) {
-            window.location.href = 'login.html';
-            return;
-        }
-        
-        const welcomeMessage = document.getElementById('welcomeMessage');
-        if(welcomeMessage) welcomeMessage.textContent = `Welcome back, ${user.email.split('@')[0]}!`;
+    else if (pageId === 'reportpage') {
+        auth.onAuthStateChanged(user => {
+            if (!user) {
+                window.location.href = 'login.html';
+                return;
+            }
 
-        const recordList = document.getElementById('recordList');
-        const emptyState = document.getElementById('emptyState');
+            const urlParams = new URLSearchParams(window.location.search);
+            const reportId = urlParams.get('id');
 
-        // Real-time listener: Jaise hi nayi report aayegi, list apne aap update hogi
-        db.collection('users').doc(user.uid).collection('reports').orderBy('date', 'desc')
-            .onSnapshot(snapshot => {
-                if (snapshot.empty) {
-                    recordList.innerHTML = '';
-                    emptyState.classList.remove('hidden');
-                    return;
-                }
-                
-                emptyState.classList.add('hidden');
-                recordList.innerHTML = '';
-                snapshot.forEach(doc => {
-                    const report = doc.data();
-                    const card = document.createElement('div');
-                    card.className = 'record-card';
-                    card.innerHTML = `
-                        <div>
-                            <h4>${report.finding}</h4>
-                            <p>Date: ${report.date.toDate().toLocaleDateString()}</p>
-                        </div>
-                        <a href="report.html?id=${doc.id}" class="btn btn-cta-main">View Details</a>
-                    `;
-                    recordList.appendChild(card);
+            if (!reportId) {
+                document.body.innerHTML = '<h1>Report not found.</h1>';
+                return;
+            }
+            
+            db.collection('users').doc(user.uid).collection('reports').doc(reportId).get()
+                .then(doc => {
+                    if (doc.exists) {
+                        const data = doc.data();
+                        document.getElementById('reportFinding').textContent = data.finding;
+                        document.getElementById('reportConfidence').textContent = `${data.confidence}%`;
+                        document.getElementById('reportRisk').textContent = data.risk;
+                        document.getElementById('reportImage').src = data.imageUrl;
+                        document.getElementById('reportDate').textContent = `Generated on ${data.date.toDate().toLocaleDateString()}`;
+                    } else {
+                        console.log("No such document!");
+                        document.body.innerHTML = '<h1>Report not found or you do not have permission.</h1>';
+                    }
                 });
-            });
-    });
-}
-else if (pageId === 'reportpage') {
-    auth.onAuthStateChanged(user => {
-        if (!user) {
-            window.location.href = 'login.html';
-            return;
-        }
-
-        const urlParams = new URLSearchParams(window.location.search);
-        const reportId = urlParams.get('id');
-
-        if (!reportId) {
-            document.body.innerHTML = '<h1>Report not found.</h1>';
-            return;
-        }
-        
-        // Firestore se report ka data fetch karo
-        db.collection('users').doc(user.uid).collection('reports').doc(reportId).get()
-            .then(doc => {
-                if (doc.exists) {
-                    const data = doc.data();
-                    // Ab is data ko page par dikhao
-                    document.getElementById('reportFinding').textContent = data.finding;
-                    document.getElementById('reportConfidence').textContent = `${data.confidence}%`;
-                    document.getElementById('reportRisk').textContent = data.risk;
-                    document.getElementById('reportImage').src = data.imageUrl;
-                    document.getElementById('reportDate').textContent = `Generated on ${data.date.toDate().toLocaleDateString()}`;
-                } else {
-                    console.log("No such document!");
-                }
-            });
-    });
-}
-
+        });
+    }
 });

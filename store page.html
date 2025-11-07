@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recommended Products - DermaMind AI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/feather-icons"></script>
+    <style>
+        /* --- Global Theme Styles --- */
+        :root {
+            --bg-dark: #000000;
+            --accent-gold: #cbf9fe;
+            --accent-glow: rgba(203, 249, 254, 0.4);
+            --text-primary: #f0f0f0;
+            --text-secondary: #a0a0a0;
+            --font-heading: 'Poppins', sans-serif;
+            --font-body: 'Lato', sans-serif;
+            --panel-bg: rgba(20, 20, 20, 0.6);
+            --panel-border: rgba(255, 255, 255, 0.1);
+            --panel-blur: 10px;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            background-image: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.75)), url('https://images.unsplash.com/photo-1558591710-4b4a1ae0f04d?q=80&w=1887&auto=format&fit=crop');
+            background-attachment: fixed;
+            background-size: cover;
+            background-position: center center;
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            margin: 0;
+        }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 30px; }
+        .frosted { background: var(--panel-bg); backdrop-filter: blur(var(--panel-blur)); -webkit-backdrop-filter: blur(var(--panel-blur)); border: 1px solid var(--panel-border); border-radius: 15px; }
+
+        /* --- Floating Header --- */
+        .main-header { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); width: 95%; max-width: 1200px; z-index: 1000; background-color: rgba(25, 25, 25, 0.7); backdrop-filter: blur(15px); border-radius: 50px; border: 1px solid var(--panel-border); padding: 0; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .main-header .nav-container { padding: 10px 30px; display: flex; justify-content: space-between; align-items: center; }
+        .logo-text { font-family: var(--font-heading); font-weight: 700; font-size: 1.5rem; color: var(--accent-gold); text-decoration: none; text-shadow: 0 0 5px var(--accent-glow); }
+        .nav-center-links { display: flex; gap: 30px; }
+        .nav-center-links a { color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.3s ease; }
+        .nav-center-links a:hover { color: var(--text-primary); }
+        
+        /* --- Page Specific Styles --- */
+        .store-main-content { padding-top: 150px; padding-bottom: 80px; }
+        .section-header { text-align: center; margin-bottom: 50px; }
+        .section-header h1 { font-size: 2.5rem; }
+        .section-header p { color: var(--text-secondary); max-width: 600px; margin: 10px auto 0; }
+
+        .filter-bar { display: flex; justify-content: center; gap: 15px; margin-bottom: 50px; flex-wrap: wrap; }
+        .filter-btn { background-color: transparent; border: 1px solid var(--panel-border); color: var(--text-secondary); padding: 10px 25px; border-radius: 50px; cursor: pointer; font-family: var(--font-heading); transition: all 0.3s ease; }
+        .filter-btn:hover { border-color: var(--accent-gold); color: var(--accent-gold); }
+        .filter-btn.active { background-color: var(--accent-gold); color: var(--bg-dark); border-color: var(--accent-gold); font-weight: 600; box-shadow: 0 0 15px var(--accent-glow); }
+
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
+        .product-card { border: 1px solid var(--panel-border); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; transition: transform 0.3s ease, box-shadow 0.3s ease; background: rgba(0,0,0,0.2); }
+        
+        .product-card:hover { 
+            transform: translateY(-8px); 
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7);
+            border-color: var(--accent-gold);
+        }
+        .product-card:hover .product-image {
+            transform: scale(1.05);
+        }
+
+        .product-image-container { overflow: hidden; }
+        .product-image { width: 100%; height: 250px; object-fit: cover; background-color: #000; transition: transform 0.4s ease-out; }
+        .product-info { padding: 25px; display: flex; flex-direction: column; flex-grow: 1; }
+        .product-info h3 { font-family: var(--font-heading); color: var(--text-primary); margin: 0 0 5px 0; font-size: 1.1rem; line-height: 1.4; height: 45px; overflow: hidden; }
+        .product-info .brand { color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 15px; }
+        .product-info .price { font-size: 1.5rem; font-weight: 700; color: var(--accent-gold); margin-bottom: 20px; }
+        
+        .btn { display: inline-block; padding: 10px 22px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: all 0.3s ease; border: none; cursor: pointer; font-family: var(--font-heading); }
+        .btn-cta-main { background-color: transparent; color: var(--accent-gold); border: 1px solid var(--accent-gold); width: 100%; margin-top: auto; }
+        .btn-cta-main:hover { background-color: var(--accent-gold); color: var(--bg-dark); }
+        
+        /* --- Footer --- */
+        .main-footer { background-color: #111111; color: var(--text-secondary); padding: 60px 0 0 0; border-top: 1px solid var(--panel-border); margin-top: 80px; }
+        .footer-bottom-bar { background-color: #000; padding: 20px 0; border-top: 1px solid #222; }
+    </style>
+</head>
+<body id="storepage">
+
+    <header class="main-header">
+        <nav class="container nav-container">
+            <a href="index.html" class="logo-text">DermaMind AI</a>
+            <div class="nav-center-links">
+                <a href="profile.html">My Profile</a>
+                <a href="consultation.html">Consultation</a>
+                <a href="team.html">Our Team</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="store-main-content">
+        <div class="container frosted">
+            <div class="section-header">
+                <h1>Curated Products</h1>
+                <p>A selection of dermatologist-recommended products for your skin and hair care needs.</p>
+            </div>
+
+            <div class="filter-bar">
+                <button class="filter-btn active" data-category="all">All Products</button>
+                <button class="filter-btn" data-category="skin">Skin Care</button>
+                <button class="filter-btn" data-category="hair">Hair Care</button>
+            </div>
+
+            <div id="product-grid" class="product-grid">
+                <!-- Products will be injected here by JavaScript -->
+            </div>
+        </div>
+    </main>
+
+    <footer class="main-footer">
+        <div class="footer-bottom-bar"><div class="container"><p>&copy; 2025 DermaMind AI. All rights reserved.</p></div></div>
+    </footer>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            feather.replace();
+
+            // Product data without image URLs, as they will be generated dynamically
+            const productsData = [
+                { id: 1, name: "10% Vitamin C Face Serum", brand: "Minimalist", category: "skin", price: "699", buyLink: "#" },
+                { id: 2, name: "Salicylic Acid Cleanser", brand: "Minimalist", category: "skin", price: "299", buyLink: "#" },
+                { id: 3, name: "Niacinamide 10% Serum", brand: "The Ordinary", category: "skin", price: "550", buyLink: "#" },
+                { id: 4, name: "Hyaluronic Acid 2% + B5", brand: "The Ordinary", category: "skin", price: "600", buyLink: "#" },
+                { id: 5, name: "Hydrating Facial Cleanser", brand: "CeraVe", category: "skin", price: "1100", buyLink: "#" },
+                { id: 6, name: "Gentle Skin Cleanser", brand: "Cetaphil", category: "skin", price: "550", buyLink: "#" },
+                { id: 7, name: "Anthelios Sunscreen", brand: "La Roche-Posay", category: "skin", price: "1800", buyLink: "#" },
+                { id: 8, name: "Hydro Boost Water Gel", brand: "Neutrogena", category: "skin", price: "1050", buyLink: "#" },
+                { id: 9, name: "2% BHA Liquid Exfoliant", brand: "Paula's Choice", category: "skin", price: "2700", buyLink: "#" },
+                { id: 10, name: "Lip Sleeping Mask", brand: "Laneige", category: "skin", price: "1450", buyLink: "#" },
+                { id: 11, name: "Snail Mucin 96% Essence", brand: "COSRX", category: "skin", price: "1450", buyLink: "#" },
+                { id: 12, name: "Sensibio H2O Micellar Water", brand: "Bioderma", category: "skin", price: "990", buyLink: "#" },
+                { id: 13, name: "Green Tea Seed Serum", brand: "Innisfree", category: "skin", price: "1950", buyLink: "#" },
+                { id: 14, name: "Ultra Facial Cream", brand: "Kiehl's", category: "skin", price: "2950", buyLink: "#" },
+                { id: 15, name: "Tea Tree Oil", brand: "The Body Shop", category: "skin", price: "695", buyLink: "#" },
+                { id: 16, name: "Green Tea Mattifying Moisturizer", brand: "Plum", category: "skin", price: "470", buyLink: "#" },
+                { id: 17, name: "Cica Calming Skin Toner", brand: "Dot & Key", category: "skin", price: "395", buyLink: "#" },
+                { id: 18, name: "Coffee Body Scrub", brand: "MCaffeine", category: "skin", price: "449", buyLink: "#" },
+                { id: 19, name: "Glycolic Night Serum", brand: "Drunk Elephant", category: "skin", price: "7200", buyLink: "#" },
+                { id: 20, name: "Soundarya Radiance Cream", brand: "Forest Essentials", category: "skin", price: "4800", buyLink: "#" },
+                { id: 21, name: "Maleic Bond Repair Hair Serum", brand: "Minimalist", category: "hair", price: "499", buyLink: "#" },
+                { id: 22, name: "Growth Actives 18% Hair Serum", brand: "Minimalist", category: "hair", price: "799", buyLink: "#" },
+                { id: 23, name: "No. 3 Hair Perfector", brand: "Olaplex", category: "hair", price: "2950", buyLink: "#" },
+                { id: 24, name: "Absolut Repair Shampoo", brand: "L'Oréal", category: "hair", price: "695", buyLink: "#" },
+                { id: 25, name: "All Soft Argan-6 Oil", brand: "Redken", category: "hair", price: "2400", buyLink: "#" },
+                { id: 26, name: "Moroccanoil Treatment", brand: "Moroccanoil", category: "hair", price: "3800", buyLink: "#" },
+                { id: 27, name: "Elixir Ultime Hair Oil", brand: "Kérastase", category: "hair", price: "3400", buyLink: "#" },
+                { id: 28, name: "Intense Repair Conditioner", brand: "Dove", category: "hair", price: "210", buyLink: "#" },
+                { id: 29, name: "Bio Bhringraj Hair Oil", brand: "Biotique", category: "hair", price: "159", buyLink: "#" },
+                { id: 30, name: "Onion Hair Mask", brand: "Mamaearth", category: "hair", price: "599", buyLink: "#" },
+                { id: 31, name: "Keratin Smooth Shampoo", brand: "Tresemmé", category: "hair", price: "550", buyLink: "#" },
+                { id: 32, name: "Intensive Repair Conditioner", brand: "L'Occitane", category: "hair", price: "1950", buyLink: "#" },
+                { id: 33, name: "Fusion Intense Repair Mask", brand: "Wella", category: "hair", price: "1075", buyLink: "#" },
+                { id: 34, name: "Osis+ Sparkler Spray", brand: "Schwarzkopf", category: "hair", price: "900", buyLink: "#" },
+                { id: 35, name: "Perfect Hair Day Dry Shampoo", brand: "Living Proof", category: "hair", price: "2200", buyLink: "#" },
+                { id: 36, name: "Bhringraj & Shikakai Cleanser", brand: "Forest Essentials", category: "hair", price: "1350", buyLink: "#" },
+                { id: 37, name: "Damage Remedy Daily Hair Repair", brand: "Aveda", category: "hair", price: "2750", buyLink: "#" },
+                { id: 38, name: "Argan Oil of Morocco Shampoo", brand: "OGX", category: "hair", price: "725", buyLink: "#" },
+                { id: 39, name: "Ginger Anti-Dandruff Shampoo", brand: "The Body Shop", category: "hair", price: "745", buyLink: "#" },
+                { id: 40, name: "Bringha Hair Oil", brand: "Indulekha", category: "hair", price: "432", buyLink: "#" }
+            ];
+
+            const productGrid = document.getElementById('product-grid');
+            const filterButtons = document.querySelectorAll('.filter-btn');
+
+            function renderProducts(productsToRender) {
+                productGrid.innerHTML = '';
+                productsToRender.forEach(product => {
+                    const productCard = document.createElement('div');
+                    productCard.className = 'product-card';
+                    
+                    // --- DYNAMIC THEMED PLACEHOLDER IMAGE ---
+                    // Creates a URL-friendly version of the product name
+                    const placeholderText = encodeURIComponent(product.name);
+                    // Creates a reliable placeholder image URL that matches the theme
+                    const imageUrl = `https://placehold.co/400x400/000000/cbf9fe?text=${placeholderText}`;
+
+                    productCard.innerHTML = `
+                        <div class="product-image-container">
+                            <img src="${imageUrl}" alt="${product.name}" class="product-image">
+                        </div>
+                        <div class="product-info">
+                            <h3>${product.name}</h3>
+                            <p class="brand">${product.brand}</p>
+                            <p class="price">₹${product.price}</p>
+                            <a href="${product.buyLink}" target="_blank" class="btn btn-cta-main">Buy Now</a>
+                        </div>
+                    `;
+                    productGrid.appendChild(productCard);
+                });
+            }
+
+            filterButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    const category = button.getAttribute('data-category');
+                    const filteredProducts = category === 'all' ? productsData : productsData.filter(p => p.category === category);
+                    renderProducts(filteredProducts);
+                });
+            });
+
+            // Initially display all products
+            renderProducts(productsData);
+        });
+    </script>
+</body>
+</html>
